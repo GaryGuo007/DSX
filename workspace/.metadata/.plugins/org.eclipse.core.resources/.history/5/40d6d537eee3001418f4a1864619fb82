@@ -1,0 +1,25 @@
+package PriceRelated;
+
+public class QuoteSide {
+	String userName;
+	String stock symbol;
+	String id;
+	String side;
+	Price Price;
+	String originalVolume;
+	String remainingOrderVolume;
+	String cancelledOrderVolume;
+	
+	
+	The user name related to this order (String)
+	• The product (stock symbol) that the order specifies
+	(String)
+	• The “id” of the order (String)
+	• The “side” (“BUY”/”SELL”) of the order (String)
+	• The Price object holding the price for this order
+	(Price)
+	• The original order volume (String)
+	• The remaining order volume (String)
+	• The cancelled volume of the order.
+
+}
