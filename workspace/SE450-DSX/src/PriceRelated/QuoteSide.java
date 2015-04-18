@@ -1,6 +1,6 @@
 package PriceRelated;
 
-public class QuoteSide {
+public class QuoteSide : Tradable {
 	String userName;
 	String stock symbol;
 	String id;
@@ -10,6 +10,8 @@ public class QuoteSide {
 	String remainingOrderVolume;
 	String cancelledOrderVolume;
 	
+	public String getProduct() {
 	
+	}
 	
 }

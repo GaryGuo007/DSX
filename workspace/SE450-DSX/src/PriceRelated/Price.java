@@ -1,12 +1,24 @@
 package PriceRelated;
 
 public class Price {
-	protect price(long price){
+	
+	long price = 0;
+	
+	public long getPrice() {
+		return price;
+	}
+	
+	protect Price() {
 		
 	}
 	
+	protect Price(long price){
+		this.price = price;
+	}
+	
 	public Price add(Price p){
-		
+		long newPrice = this.getPrice() + p.getPrice();
+		return new Price(newPrice);
 	}
     
 	public Price subtract(Price p){
@@ -42,6 +54,7 @@ public class Price {
 	}
 	
 	public boolean isMarket() {
+		return false;
 		
 	}
 	
