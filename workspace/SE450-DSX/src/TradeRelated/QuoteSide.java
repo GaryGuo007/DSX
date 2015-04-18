@@ -1,4 +1,4 @@
-package PriceRelated;
+package TradeRelated;
 
 public class QuoteSide : Tradable {
 	String userName;

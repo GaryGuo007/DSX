@@ -1,10 +1,21 @@
 package PriceRelated;
 
 public class PriceFactory {
-	public static Price makeLimitPrice(String value)
+	private Hashtable
+	private Price
 	
-	public static Price makeLimitPrice(long value)
+	public static Price makeLimitPrice(String value){
+		
+	}
 	
-	public static Price makeMarketPrice()
+	public static Price makeLimitPrice(long value){
+		
+	}
+	
+	public static Price makeMarketPrice(){
+		
+	}
+	
+	private static Price
 
 }

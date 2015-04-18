@@ -1,4 +1,6 @@
-package PriceRelated;
+package TradeRelated;
+
+import PriceRelated.Price;
 
 public class Order {
 	String userName;

@@ -2,30 +2,39 @@ package PriceRelated;
 
 public class Price {
 	
-	long price = 0;
+	private long price = 0;
+	private boolean isMarket;
 	
-	public long getPrice() {
-		return price;
-	}
+	public long getPrice() {return price;}
 	
-	protect Price() {
-		
-	}
+    public boolean getIsMarket(){return isMarket;}
+	Price() {isMarket= true;}
 	
-	protect Price(long price){
+	Price(long price){
 		this.price = price;
 	}
 	
 	public Price add(Price p){
 		long newPrice = this.getPrice() + p.getPrice();
 		return new Price(newPrice);
+		
+		if(p == null || isMarket == true || p.getIsMarket()==true)
+			throw new InvalidPriceOperation("");
 	}
     
 	public Price subtract(Price p){
 		
+		
+		if(p == null || isMarket == true || p.getIsMarket()==true)
+			throw new InvalidPriceOperation("");
+		return p2;
+		
 	}
     
 	public Price multiply(int p){
+		
+		if(p == null || isMarket == true || p.getIsMarket()==true)
+			throw new InvalidPriceOperation("");
 		
 	}
     

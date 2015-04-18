@@ -1,4 +1,6 @@
-package PriceRelated;
+package TradeRelated;
+
+import PriceRelated.Price;
 
 public interface Tradable {
 	String getProduct(); // Returns the product symbol (i.e., IBM, GOOG, AAPL, etc.) that the Tradable works with.
