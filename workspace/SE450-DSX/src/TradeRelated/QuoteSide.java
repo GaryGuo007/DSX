@@ -1,8 +1,9 @@
 package TradeRelated;
-
-public class QuoteSide : Tradable {
+import PriceRelated.PriceFactory;
+import PriceRelated.Price;
+public class QuoteSide implements Tradable {
 	String userName;
-	String stock symbol;
+	String stockSymbol;
 	String id;
 	String side;
 	Price Price;
@@ -10,8 +11,20 @@ public class QuoteSide : Tradable {
 	String remainingOrderVolume;
 	String cancelledOrderVolume;
 	
-	public String getProduct() {
+	public QuoteSide(QuoteSide qs){
+		
+	}
 	
+	public String getProduct(){
+		return stockSymbol;
+	}
+	
+	public int getRemainingVolume(){
+		return remainingOrderVolume;
+	}
+	
+	public setRemainingVolume(){
+		
 	}
 	
 }
