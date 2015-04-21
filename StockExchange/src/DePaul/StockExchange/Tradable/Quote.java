@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange;
+package DePaul.StockExchange.Tradable;
+
+import DePaul.StockExchange.InvalidVolumeValueException;
+import DePaul.StockExchange.Tradable.QuoteSide;
+import DePaul.StockExchange.Price.Price;
 
 /**
  *
@@ -37,13 +41,13 @@ public class Quote {
     private void setBuyQuoteSide(String userName, String productSymbol,
                     Price sidePrice, int volume) throws Exception {
         this.buyQuoteSide = new QuoteSide(userName, productSymbol, sidePrice,
-                                volume, BookSide.BUY);
+                                volume, "BUY");
     }
 
     private void setSellQuoteSide(String userName, String productSymbol,
                     Price sidePrice, int volume) throws Exception {
         this.sellQuoteSide = new QuoteSide(userName, productSymbol, sidePrice,
-                                volume, BookSide.SELL);
+                                volume, "SELL");
     }
 
     private void setUserName(String userName) {
@@ -69,8 +73,8 @@ public class Quote {
         return this.sellQuoteSide;
     }
 
-    public QuoteSide getQuoteSide(BookSide sideIn) throws Exception {
-        if (sideIn == BookSide.SELL) {
+    public QuoteSide getQuoteSide(String sideIn) throws InvalidVolumeValueException {
+        if ("SELL".equals(sideIn)) {
             return new QuoteSide(this.getSellQuoteSide());
         }
         return new QuoteSide(this.getBuyQuoteSide());

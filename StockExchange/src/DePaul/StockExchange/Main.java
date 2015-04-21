@@ -5,7 +5,15 @@
  */
 package DePaul.StockExchange;
 
+import DePaul.StockExchange.Tradable.Order;
+import DePaul.StockExchange.Tradable.Quote;
+import DePaul.StockExchange.Tradable.TradableDTO;
+import DePaul.StockExchange.Tradable.Tradable;
+import DePaul.StockExchange.Price.PriceFactory;
+import DePaul.StockExchange.Price.Price;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -119,17 +127,22 @@ public class Main {
 
     private static void makeSomeTestPriceObjects() {
         System.out.println("1) Creating some Test Price Objects: ");
-        testPriceHolder.add(PriceFactory.makeLimitPrice("10.50"));
-        testPriceHolder.add(PriceFactory.makeLimitPrice("$1400.99"));
-        testPriceHolder.add(PriceFactory.makeLimitPrice("$-51.52"));
-        testPriceHolder.add(PriceFactory.makeLimitPrice(".49"));
-        testPriceHolder.add(PriceFactory.makeLimitPrice("-0.89"));
-        testPriceHolder.add(PriceFactory.makeLimitPrice("12"));
-        testPriceHolder.add(PriceFactory.makeLimitPrice("90."));
-        testPriceHolder.add(PriceFactory.makeLimitPrice("14.5"));
-        testPriceHolder.add(PriceFactory.makeMarketPrice());
-        System.out.println("   " + testPriceHolder);
-        System.out.println();
+        try {
+            testPriceHolder.add(PriceFactory.makeLimitPrice("10.50"));
+            testPriceHolder.add(PriceFactory.makeLimitPrice("$1400.99"));
+            testPriceHolder.add(PriceFactory.makeLimitPrice("$-51.52"));
+            testPriceHolder.add(PriceFactory.makeLimitPrice(".49"));
+            testPriceHolder.add(PriceFactory.makeLimitPrice("-0.89"));
+            testPriceHolder.add(PriceFactory.makeLimitPrice("12"));
+            testPriceHolder.add(PriceFactory.makeLimitPrice("90."));
+            testPriceHolder.add(PriceFactory.makeLimitPrice("14.5"));
+            testPriceHolder.add(PriceFactory.makeMarketPrice());
+            System.out.println("   " + testPriceHolder);
+            System.out.println();
+        } catch (InvalidPriceOperation ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Got an invalid price while creating price objects" + ex);
+        }
     }
 
     private static void verifyTestPriceValues() {
@@ -265,15 +278,20 @@ public class Main {
     }
 
     private static void verifyFlyweight() {
-        System.out.println("6) Verifying your Flyweight Implementation:");
-        String format = "    Price %-9s is same object as new %9s: %s%n";
-        Price p1 = PriceFactory.makeLimitPrice("10.50");
-        System.out.format(format, testPriceHolder.get(0), p1, testPriceHolder.get(0) == p1 ? "PASS" : "FAIL");
-        System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
+        try {
+            System.out.println("6) Verifying your Flyweight Implementation:");
+            String format = "    Price %-9s is same object as new %9s: %s%n";
+            Price p1 = PriceFactory.makeLimitPrice("10.50");
+            System.out.format(format, testPriceHolder.get(0), p1, testPriceHolder.get(0) == p1 ? "PASS" : "FAIL");
+            System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
 
-        p1 = PriceFactory.makeMarketPrice();
-        System.out.format(format, testPriceHolder.get(8), p1, testPriceHolder.get(8) == p1 ? "PASS" : "FAIL");
-        System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
+            p1 = PriceFactory.makeMarketPrice();
+            System.out.format(format, testPriceHolder.get(8), p1, testPriceHolder.get(8) == p1 ? "PASS" : "FAIL");
+            System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
+        } catch (InvalidPriceOperation ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Got an invalid price while creating a price object" + ex);
+        }
     }
     
 }

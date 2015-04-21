@@ -13,64 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange;
+
+package DePaul.StockExchange.Tradable;
+
+import DePaul.StockExchange.InvalidVolumeValueException;
+import DePaul.StockExchange.Price.Price;
 
 /**
  *
  * @author jimliu
  */
-public final class QuoteSide implements Tradable {
+public class Order implements Tradable {
     private String user;
     private String product;
     private String id;
-    private BookSide side;
+    private String side;
     private Price price;
     private int originalVolume;
     private int remainingVolume;
     private int cancelledVolume;
 
-    public QuoteSide(String userName, String productSymbol, Price sidePrice,
-                    int originalVolume, BookSide side) throws Exception {
-        this.setId(userName, productSymbol);
-        this.setPrice(sidePrice);
-        this.setUser(userName);
-        this.setProduct(productSymbol);
-        this.setOriginalVolume(originalVolume);
-        this.setRemainingVolume(originalVolume);
-        this.setSide(side);
-    }
-
-    public QuoteSide(QuoteSide qs) throws Exception {
-        this.setId(qs.getUser(), qs.getProduct());
-        this.setPrice(qs.getPrice());
-        this.setUser(qs.getUser());
-        this.setProduct(qs.getProduct());
-        this.setOriginalVolume(qs.getOriginalVolume());
-        this.setRemainingVolume(qs.getOriginalVolume());
-        this.setSide(qs.getSide());
-    }
-
-    private void setId(String userName, String productSymbol) {
-        this.id = String.format("%s%s%s", userName, productSymbol, System.nanoTime());
-    }
-
-    public void setPrice(Price price) {
-        this.price = price;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    private void setProduct(String productSymbol) {
+    /*
+    @todo: check the paremeter
+    */
+    public Order(String userName, String productSymbol, Price orderPrice, 
+            int originalVolume, String side) throws Exception {
+        this.id = userName + productSymbol + 
+                orderPrice.toString() + System.nanoTime();
+        this.price = orderPrice;
+        this.user = userName;
         this.product = productSymbol;
-    }
-
-    public void setOriginalVolume(int originalVolume) {
         this.originalVolume = originalVolume;
-    }
-
-    public void setSide(BookSide side) {
+        this.remainingVolume = originalVolume;
         this.side = side;
     }
 
@@ -121,7 +95,7 @@ public final class QuoteSide implements Tradable {
     }
 
     @Override
-    public BookSide getSide() {
+    public String getSide() {
         return this.side;
     }
 
@@ -138,8 +112,8 @@ public final class QuoteSide implements Tradable {
 
     @Override
     public String toString() {
-        return String.format("%sx%s (Original Vol: %s, CXL'd Vol: %s) [%s]", 
-                this.getPrice(), this.getRemainingVolume(), this.getOriginalVolume(), 
-                this.getCancelledVolume(), this.getId());
+        return String.format("%s order: %s %s %s at %s (Original Vol: %s, CXL'd Vol: %s), ID: %s", 
+                user, side, remainingVolume, product, price, originalVolume, cancelledVolume, id);
     }
+
 }

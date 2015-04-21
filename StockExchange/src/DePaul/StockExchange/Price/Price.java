@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange;
+package DePaul.StockExchange.Price;
+
+import DePaul.StockExchange.InvalidPriceOperation;
 
 /**
  *
@@ -48,13 +50,13 @@ public final class Price implements Comparable<Price> {
     *   and return a new Price object representing that sum.
     * @param  p
     *   the Price object passed in to add with the current Price
-    * @throws InvalidPriceOperationException 
+    * @throws InvalidPriceOperation 
     *   These methods should throw InvalidPriceOperation 
     *   if either Price is a Market Price, or the Price passed in is null.
     */ 
-    public Price add(Price p) throws InvalidPriceOperationException {
+    public Price add(Price p) throws InvalidPriceOperation {
         if (p == null || this.isMarket() || p.isMarket()) {
-            throw new InvalidPriceOperationException("Price is a Market Price, or the Price passed in is null.");
+            throw new InvalidPriceOperation("Price is a Market Price, or the Price passed in is null.");
         }
 
         long newValue = this.priceValue + p.priceValue;
@@ -64,9 +66,9 @@ public final class Price implements Comparable<Price> {
 
     // Subtract the value of the Price object passed in from the current Price object’s value 
     // and return a new Price object representing that difference.
-    public Price subtract(Price p) throws InvalidPriceOperationException {
+    public Price subtract(Price p) throws InvalidPriceOperation {
         if (p == null || this.isMarket() || p.isMarket()) {
-            throw new InvalidPriceOperationException("Price is a Market Price, or the Price passed in is null.");
+            throw new InvalidPriceOperation("Price is a Market Price, or the Price passed in is null.");
         }
 
         long newValue = this.priceValue + p.priceValue;
@@ -75,9 +77,9 @@ public final class Price implements Comparable<Price> {
 
     // Multiply the value passed in by the current Price object’s value 
     // and returns a new Price object representing that product.
-    public Price multiply(int p) throws InvalidPriceOperationException {
+    public Price multiply(int p) throws InvalidPriceOperation {
         if (this.isMarket()) {
-            throw new InvalidPriceOperationException("Price is a Market Price, or the Price passed in is null.");
+            throw new InvalidPriceOperation("Price is a Market Price, or the Price passed in is null.");
         }
         long newValue = this.priceValue * p;
         return PriceFactory.makeLimitPrice(newValue);

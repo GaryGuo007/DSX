@@ -19,21 +19,13 @@ package DePaul.StockExchange;
  *
  * @author jimliu
  */
-public enum BookSide {
+public class InvalidPriceOperation extends Exception {
 
-    BUY("BUY"),
-    SELL("SELL");
-    private final String bookside;  
-
-    private BookSide(String side) throws RuntimeException {
-        if (side.equals("BUY") || side.equals("SELL")) {
-            bookside = side;
-        } else {
-            throw new RuntimeException("RuntimeException: MarketState can only be BUY or SELL.");
-        }
+    public InvalidPriceOperation() {
+        super();
     }
 
-    public String getBookSide() {
-        return bookside;
+    public InvalidPriceOperation(String message) {
+        super(message);
     }
 }

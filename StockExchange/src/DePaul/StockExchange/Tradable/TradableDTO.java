@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange;
+package DePaul.StockExchange.Tradable;
+
+import DePaul.StockExchange.Price.Price;
 
 /**
  *
@@ -27,12 +29,12 @@ public class TradableDTO {
     public int remainingVolume;
     public int cancelledVolume;
     public String user;
-    public BookSide side;
+    public String side;
     public boolean isQuote;
     public String id;
     
     public TradableDTO(String productSymbol, Price p, int origVolume, int remainVolume,
-            int cancelVolume, String userName, BookSide s, boolean isQ, String Id) {
+            int cancelVolume, String userName, String s, boolean isQ, String Id) {
         this.product = productSymbol;
         this.price = p;
         this.originalVolume = origVolume;

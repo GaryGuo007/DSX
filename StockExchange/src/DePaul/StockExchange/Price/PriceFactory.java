@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange;
+package DePaul.StockExchange.Price;
+import DePaul.StockExchange.InvalidPriceOperation;
 import java.util.Hashtable;
 
 /**
  *
  * @author jimliu
  */
-public abstract class PriceFactory {
+public class PriceFactory {
 
-    private static Hashtable<Long, Price> prices = new Hashtable<Long, Price>();
-    private static Price marketPrice = new Price();
+    private static final Hashtable<Long, Price> prices = new Hashtable<>();
+    private static final Price marketPrice = new Price();
 
-    public static Price makeLimitPrice(String value) throws InvalidPriceOperationException {
+    public static Price makeLimitPrice(String value) throws InvalidPriceOperation {
         double d = 0;
         try
         {
@@ -34,12 +35,12 @@ public abstract class PriceFactory {
         //if invalid value was entered
         catch(NumberFormatException ne)
         {
-            throw new InvalidPriceOperationException("InvalidPriceOperationException");
+            throw new InvalidPriceOperation("InvalidPriceOperationException");
         }
         return PriceFactory.makeLimitPrice((long) (d * 100.0));
     }
 
-    public static Price makeLimitPrice(long value) throws InvalidPriceOperationException {
+    public static Price makeLimitPrice(long value) throws InvalidPriceOperation {
         Price p = prices.get(value);
         if (p == null) {  
             p = new Price(value);

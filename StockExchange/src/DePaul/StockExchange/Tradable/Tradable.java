@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange;
+package DePaul.StockExchange.Tradable;
+
+import DePaul.StockExchange.InvalidVolumeValueException;
+import DePaul.StockExchange.Price.Price;
 
 /**
  *
@@ -74,7 +77,7 @@ public interface Tradable {
 	/*
 	 * Returns the side (“BUY”/”SELL”) of the Tradable.
 	 */
-	BookSide getSide();
+	String getSide();
 
 	/*
 	 * Returns true if the Tradable is part of a Quote, returns false if not
