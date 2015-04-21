@@ -9,3 +9,4 @@ Phase 1 (2 Weeks) 4/9 – 4/23 [Week 2 - 4]:
 Phase 2 (2 Weeks) 4/23 – 5/7: [Week 4 - 6]
 Phase 3 (2 Weeks) 5/7 – 5/21: [Week 6 – 8]
 Phase 4 (2 Weeks) 5/21 – 6/4: [Week 8 – 10] 
+

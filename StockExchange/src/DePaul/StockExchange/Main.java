@@ -20,8 +20,7 @@ import java.util.logging.Logger;
  * @author jimliu
  */
 public class Main {
-
- private static final ArrayList<Price> testPriceHolder = new ArrayList<>();
+   private static final ArrayList<Price> testPriceHolder = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -140,8 +139,8 @@ public class Main {
             System.out.println("   " + testPriceHolder);
             System.out.println();
         } catch (InvalidPriceOperation ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Got an invalid price while creating price objects" + ex);
+            System.out.println("An unexpected exception occurred: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -278,20 +277,19 @@ public class Main {
     }
 
     private static void verifyFlyweight() {
-        try {
-            System.out.println("6) Verifying your Flyweight Implementation:");
-            String format = "    Price %-9s is same object as new %9s: %s%n";
-            Price p1 = PriceFactory.makeLimitPrice("10.50");
-            System.out.format(format, testPriceHolder.get(0), p1, testPriceHolder.get(0) == p1 ? "PASS" : "FAIL");
-            System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
-
-            p1 = PriceFactory.makeMarketPrice();
-            System.out.format(format, testPriceHolder.get(8), p1, testPriceHolder.get(8) == p1 ? "PASS" : "FAIL");
-            System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
-        } catch (InvalidPriceOperation ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Got an invalid price while creating a price object" + ex);
-        }
+        System.out.println("6) Verifying your Flyweight Implementation:");
+        String format = "    Price %-9s is same object as new %9s: %s%n";
+       try {
+           Price p1 = PriceFactory.makeLimitPrice("10.50");
+           System.out.format(format, testPriceHolder.get(0), p1, testPriceHolder.get(0) == p1 ? "PASS" : "FAIL");
+           System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
+           
+           p1 = PriceFactory.makeMarketPrice();
+           System.out.format(format, testPriceHolder.get(8), p1, testPriceHolder.get(8) == p1 ? "PASS" : "FAIL");
+           System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
+       } catch (InvalidPriceOperation ex) {
+            System.out.println("An unexpected exception occurred: " + ex.getMessage());
+            ex.printStackTrace();
+       }
     }
-    
 }

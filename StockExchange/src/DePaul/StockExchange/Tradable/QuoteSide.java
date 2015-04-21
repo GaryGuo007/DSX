@@ -15,7 +15,7 @@
  */
 package DePaul.StockExchange.Tradable;
 
-import DePaul.StockExchange.InvalidVolumeValueException;
+import DePaul.StockExchange.InvalidTradableValue;
 import DePaul.StockExchange.Price.Price;
 
 /**
@@ -33,47 +33,70 @@ public final class QuoteSide implements Tradable {
     private int cancelledVolume;
 
     public QuoteSide(String userName, String productSymbol, Price sidePrice,
-                    int originalVolume, String side) throws InvalidVolumeValueException {
-        this.setId(userName, productSymbol);
+                    int originalVolume, String side) 
+            throws InvalidTradableValue {
         this.setPrice(sidePrice);
         this.setUser(userName);
         this.setProduct(productSymbol);
+        this.setSide(side);
+        this.setId(userName, productSymbol);
         this.setOriginalVolume(originalVolume);
         this.setRemainingVolume(originalVolume);
-        this.setSide(side);
+        this.setCancelledVolume(0);
     }
 
-    public QuoteSide(QuoteSide qs) throws InvalidVolumeValueException {
-        this.setId(qs.getUser(), qs.getProduct());
-        this.setPrice(qs.getPrice());
-        this.setUser(qs.getUser());
-        this.setProduct(qs.getProduct());
-        this.setOriginalVolume(qs.getOriginalVolume());
-        this.setRemainingVolume(qs.getOriginalVolume());
-        this.setSide(qs.getSide());
+    public QuoteSide(QuoteSide qs) {
+        this.id = qs.getId();
+        this.user = qs.getUser();
+        this.product = qs.getProduct();
+        this.side = qs.getSide();
+        this.price = qs.getPrice();
+        this.originalVolume = qs.getOriginalVolume();
+        this.cancelledVolume = qs.getCancelledVolume();
+        this.remainingVolume = qs.getRemainingVolume();
     }
 
     private void setId(String userName, String productSymbol) {
-        this.id = String.format("%s%s%s", userName, productSymbol, System.nanoTime());
+        this.id = String.format("%s%s%s", userName, 
+                productSymbol, System.nanoTime());
     }
 
-    public void setPrice(Price price) {
+    public void setPrice(Price price) throws InvalidTradableValue {
+        if (price.isMarket()) {
+            throw new InvalidTradableValue("Invalid price, "
+                    + "Quotes can only use limit prices.");
+        }
         this.price = price;
     }
 
-    public void setUser(String user) {
+    public void setUser(String userName) throws InvalidTradableValue {
+        if (userName == null || "".equals(userName)) {
+            throw new InvalidTradableValue("Invalid user name: " + userName); 
+        }
         this.user = user;
     }
 
-    private void setProduct(String productSymbol) {
+    private void setProduct(String productSymbol) throws InvalidTradableValue {
+        if (productSymbol == null || "".equals(productSymbol)) {
+            throw new InvalidTradableValue("Invalid product symbol: " 
+                    + productSymbol); 
+        }
         this.product = productSymbol;
     }
 
-    public void setOriginalVolume(int originalVolume) {
+    public void setOriginalVolume(int originalVolume)
+            throws InvalidTradableValue {
+        if (originalVolume <= 0) {
+            throw new InvalidTradableValue("Invalid " + this.side 
+                    + "-Side Volume: " + originalVolume); 
+        }
         this.originalVolume = originalVolume;
     }
 
-    public void setSide(String side) {
+    public void setSide(String side) throws InvalidTradableValue {
+        if (!"SELL".equals(side) && !"BUY".equals(side)) {
+            throw new InvalidTradableValue("Invalid Side: " + side); 
+        }
         this.side = side;
     }
 
@@ -103,17 +126,33 @@ public final class QuoteSide implements Tradable {
     }
 
     @Override
-    public void setCancelledVolume(int newCancelledVolume) throws InvalidVolumeValueException {
-        if (newCancelledVolume < 0 || (newCancelledVolume + this.remainingVolume > this.originalVolume)) {
-            throw new InvalidVolumeValueException("The value is negative, or the requested cancelled volume plus the current remaining volume exceeds the original volume."); 
+    public void setCancelledVolume(int newCancelledVolume) throws InvalidTradableValue {
+        if (newCancelledVolume < 0) {
+            throw new InvalidTradableValue("Invalid Cancelled Volume: " + newCancelledVolume);
+        }
+        if (newCancelledVolume + this.remainingVolume > this.originalVolume) {
+            String errorMessage = String.format("Requested new Cancelled Volume "
+                    + "(%s) plus the Remaining Volume (%s) exceeds the "
+                    + "tradable's Original Volume (%s)"
+                    , newCancelledVolume, this.remainingVolume, this.originalVolume);
+            throw new InvalidTradableValue(errorMessage);
         }
         this.cancelledVolume = newCancelledVolume;
     }
 
     @Override
-    public void setRemainingVolume(int newRemainingVolume) throws InvalidVolumeValueException {
-        if (newRemainingVolume < 0 || (newRemainingVolume + this.cancelledVolume > this.originalVolume)) {
-            throw new InvalidVolumeValueException("he value is negative, or the requested remaining volume plus the current cancelled volume exceeds the original volume."); 
+    public void setRemainingVolume(int newRemainingVolume) 
+            throws InvalidTradableValue {
+        if (newRemainingVolume < 0) {
+            throw new InvalidTradableValue("Invalid Remaining Volume: " 
+                    + newRemainingVolume);
+        }
+        if (newRemainingVolume + this.cancelledVolume > this.originalVolume) {
+            String errorMessage = String.format("Requested new Remaining Volume "
+                    + "(%s) plus the Cancelled Volume (%s) exceeds the "
+                    + "tradable's Original Volume (%s)"
+                    , newRemainingVolume, this.cancelledVolume, this.originalVolume);
+            throw new InvalidTradableValue(errorMessage);
         }
         this.remainingVolume = newRemainingVolume;
     }
@@ -130,7 +169,7 @@ public final class QuoteSide implements Tradable {
 
     @Override
     public boolean isQuote() {
-        return false;
+        return true;
     }
 
     @Override
@@ -142,7 +181,8 @@ public final class QuoteSide implements Tradable {
     @Override
     public String toString() {
         return String.format("%sx%s (Original Vol: %s, CXL'd Vol: %s) [%s]", 
-                this.getPrice(), this.getRemainingVolume(), this.getOriginalVolume(), 
+                this.getPrice(), this.getRemainingVolume(), 
+                this.getOriginalVolume(), 
                 this.getCancelledVolume(), this.getId());
     }
 }

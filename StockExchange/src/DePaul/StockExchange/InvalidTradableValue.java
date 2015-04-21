@@ -19,13 +19,13 @@ package DePaul.StockExchange;
  *
  * @author jimliu
  */
-public class InvalidVolumeValueException extends Exception {
+public class InvalidTradableValue extends Exception {
 
-    public InvalidVolumeValueException() {
+    public InvalidTradableValue() {
         super();
     }
 
-    public InvalidVolumeValueException(String message) {
+    public InvalidTradableValue(String message) {
         super(message);
     }
 }

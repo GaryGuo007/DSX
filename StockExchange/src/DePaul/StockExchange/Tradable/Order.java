@@ -16,7 +16,7 @@
 
 package DePaul.StockExchange.Tradable;
 
-import DePaul.StockExchange.InvalidVolumeValueException;
+import DePaul.StockExchange.InvalidTradableValue;
 import DePaul.StockExchange.Price.Price;
 
 /**
@@ -37,15 +37,47 @@ public class Order implements Tradable {
     @todo: check the paremeter
     */
     public Order(String userName, String productSymbol, Price orderPrice, 
-            int originalVolume, String side) throws Exception {
-        this.id = userName + productSymbol + 
-                orderPrice.toString() + System.nanoTime();
-        this.price = orderPrice;
-        this.user = userName;
-        this.product = productSymbol;
-        this.originalVolume = originalVolume;
-        this.remainingVolume = originalVolume;
+            int originalVolume, String side) throws InvalidTradableValue {
+        this.setPrice(orderPrice);
+        this.setUser(userName);
+        this.setProduct(productSymbol);
+        this.setId(userName, productSymbol, orderPrice);
+        this.setOriginalVolume(originalVolume);
+        this.setRemainingVolume(originalVolume);
         this.side = side;
+    }
+    
+    void setId(String userName, String productSymbol, Price orderPrice) {
+        this.id = String.format("%s%s%s%s", userName, productSymbol, 
+                orderPrice, System.nanoTime());
+    }
+    
+    void setPrice(Price orderPrice) {
+        this.price = orderPrice;
+    }
+    
+    void setUser(String userName) throws InvalidTradableValue {
+        if (userName == null || "".equals(userName)) {
+            throw new InvalidTradableValue("Invalid user name: " + userName); 
+        }
+        this.user = userName;
+    }
+    
+    void setProduct(String productSymbol) throws InvalidTradableValue {
+        if (productSymbol == null || "".equals(productSymbol)) {
+            throw new InvalidTradableValue("Invalid product symbol: " 
+                    + productSymbol); 
+        }
+        this.product = productSymbol;
+    }
+    
+    void setOriginalVolume(int originalVolume) 
+            throws InvalidTradableValue {
+        if (originalVolume <= 0) {
+            throw new InvalidTradableValue("Invalid Order Volume: " 
+                    + originalVolume); 
+        }
+        this.originalVolume = originalVolume;
     }
 
     @Override
@@ -74,17 +106,33 @@ public class Order implements Tradable {
     }
 
     @Override
-    public void setCancelledVolume(int newCancelledVolume) throws InvalidVolumeValueException {
-        if (newCancelledVolume < 0 || (newCancelledVolume + this.remainingVolume > this.originalVolume)) {
-            throw new InvalidVolumeValueException("The value is negative, or the requested cancelled volume plus the current remaining volume exceeds the original volume."); 
+    public void setCancelledVolume(int newCancelledVolume) throws InvalidTradableValue {
+        if (newCancelledVolume < 0) {
+            throw new InvalidTradableValue("Invalid Cancelled Volume: " + newCancelledVolume);
+        }
+        if (newCancelledVolume + this.remainingVolume > this.originalVolume) {
+            String errorMessage = String.format("Requested new Cancelled Volume "
+                    + "(%s) plus the Remaining Volume (%s) exceeds the "
+                    + "tradable's Original Volume (%s)"
+                    , newCancelledVolume, this.remainingVolume, this.originalVolume);
+            throw new InvalidTradableValue(errorMessage);
         }
         this.cancelledVolume = newCancelledVolume;
     }
 
     @Override
-    public void setRemainingVolume(int newRemainingVolume) throws InvalidVolumeValueException {
-        if (newRemainingVolume < 0 || (newRemainingVolume + this.cancelledVolume > this.originalVolume)) {
-            throw new InvalidVolumeValueException("he value is negative, or the requested remaining volume plus the current cancelled volume exceeds the original volume."); 
+    public void setRemainingVolume(int newRemainingVolume) 
+            throws InvalidTradableValue {
+        if (newRemainingVolume < 0) {
+            throw new InvalidTradableValue("Invalid Remaining Volume: " 
+                    + newRemainingVolume);
+        }
+        if (newRemainingVolume + this.cancelledVolume > this.originalVolume) {
+            String errorMessage = String.format("Requested new Remaining Volume "
+                    + "(%s) plus the Cancelled Volume (%s) exceeds the "
+                    + "tradable's Original Volume (%s)"
+                    , newRemainingVolume, this.cancelledVolume, this.originalVolume);
+            throw new InvalidTradableValue(errorMessage);
         }
         this.remainingVolume = newRemainingVolume;
     }
@@ -112,8 +160,10 @@ public class Order implements Tradable {
 
     @Override
     public String toString() {
-        return String.format("%s order: %s %s %s at %s (Original Vol: %s, CXL'd Vol: %s), ID: %s", 
-                user, side, remainingVolume, product, price, originalVolume, cancelledVolume, id);
+        return String.format("%s order: %s %s %s at %s "
+                + "(Original Vol: %s, CXL'd Vol: %s), ID: %s", 
+                user, side, remainingVolume, product, 
+                price, originalVolume, cancelledVolume, id);
     }
 
 }

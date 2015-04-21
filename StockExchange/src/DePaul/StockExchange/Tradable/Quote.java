@@ -15,7 +15,7 @@
  */
 package DePaul.StockExchange.Tradable;
 
-import DePaul.StockExchange.InvalidVolumeValueException;
+import DePaul.StockExchange.InvalidTradableValue;
 import DePaul.StockExchange.Tradable.QuoteSide;
 import DePaul.StockExchange.Price.Price;
 
@@ -31,7 +31,8 @@ public class Quote {
     private QuoteSide sellQuoteSide;
 
     public Quote(String userName, String productSymbol, Price buyPrice,
-                    int buyVolume, Price sellPrice, int sellVolume) throws Exception {
+                    int buyVolume, Price sellPrice, int sellVolume) 
+            throws InvalidTradableValue {
         this.setUserName(userName);
         this.setProduct(productSymbol);
         this.setBuyQuoteSide(userName, productSymbol, buyPrice, buyVolume);
@@ -39,13 +40,13 @@ public class Quote {
     }
 
     private void setBuyQuoteSide(String userName, String productSymbol,
-                    Price sidePrice, int volume) throws Exception {
+                    Price sidePrice, int volume) throws InvalidTradableValue {
         this.buyQuoteSide = new QuoteSide(userName, productSymbol, sidePrice,
                                 volume, "BUY");
     }
 
     private void setSellQuoteSide(String userName, String productSymbol,
-                    Price sidePrice, int volume) throws Exception {
+                    Price sidePrice, int volume) throws InvalidTradableValue {
         this.sellQuoteSide = new QuoteSide(userName, productSymbol, sidePrice,
                                 volume, "SELL");
     }
@@ -73,7 +74,7 @@ public class Quote {
         return this.sellQuoteSide;
     }
 
-    public QuoteSide getQuoteSide(String sideIn) throws InvalidVolumeValueException {
+    public QuoteSide getQuoteSide(String sideIn) {
         if ("SELL".equals(sideIn)) {
             return new QuoteSide(this.getSellQuoteSide());
         }
