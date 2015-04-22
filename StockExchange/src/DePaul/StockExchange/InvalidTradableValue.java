@@ -16,9 +16,10 @@
 package DePaul.StockExchange;
 
 /**
- *
+ *  
  * @author jimliu
  */
+@SuppressWarnings("serial")
 public class InvalidTradableValue extends Exception {
 
     public InvalidTradableValue() {

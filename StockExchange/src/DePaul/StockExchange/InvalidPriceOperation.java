@@ -19,6 +19,7 @@ package DePaul.StockExchange;
  *
  * @author jimliu
  */
+@SuppressWarnings("serial")
 public class InvalidPriceOperation extends Exception {
 
     public InvalidPriceOperation() {

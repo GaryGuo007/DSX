@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  *
  * @author jimliu
  */
+@SuppressWarnings("unused")
 public class Main {
    private static final ArrayList<Price> testPriceHolder = new ArrayList<>();
 
