@@ -177,7 +177,9 @@ public final class QuoteSide implements Tradable {
         return this.id;
     }
 
-
+    /**
+     * 
+     */
     @Override
     public String toString() {
         return String.format("%sx%s (Original Vol: %s, CXL'd Vol: %s) [%s]", 
