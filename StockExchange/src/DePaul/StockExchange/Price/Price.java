@@ -65,7 +65,7 @@ public final class Price implements Comparable<Price> {
 
     /** 
     * The add method of the Price object. 
-    * Add the value of the Price object passed in to the current Price object’s value  
+    * Add the value of the Price object passed in to the current Price object's value  
     * and return a new Price object representing that sum.
     * 
     * @param  p
@@ -95,10 +95,9 @@ public final class Price implements Comparable<Price> {
         return PriceFactory.makeLimitPrice(newValue);
     }
 
-
     /**
      * Subtract the value of the Price object passed in 
-     * from the current Price object’s value 
+     * from the current Price object's value 
      * 
      * @param p
      *  The Price object passed in to subtract with the current Price
@@ -121,7 +120,7 @@ public final class Price implements Comparable<Price> {
     }
 
     /**
-     * Multiply the value passed in by the current Price object’s value
+     * Multiply the value passed in by the current Price object's value
      * 
      * @param p
      *      The value passed in to multiply with the current Price
@@ -170,7 +169,7 @@ public final class Price implements Comparable<Price> {
      * @return 
      *      Return true if the current Price object is greater than or equal to 
      *      the Price object passed in. If either the current Price object or 
-     *      the Price object passed in is a “market” price, return false.
+     *      the Price object passed in is a "market" price, return false.
      */
     public boolean greaterOrEqual(Price p) {
         return !(this.isMarket() || p.isMarket() || 
@@ -186,7 +185,7 @@ public final class Price implements Comparable<Price> {
      * @return 
      *      Return true if the current Price object is greater than 
      *      the Price object passed in. If either the current Price object 
-     *      or the Price object passed in is a “market” price, return false.
+     *      or the Price object passed in is a "market" price, return false.
      */
     public boolean greaterThan(Price p) {
         return !(this.isMarket() || p.isMarket() || 
@@ -202,7 +201,7 @@ public final class Price implements Comparable<Price> {
      * @return 
      *      Return true if the current Price object is less than or equal 
      *      to the Price object passed in. If either the current Price object 
-     *      or the Price object passed in is a “market” price, return false.
+     *      or the Price object passed in is a "market" price, return false.
      */
     public boolean lessOrEqual(Price p) {
         return !(this.isMarket() || p.isMarket() 
@@ -218,7 +217,7 @@ public final class Price implements Comparable<Price> {
      * @return 
      *      Return true if the current Price object is greater than 
      *      the Price object passed in. If either the current Price object 
-     *      or the Price object passed in is a “market” price, return false.
+     *      or the Price object passed in is a "market" price, return false.
      */
     public boolean lessThan(Price p) {
         return !(this.isMarket() || p.isMarket() 
@@ -233,7 +232,7 @@ public final class Price implements Comparable<Price> {
      * @return 
      *      Return true if the Price object passed in holds the same value 
      *      as the current Price object. If either the current Price object 
-     *      or the Price object passed in is a “market” price, return false.
+     *      or the Price object passed in is a "market" price, return false.
      */
     public boolean equals(Price p) {
         return !(this.isMarket() || p.isMarket() 
@@ -241,10 +240,10 @@ public final class Price implements Comparable<Price> {
     }
 
     /**
-     * Check if the Price is a “market” price.
+     * Check if the Price is a market price.
      * 
      * @return 
-     *      Return true if the Price is a “market” price, 
+     *      Return true if the Price is a market price, 
      *      return false if not.
      */
     public boolean isMarket() {
@@ -256,7 +255,7 @@ public final class Price implements Comparable<Price> {
      * 
      * @return 
      *      Return true if the Price is negative, return false if the Price 
-     *      is zero or positive. If the Price is a “market” price, return false.
+     *      is zero or positive. If the Price is a "market" price, return false.
      */
     public boolean isNegative() {
         return (this.getPriceValue() < 0 && !this.isMarket());
