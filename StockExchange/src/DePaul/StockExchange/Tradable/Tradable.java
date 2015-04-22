@@ -26,6 +26,7 @@ import DePaul.StockExchange.Price.Price;
  * @author      Yuancheng Zhang
  * @author      Junmin Liu
  */
+
 public interface Tradable {
 
 	/*
