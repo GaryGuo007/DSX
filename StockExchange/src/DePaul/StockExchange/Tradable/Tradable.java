@@ -19,8 +19,12 @@ import DePaul.StockExchange.InvalidTradableValue;
 import DePaul.StockExchange.Price.Price;
 
 /**
- *
- * @author jimliu
+ * The Tradable interface will be used as the common generic type for anything 
+ * representing a BUY or SELL request that can be traded in our system.
+ * 
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
  */
 public interface Tradable {
 
@@ -54,7 +58,7 @@ public interface Tradable {
 	int getCancelledVolume();
 
 	/*
-	 * Sets the Tradable’s cancelled quantity to the value passed in. This
+	 * Sets the Tradable's cancelled quantity to the value passed in. This
 	 * method should throw an exception if the value is invalid (i.e., if the
 	 * value is negative, or if the requested cancelled volume plus the current
 	 * remaining volume exceeds the original volume).
@@ -75,18 +79,18 @@ public interface Tradable {
 	String getUser();
 
 	/*
-	 * Returns the side (“BUY”/”SELL”) of the Tradable.
+	 * Returns the side ("BUY"/"SELL") of the Tradable.
 	 */
 	String getSide();
 
 	/*
 	 * Returns true if the Tradable is part of a Quote, returns false if not
-	 * (i.e., false if it°Øs part of an order)
+	 * (i.e., false if it's part of an order)
 	 */
 	boolean isQuote();
 
 	/*
-	 * Returns the Tradable “id” – the value each tradable is given once it is
+	 * Returns the Tradable "id" the value each tradable is given once it is
 	 * received by the system.
 	 */
 	String getId();
