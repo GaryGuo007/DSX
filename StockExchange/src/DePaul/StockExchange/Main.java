@@ -14,10 +14,12 @@ import DePaul.StockExchange.Price.Price;
 import java.util.ArrayList;
 
 /**
- *
- * @author jimliu
+ * Main
+ * 
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
  */
-@SuppressWarnings("unused")
 public class Main {
    private static final ArrayList<Price> testPriceHolder = new ArrayList<>();
 

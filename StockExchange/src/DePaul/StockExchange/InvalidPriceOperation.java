@@ -16,10 +16,12 @@
 package DePaul.StockExchange;
 
 /**
- *
- * @author jimliu
+ * An exception class to tell user that the price 
+ * does not have an acceptable value.
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
  */
-@SuppressWarnings("serial")
 public class InvalidPriceOperation extends Exception {
 
     public InvalidPriceOperation() {

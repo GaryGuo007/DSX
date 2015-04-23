@@ -16,10 +16,12 @@
 package DePaul.StockExchange;
 
 /**
- *  
- * @author jimliu
+ * An exception class to tell user the value of tradable is invalid
+ * 
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
  */
-@SuppressWarnings("serial")
 public class InvalidTradableValue extends Exception {
 
     public InvalidTradableValue() {
