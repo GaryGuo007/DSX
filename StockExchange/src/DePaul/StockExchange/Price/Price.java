@@ -148,6 +148,10 @@ public final class Price implements Comparable<Price> {
 
     /**
      * Standard compareTo logic.
+     * Assume the value of market price is 0.
+     * 
+     * @param p
+     *      The price passed in to compare with current price
      */
     @Override
     public int compareTo(Price p) {

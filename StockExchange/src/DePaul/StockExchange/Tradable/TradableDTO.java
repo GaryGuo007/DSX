@@ -18,9 +18,9 @@ package DePaul.StockExchange.Tradable;
 import DePaul.StockExchange.Price.Price;
 
 /**
- * The TradableDTO class is based upon the “Data Transfer Object” design pattern. 
- * The TradableDTO will act as a “data holder” that holds selected data values 
- * from a “Tradable” object. 
+ * The TradableDTO class is based upon theï¿½Data Transfer Object design pattern. 
+ * The TradableDTO will act as a data holder that holds selected data values 
+ * from a Tradable object. 
  * 
  * @author      Junmin Liu
  * @author      Xin Guo
@@ -52,12 +52,12 @@ public class TradableDTO {
      * @param userName
      * 		the User id associated with the Tradable
      * @param s
-     * 		the “side” (BUY/SELL) of the Tradable.
+     * 		the side (BUY/SELL) of the Tradable.
      * @param isQ
      * 		set to true if the Tradable is part of a Quote, false if not 
-     * 		(i.e., false if it’s part of an order)
+     * 		(i.e., false if it's part of an order)
      * @param Id
-     * 		the Tradable “id” – the value each tradable is given once it is received by the system
+     * 		the Tradable id the value each tradable is given once it is received by the system
      */
     public TradableDTO(String productSymbol, Price p, int origVolume, int remainVolume,
             int cancelVolume, String userName, String s, boolean isQ, String Id) {

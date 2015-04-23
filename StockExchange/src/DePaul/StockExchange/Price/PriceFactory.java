@@ -18,9 +18,10 @@ import DePaul.StockExchange.InvalidPriceOperation;
 import java.util.Hashtable;
 
 /**
+ * A factory help to create price object.
  * Price objects should not be created by classes across the entire application. 
  * This would couple other classes to the specifics of Price object creation. 
- * Instead, a globally accessible “Factory” called PriceFactory should perform 
+ * Instead, a globally accessible Factory called PriceFactory should perform 
  * the creation of Price objects 
  * (i.e., using the Factory design pattern).
  * 
@@ -87,8 +88,9 @@ public class PriceFactory {
     /**
      * Creates a market price object
      * 
-     * @return marketPrice
+     * @return  marketPrice
      * 		Return the market price object.
+     * @see     Price
      */
     public static Price makeMarketPrice() {
         return marketPrice;

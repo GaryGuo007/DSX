@@ -84,14 +84,14 @@ public class Quote {
     }
 
     /**
-     * Sets the Quote’s user name.
+     * Sets the Quote's user name.
      */
     private void setUserName(String userName) {
         this.user = userName;
     }
 
     /**
-     * Returns the Quote’s user name.
+     * Returns the Quoteï¿½s user name.
      */
     public String getUserName() {
         return this.user;
@@ -105,7 +105,7 @@ public class Quote {
     }
 
     /**
-     * Returns the Quote’s product symbol.
+     * Returns the Quoteï¿½s product symbol.
      */
     public String getProduct() {
         return this.product;
@@ -127,18 +127,22 @@ public class Quote {
 
     /**
      * Returns a copy of the BUY or SELL QuoteSide object, 
-     * depending upon which side is specified in the “sideIn” parameter.
+     * depending upon which side is specified in the ï¿½sideInï¿½ parameter.
      * @param sideIn
      * 		"BUY" or "SELL" side
      * @return
      * 		If sideIn is "BUY", return a buy-side QuoteSide object, and vice verse.
+     * @exception InvalidTradableValue
+     *          If the side is neither "BUY" nor "SELL", throws an exception.
      */
-    public QuoteSide getQuoteSide(String sideIn)  {
+    public QuoteSide getQuoteSide(String sideIn) throws InvalidTradableValue  {
+        if (!"SELL".equals(sideIn) && !"BUY".equals(sideIn)) {
+            throw new InvalidTradableValue("Invalid Side: " + sideIn); 
+        }
         if ("SELL".equals(sideIn)) {
             return new QuoteSide(this.getSellQuoteSide());
-        } else {
-        	return new QuoteSide(this.getBuyQuoteSide());
-        } 
+        }
+        return new QuoteSide(this.getBuyQuoteSide());
     }
 
     /**

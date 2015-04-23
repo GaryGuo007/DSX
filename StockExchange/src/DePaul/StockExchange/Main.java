@@ -12,8 +12,6 @@ import DePaul.StockExchange.Tradable.Tradable;
 import DePaul.StockExchange.Price.PriceFactory;
 import DePaul.StockExchange.Price.Price;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -98,11 +96,13 @@ public class Main {
             e.printStackTrace();
         }
 
-        
-        System.out.println("8) Display the individual Quote Sides of the new Quote object:");
-        System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("BUY"));
-        System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("SELL") + "\n");
-
+        try {
+            System.out.println("8) Display the individual Quote Sides of the new Quote object:");
+            System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("BUY"));
+            System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("SELL") + "\n");
+        } catch (Exception e) { // Catch anything you throw.
+            System.out.println("Properly handled an invalid side -- error message is: " + e.getMessage() + "\n");
+        }
         
         try {
             System.out.println("9) Attempt to create a quote using INVALID data (negative sell volume) - should throw an exception:");
