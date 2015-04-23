@@ -6,9 +6,14 @@ import DePaul.StockExchange.Price.Price;
 
 public class TradableImpleFactory {
 	
-	 public static TradableImpleFactory build(String userName,String productSymbol, Price orderPrice, int originalVolume, String side, String id,boolean isQuote) throws InvalidPriceOperation
+	 public static TradableImpleFactory build(String userName,String productSymbol, 
+			 Price orderPrice, int originalVolume, String side,
+			 String id,boolean isQuote) throws InvalidPriceOperation
 	    {
-		  return  TradableImpleFactory(userName, productSymbol, orderPrice, originalVolume, side, id, isQuote);
+		  return  TradableImpleFactory.build(userName, productSymbol, orderPrice, 
+				  originalVolume, side, id, isQuote);
 	    }
+
+	
 
 }
