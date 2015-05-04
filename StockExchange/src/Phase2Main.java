@@ -9,29 +9,24 @@ public class Phase2Main {
 
     public static void main(String[] args) {
 
-        try {
-            performLegacyTests();
+        performLegacyTests();
 
-            makeTestUsers();
-            testCurrentMarketPublisher();
-            testTickerPublisher();
-            testLastSalePublisher();
-            testMessagePublisher();
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        makeTestUsers();
+        testCurrentMarketPublisher();
+        testTickerPublisher();
+        testLastSalePublisher();
+        testMessagePublisher();
 
     }
 
-    private static void performLegacyTests() throws Exception {
+    private static void performLegacyTests() {
 
         Price p1 = PriceFactory.makeLimitPrice("15.00");
         Price p2 = PriceFactory.makeLimitPrice("$15.00");
         Price p3 = PriceFactory.makeLimitPrice("15");
 
         // Insure Flyweight functionality
-        System.out.println("1) The Strings '15.00' and '$15.00' and '15' should all result in the same Price object holding a long of 1500");
+        System.out.println("1) The Strings '15.00 and '$15.00' and '15' should all result in the same Price object holding a long of 1500");
         boolean r = p1 == p2;
         System.out.println("   Is 'p1'(15.00) the same Price object as 'p2' ($15.00): " + r + " (" + (r ? "CORRECT" : "ERROR") + ")");
         r = p1 == p3;
@@ -49,14 +44,14 @@ public class Phase2Main {
         System.out.println("   Done with legacy tests\n");
     }
 
-    private static void makeTestUsers() throws Exception {
+    private static void makeTestUsers() {
         u1 = new UserImpl("REX");
         u2 = new UserImpl("ANN");
         u3 = new UserImpl("OWL");
         u4 = new UserImpl("BEN");
     }
-
-    private static void testCurrentMarketPublisher() throws Exception {
+    
+    private static void testCurrentMarketPublisher() {
         try {
             CurrentMarketPublisher.getInstance().subscribe(u1, "SBUX");
             CurrentMarketPublisher.getInstance().subscribe(u2, "IBM");
@@ -101,7 +96,7 @@ public class Phase2Main {
         }
     }
 
-    private static void testTickerPublisher() throws Exception {
+    private static void testTickerPublisher() {
         try {
             TickerPublisher.getInstance().subscribe(u1, "SBUX");
             TickerPublisher.getInstance().subscribe(u2, "IBM");
@@ -131,12 +126,12 @@ public class Phase2Main {
 
             System.out.println("11) Publish Ticker for SBUX. Now all 4 users are subscribed so REX, ANN, OWL & BEN get a message (DOWN arrows on message):");
             TickerPublisher.getInstance().publishTicker("SBUX", PriceFactory.makeLimitPrice("51.90"));
-            System.out.println();
-
+            System.out.println(); 
+            
             System.out.println("12) Publish Ticker for SBUX. Now all 4 users are subscribed so REX, ANN, OWL & BEN get a message (EQUALS sign on message):");
             TickerPublisher.getInstance().publishTicker("SBUX", PriceFactory.makeLimitPrice("51.90"));
             System.out.println();
-
+            
             TickerPublisher.getInstance().unSubscribe(u1, "SBUX");
             TickerPublisher.getInstance().unSubscribe(u2, "SBUX");
             TickerPublisher.getInstance().unSubscribe(u3, "SBUX");
@@ -151,13 +146,13 @@ public class Phase2Main {
         }
     }
 
-    private static void testLastSalePublisher() throws Exception {
+    private static void testLastSalePublisher() {
         try {
             LastSalePublisher.getInstance().subscribe(u1, "SBUX");
             LastSalePublisher.getInstance().subscribe(u2, "IBM");
             TickerPublisher.getInstance().subscribe(u1, "SBUX");
             TickerPublisher.getInstance().subscribe(u2, "IBM");
-
+            
             System.out.println("14) Publish Last Sale for SBUX. Only user REX is subscribed, only REX gets a message (Last Sale & Ticker with DOWN arrow):");
             LastSalePublisher.getInstance().publishLastSale("SBUX", PriceFactory.makeLimitPrice("51.00"), 120);
             System.out.println();
@@ -176,7 +171,7 @@ public class Phase2Main {
             TickerPublisher.getInstance().subscribe(u2, "SBUX");
             TickerPublisher.getInstance().subscribe(u3, "SBUX");
             TickerPublisher.getInstance().subscribe(u4, "SBUX");
-
+            
             System.out.println("17) Publish Last Sale for SBUX. Now all 4 users are subscribed so REX, ANN, OWL & BEN get a message (Last Sale & Ticker with EQUALS sign):");
             LastSalePublisher.getInstance().publishLastSale("SBUX", PriceFactory.makeLimitPrice("51.00"), 120);
             System.out.println();
@@ -189,7 +184,7 @@ public class Phase2Main {
             TickerPublisher.getInstance().unSubscribe(u2, "SBUX");
             TickerPublisher.getInstance().unSubscribe(u3, "SBUX");
             TickerPublisher.getInstance().unSubscribe(u4, "SBUX");
-
+            
             System.out.println("18) Publish Last Sale for SBUX. Now all 4 users are unsubscribed so no one get a message");
             LastSalePublisher.getInstance().publishLastSale("SBUX", PriceFactory.makeLimitPrice("51.00"), 120);
             System.out.println("Done with Last Sale tests\n");
@@ -199,74 +194,75 @@ public class Phase2Main {
         }
     }
 
-    private static void testMessagePublisher() throws Exception {
+    private static void testMessagePublisher() {
 
         try {
             MessagePublisher.getInstance().subscribe(u1, "SBUX");
             MessagePublisher.getInstance().subscribe(u2, "SBUX");
 
             System.out.println("19) Send a CancelMessage to REX. REX is subscribed for SBUX messages so REX gets the message.");
-            CancelMessage cm = new CancelMessageImpl("REX", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            CancelMessage cm = new CancelMessage("REX", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishCancel(cm);
             System.out.println();
-
+            
             System.out.println("20) Send a CancelMessage to REX. REX is NOT subscribed for IBM messages so REX does not get the message.");
-            CancelMessage cm2 = new CancelMessageImpl("REX", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            CancelMessage cm2 = new CancelMessage("REX", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishCancel(cm2);
             System.out.println();
-
+                        
             System.out.println("21) Send a CancelMessage to ANN. ANN is subscribed for SBUX messages so ANN gets the message.");
-            CancelMessage cm3 = new CancelMessageImpl("ANN", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            CancelMessage cm3 = new CancelMessage("ANN", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishCancel(cm3);
             System.out.println();
-
+            
             System.out.println("22) Send a CancelMessage to ANN. ANN is NOT subscribed for IBM messages so ANN does not get the message.");
-            CancelMessage cm4 = new CancelMessageImpl("ANN", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            CancelMessage cm4 = new CancelMessage("ANN", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishCancel(cm4);
             System.out.println();
-
+            
             System.out.println("23) Send a FillMessage to REX. REX is subscribed for SBUX messages so REX gets the message.");
-            FillMessage fm = new FillMessageImpl("REX", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            FillMessage fm = new FillMessage("REX", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishFill(fm);
             System.out.println();
-
+            
             System.out.println("24) Send a FillMessage to REX. REX is NOT subscribed for IBM messages so REX does not get the message.");
-            FillMessage fm2 = new FillMessageImpl("REX", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            FillMessage fm2 = new FillMessage("REX", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishFill(fm2);
             System.out.println();
-
+                        
             System.out.println("25) Send a FillMessage to ANN. ANN is subscribed for SBUX messages so ANN gets the message.");
-            FillMessage fm3 = new FillMessageImpl("ANN", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            FillMessage fm3 = new FillMessage("ANN", "SBUX", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishFill(fm3);
             System.out.println();
-
+            
             System.out.println("26) Send a FillMessage to ANN. ANN is NOT subscribed for IBM messages so ANN does not get the message.");
-            FillMessage fm4 = new FillMessageImpl("ANN", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
+            FillMessage fm4 = new FillMessage("ANN", "IBM", PriceFactory.makeLimitPrice("52.00"), 140, "Cancelled By User", BookSide.BUY, "ABC123XYZ");
             MessagePublisher.getInstance().publishFill(fm4);
-            System.out.println();
-
+            System.out.println(); 
+                      
             MessagePublisher.getInstance().unSubscribe(u2, "SBUX");
             System.out.println("27) Send a MarketMessage. REX is the only MessagePublisher subscriber so only REX gets the message.");
-            MessagePublisher.getInstance().publishMarketMessage(new MarketMessageImpl(GlobalConstants.MarketState.PREOPEN));
-            System.out.println();
-
+            MessagePublisher.getInstance().publishMarketMessage(new MarketMessage(GlobalConstants.MarketState.PREOPEN));
+            System.out.println(); 
+            
             MessagePublisher.getInstance().subscribe(u2, "SBUX");
             System.out.println("28) Send a MarketMessage. REX and ANN are MessagePublisher subscribers so REX & Ann get the message.");
-            MessagePublisher.getInstance().publishMarketMessage(new MarketMessageImpl(GlobalConstants.MarketState.OPEN));
-            System.out.println();
-
+            MessagePublisher.getInstance().publishMarketMessage(new MarketMessage(GlobalConstants.MarketState.OPEN));
+            System.out.println(); 
+            
             MessagePublisher.getInstance().unSubscribe(u1, "SBUX");
             MessagePublisher.getInstance().unSubscribe(u2, "SBUX");
             System.out.println("29) Send a MarketMessage. No users are MessagePublisher subscribers so No users get the message.");
-            MessagePublisher.getInstance().publishMarketMessage(new MarketMessageImpl(GlobalConstants.MarketState.CLOSED));
-            System.out.println("Done with Message tests\n");
+            MessagePublisher.getInstance().publishMarketMessage(new MarketMessage(GlobalConstants.MarketState.CLOSED));
+            System.out.println("Done with Message tests\n"); 
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
-
+    
+    
     static class UserImpl implements User {
 
         private String uname;
