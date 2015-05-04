@@ -1,5 +1,7 @@
 package driver;
-
+import DePaul.StockExchange.Messages;
+import DePaul.StockExchange.Client;
+import DePaul.StockExchange.Publishers;
 // HERE you should add any imports for your classes that you need to make this class compile.
 
 
