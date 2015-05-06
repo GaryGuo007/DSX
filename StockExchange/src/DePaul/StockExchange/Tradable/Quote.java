@@ -91,7 +91,7 @@ public class Quote {
     }
 
     /**
-     * Returns the Quote�s user name.
+     * Returns the Quote's user name.
      */
     public String getUserName() {
         return this.user;
@@ -105,7 +105,7 @@ public class Quote {
     }
 
     /**
-     * Returns the Quote�s product symbol.
+     * Returns the Quote's product symbol.
      */
     public String getProduct() {
         return this.product;

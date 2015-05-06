@@ -41,7 +41,7 @@ public abstract class TradableImplement implements Tradable {
      * Sets the Tradable's user name.
      * 
      * @param userName
-     * 		the user name (e.g. �REX�)
+     * 		the user name (e.g. "REX")
      * @throws InvalidTradableValue
      * 		If the user name is either null or an empty string, throws an exception. 
      */
@@ -56,7 +56,7 @@ public abstract class TradableImplement implements Tradable {
      * Sets the product symbol (i.e., IBM, GOOG, AAPL, etc.) that the Order works with.
      * 
      * @param productSymbol
-     * 		the product (stock) symbol (e.g. �AMZN�)
+     * 		the product (stock) symbol (e.g. "AMZN")
      * @throws InvalidTradableValue
      * 		If the product symbol is either null or an empty string, throws an exception. 
      */
@@ -176,13 +176,13 @@ public abstract class TradableImplement implements Tradable {
     }
 
     /**
-     * Sets the Tradable�s remaining quantity to the value passed in. 
+     * Sets the Tradable's remaining quantity to the value passed in. 
      * This method should throw an exception if the value is invalid 
      * (i.e., if the value is negative, or if the requested remaining 
      * volume plus the current cancelled volume exceeds the original volume).
      * 
      * @param newRemainingVolume
-     * 		A new Tradable�s remaining quantity to the value passed in.
+     * 		A new Tradable's remaining quantity to the value passed in.
      * @throws InvalidTradableValue
      * 		If the value is invalid (i.e., if the value is negative, 
      * 		or if the requested cancelled volume plus the current remaining volume 
@@ -223,13 +223,13 @@ public abstract class TradableImplement implements Tradable {
 
     /**
      * Returns true if the Tradable is part of a Quote, 
-     * returns false if not (i.e., false if it�s part of an order)
+     * returns false if not (i.e., false if it's part of an order)
      */
     @Override
     public abstract boolean isQuote();
     
     /**
-     * Returns the Tradable �id� � the value each tradable is given once it is received by the system.
+     * Returns the Tradable "id" and the value each tradable is given once it is received by the system.
      */
     @Override
     public String getId() {
