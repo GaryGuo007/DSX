@@ -17,7 +17,7 @@ public class FillMessage extends Message implements Comparable<FillMessage>{
 	}
 	public FillMessage(String user, String product, Price price, 
 			int volume, String details, BookSide side, String id) 
-					throws InvalidTradableValue {
+					throws InvalidMessageArgumentException {
 		super(user, product, price, volume, details, side, id);
 	}
 	public int compareTo(CancelMessage cm) {

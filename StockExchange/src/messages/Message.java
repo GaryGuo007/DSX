@@ -30,7 +30,7 @@ public class Message {
 	}
 
 	private void setUser(String user) throws InvalidTradableValue {
-		if(user == null || user.isEmpty() || user == "") throw new InvalidTradableValue("Invalid argument: user"); 
+		if(user == null || user.isEmpty()) throw new InvalidTradableValue("Invalid argument: user"); 
 		this.user = user;
 	}
 
@@ -39,7 +39,7 @@ public class Message {
 	}
 
 	private void setProduct(String product) throws InvalidTradableValue {
-		if(product == null || product.isEmpty() || product == "") throw new InvalidTradableValue("Invalid argument: product"); 
+		if(product == null || product.isEmpty()) throw new InvalidTradableValue("Invalid argument: product"); 
 		this.product = product;
 	}
 
@@ -85,7 +85,7 @@ public class Message {
 	}
 
 	private void setId(String id)  throws InvalidTradableValue{
-		if(id == null || id.isEmpty() || id == "") throw new InvalidTradableValue("Invalid argument: id"); 
+		if(id == null || id.isEmpty()) throw new InvalidTradableValue("Invalid argument: id"); 
 		this.id = id;
 	}
 	

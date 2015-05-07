@@ -17,7 +17,7 @@ public class CancelMessage extends Message implements Comparable<CancelMessage>{
 	}
 	public CancelMessage(String user, String product, Price price, 
 			int volume, String details, BookSide side, String id) 
-					throws InvalidTradableValue {
+					throws InvalidMessageArgumentException {
 		super(user, product, price, volume, details, side, id);
 	}
 	/**

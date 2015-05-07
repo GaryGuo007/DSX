@@ -39,25 +39,23 @@ public class MarketDataDTO {
 public MarketDataDTO(String product, Price buyPrice, int buyVolume, Price sellPrice, 
 		int sellVolume) {
 	        this.product = product;
-	        this.price = 
+	        this.buyPrice = buyPrice;
+	        this.sellPrice = sellPrice;
 	        this.buyVolume = buyVolume;
 	        this.sellVolume = sellVolume;
 	       
 	    }
 
-	    public MarketDataDTO(MarketData d) throws Exception {
-	        this.product = d.getProduct();
-	        this.price = 
-	        this.buyVolume = d.buylVolume();
-	        this.sellVolume = d.getsellVolume();
-	        
-	    } 
-	 public String toString() {
-		 StringBuilder sb = new StringBuilder();
-	        sb.append(String.format("Product: %s," product ));
-	        sb.append(String.format(", buyVolume: %s", buyPrice: %s, buyVolume, buyPrice));
-	        sb.append(String.format(", sellVolume: %s, sellPrice: %s", sellVolume, sellPrice));
-	        return sb.toString();	
+//	    public MarketDataDTO(MarketData d) throws Exception {
+//	        this.product = d.getProduct();
+//	        this.price = 
+//	        this.buyVolume = d.buylVolume();
+//	        this.sellVolume = d.getsellVolume();
+//	        
+//	    } 
+	    public String toString() {
+			return String.format(getClass().getName()+ "Product: %s, buyPrice: %s, buyVolume: %s, sellPrice: %s, sellVolume: %s "
+					, getProduct(),getbuyPrice(), getbuyVolume(), getsellPrice(), getsellVolume());
 		}
 	
 

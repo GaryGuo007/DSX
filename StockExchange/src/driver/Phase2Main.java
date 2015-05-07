@@ -3,6 +3,7 @@ import messages.*;
 import price.*;
 import publishers.*;
 import tradable.*;
+import client.*;
 // HERE you should add any imports for your classes that you need to make this class compile.
 
 

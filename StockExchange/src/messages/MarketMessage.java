@@ -15,9 +15,9 @@ constructor).
 	 */
 	private MarketState state;
 	
-	public MarketMessage(MarketState state) throws InvalidArgumentException{
+	public MarketMessage(MarketState state) throws InvalidMessageArgumentException{
 		if(state != MarketState.OPEN || state != MarketState.PREOPEN || state != MarketState.CLOSED){
-			throw new InvalidArgumentException("Invalid: market state");
+			throw new InvalidMessageArgumentException("Invalid: market state");
 		}
 		this.state = state;
 	}
