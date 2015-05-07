@@ -1,6 +1,8 @@
 package publishers;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import DePaul.StockExchange.InvalidPriceOperation;
 import client.User;
 import price.*;
 
@@ -70,7 +72,7 @@ the following:
     	 }
 	}
     
-    public synchronized void publishLastSale(String product, Price price, int v) throws  {
+    public synchronized void publishLastSale(String product, Price price, int v) throws InvalidPriceOperation {
     	
     	/*
 		 * The String stock symbol passed into “publishLastSale” (i.e., the product).
