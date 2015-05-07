@@ -1,6 +1,6 @@
 package messages;
 
-import messages.CancelMessage.BookSide;
+import messages.BookSideClass.BookSide;
 import price.Price;
 import DePaul.StockExchange.*;
 
@@ -34,7 +34,7 @@ public class Message {
 	 * 		The side (BUY/SELL) of the cancelled order or quote-side. Must be a valid side.
 	 * @param id
 	 * 		The String identifier of the cancelled order or quote-side. Cannot be null.
-	 * @throws InvalidMessageArgumentException
+	 * @throws InvalidTradableValue
 	 */
 	
 	public Message(String user, String product, Price price, 
@@ -99,8 +99,12 @@ public class Message {
 		return side;
 	}
 
-	private void setSide(BookSide side)  throws InvalidMessageArgumentException{
-		if(side != BookSide.BUY && side != BookSide.SELL) throw new InvalidMessageArgumentException("Invalid argument: side"); 
+//	private void setSide(BookSide side)  throws InvalidMessageArgumentException{
+//		if(side != BookSide.BUY && side != BookSide.SELL) throw new InvalidMessageArgumentException("Invalid argument: side"); 
+//		this.side = side;
+//	}
+	
+	private void setSide(BookSide side) {
 		this.side = side;
 	}
 
