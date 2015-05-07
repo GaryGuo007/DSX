@@ -1,6 +1,8 @@
 package publishers;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import client.User;
+import price.*;
 
 /**
  * The LastSalePublisher should implement the “Singleton” design pattern, as we only want to have a single
@@ -19,16 +21,58 @@ public class LastSalePublisher {
 	 * For each User object in the HashSet or ArrayList for the specified stock symbol (i.e., the product), do
 the following:
      */
-	public synchronized void subscribe(User u, String product) throws AlreadySubscribedException{
-		
+	private volatile static LastSalePublisher Instance;
+	private static HashMap<String, ArrayList<User>> HashMap;
+	
+	private LastSalePublisher (){
+		HashMap = new HashMap<String, ArrayList<User>>();
 	}
 	
-	public synchronized void unSubscribe(User u, String product) throws NotSubscribedException{
-		
+	public static LastSalePublisher  getInstance(){
+		if(Instance == null){
+			synchronized (LastSalePublisher.class){
+				if(Instance == null)
+					Instance = new LastSalePublisher();				
+			}
+		}
+		return Instance;
 	}
-
-	public synchronized void publishLastSale(String product, Price p, int v){
-		/*
+	
+	public synchronized void subscribe(User u, String product)throws AlreadySubscribedException{
+			
+		if (HashMap.containsKey(product)){
+			ArrayList<User> arrayList = HashMap.get(product);
+			if(arrayList != null){
+				if(arrayList.contains(u)){
+					throw new AlreadySubscribedException("It has been subscribed");
+				}
+				else{
+					arrayList.add(u);
+				}
+			}
+		}		
+		else if (!HashMap.containsKey(product)) {
+			ArrayList<User> arrayList = new ArrayList<User>();			
+			HashMap.put(product, arrayList);	
+			arrayList.add(u);
+		}	
+	}
+	
+    public synchronized void unSubscribe(User u, String product)throws NotSubscribedException{
+    	 ArrayList<User> arrayList = HashMap.get(product);
+    	 if (arrayList != null){
+    		 if(arrayList.contains(u)){
+    			 arrayList.remove(u);
+    		 }
+    		 else{
+    			 throw new NotSubscribedException("It hasn't been subscribed");
+    		 }
+    	 }
+	}
+    
+    public synchronized void publishLastSale(String product, Price price, int v) throws  {
+    	
+    	/*
 		 * The String stock symbol passed into “publishLastSale” (i.e., the product).
 		 */
 		
@@ -44,6 +88,27 @@ the following:
 		 * Then, after the “for” loop, make a call to the TickerPublisher’s “publishTicker” method, passing it
 the “product” symbol String, and the Price “p” that were passed into this method.
 		 */
-	}
+	
+    	
+    	if (HashMap.containsKey(product)){
+			ArrayList<User> arrayList = HashMap.get(product);
+			Price p = price;
+			if(p == null){
+				p = PriceFactory.makeLimitPrice(0);
+			}	
+			if(arrayList != null){
+				for(User user: arrayList){								
+					user.acceptLastSale(product, p, v);
+				}										
+				TickerPublisher.getInstance().publishTicker(product, price);					
+			}
+    	}
+    }
+  }
 
-}
+
+	
+	
+		
+
+

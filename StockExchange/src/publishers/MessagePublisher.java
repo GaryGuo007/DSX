@@ -1,7 +1,12 @@
 package publishers;
+import java.util.ArrayList;
+//import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+//import price.*;
+//import client.User;
 import client.User;
-import messages.*;
-
+//import messages.*;
 import messages.*;;
 
 /**
@@ -19,12 +24,53 @@ import messages.*;;
  * @author Junmin Liu
  */
 public class MessagePublisher {
+	private volatile static MessagePublisher Instance;
+	private static HashMap<String, ArrayList<User>> HashMap;	
+	
+	private MessagePublisher(){
+		HashMap = new HashMap<String, ArrayList<User>>();
+	}
+	
+	public static MessagePublisher getInstance(){
+		if(Instance == null){
+			synchronized (MessagePublisher.class){
+				if(Instance == null)
+					Instance = new MessagePublisher();				
+			}
+		}
+		return Instance;
+	}
+	
+
+	
+	
+	
+	
 	public synchronized void subscribe(User u, String product) throws AlreadySubscribedException{
+		if(HashMap.containsKey(product)){
+			ArrayList<User> arrayList = HashMap.get(product);
+			if(arrayList.contains(u)){
+				throw new AlreadySubscribedException("It has been subscribed");
+			}
+			else arrayList.add(u);
+		}
+		else{
+			ArrayList<User> arrayList = new ArrayList<User>();
+			HashMap.put(product, arrayList);
+			arrayList.add(u);
+		}
 		
 	}
 	
+	
+	
 	public synchronized void unSubscribe(User u, String product) throws NotSubscribedException{
-		
+		ArrayList<User> arrayList = HashMap.get(product);
+		if(arrayList != null){
+			if(arrayList.contains(u))
+				arrayList.remove(u);
+			else throw new NotSubscribedException("It has been subscribed");
+		}
 	}
 	/**
 	 * Find the individual User object in the HashSet or ArrayList for the
@@ -37,12 +83,35 @@ public class MessagePublisher {
 	 * Once found, call the User object�s �acceptMessage� passing the
 	 * CancelMessage object that was passed in.
 	 */
-	public synchronized void publishCel(CancelMessage cm) throws InvalidMessageArgumentException{
-		
-	}
+public synchronized void publishCancel(CancelMessage cm) throws InvalidMessageArgumentException{
+    	
+    	if (cm.getProduct()  == null){
+    		throw new InvalidMessageArgumentException("publishCancel: product is null");
+    	}
+    	ArrayList<User> arrayList = HashMap.get(cm.getProduct());
+    	if(arrayList != null){
+    		for (User user: arrayList){
+    			if(cm.getUser()== user.getUserName()){
+    				user.acceptMessage(cm);
+    			}
+    		}
+    	}		   	
+    }
+    
+    public synchronized void publishFill(FillMessage fm) throws InvalidMessageArgumentException{
+    	if (fm.getProduct()  == null){
+    		throw new InvalidMessageArgumentException("publishFill: product is null");
+    	}
+    	ArrayList<User> arrayList = HashMap.get(fm.getProduct());
+    	if(arrayList != null){
+    		for (User user: arrayList){
+    			if(fm.getUser()== user.getUserName()){
+    				user.acceptMessage(fm);
+    			}	
+    		}
+    	}
+    }
 	
-	public synchronized void publishFill(FillMessage fm) throws InvalidMessageArgumentException{
-	}	
 		/**
 		 * Find the individual User object in the HashSet or ArrayList for the specified stock symbol whose user
 name matches the user name found in the FillMessage object passed into �publishFill�. The user
@@ -53,7 +122,17 @@ name and stock symbol are found in the provided FillMessage.
 		 * Once found, call the User object�s �acceptMessage� passing the FillMessage object that was passed
 into �publishFill�
 		 */
-	public synchronized void publishMarketMessage(MarketMessage mm){
+    public synchronized void publishMarketMessage(MarketMessage mm){    	
+    	for (Map.Entry<String, ArrayList<User>> entry: HashMap.entrySet()){
+    		ArrayList<User> list = entry.getValue();
+    		if(list != null){
+    			for (User user: list){
+    				user.acceptMarketMessage(mm.toString());
+    			}
+    		}
+    	}   	
+         
+
 			/**
 			 * For all subscribed Users regardless of the stock symbol they are interested in, do the following:
 			 */
