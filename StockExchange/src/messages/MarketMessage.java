@@ -1,6 +1,9 @@
 package messages;
+
+import DePaul.StockExchange.InvalidMessageArgumentException;
+
 /**
- * The MarketMessage class encapsulates data related to the “state” of the market. The possible market
+ * The MarketMessage class encapsulates data related to the ï¿½stateï¿½ of the market. The possible market
  * states are: CLOSED, PREOPEN, and OPEN. Only these values are legal market states.
  * @author      Xin Guo
  * @author      Yuancheng Zhang
@@ -16,18 +19,23 @@ constructor).
 	private MarketState state;
 	
 	public MarketMessage(MarketState state) throws InvalidMessageArgumentException{
-		if(state != MarketState.OPEN || state != MarketState.PREOPEN || state != MarketState.CLOSED){
+		if(state != MarketState.OPEN || state != MarketState.PREOPEN || state != MarketState.CLOSED) {
 			throw new InvalidMessageArgumentException("Invalid: market state");
+		} else {
+			setState(state);
 		}
-		this.state = state;
 	}
 	
 	public MarketState getState(){
 		return state;
 	}
 	
+	private void setState(MarketState state) {
+		this.state = state;
+	}
+	
 	public String toString(){
 		return "Market state = " + getState();
 	}
-
+	
 }

@@ -1,5 +1,5 @@
 package messages;
-import messages.BookSideClass.BookSide;
+import messages.BookSide;
 import price.Price;
 import DePaul.StockExchange.*;
 
