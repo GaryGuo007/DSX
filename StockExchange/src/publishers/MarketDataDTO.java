@@ -1,7 +1,7 @@
 package publishers;
 
 import price.Price;
-import tradable.Tradable;
+//import tradable.Tradable;
 /**
  * The MarketDataDTO class is based upon the “Data Transfer Object” pattern. This DTO will be used to
  * encapsulate a set of data elements that detail the values that make up the current market. This
@@ -55,7 +55,7 @@ public MarketDataDTO(String product, Price buyPrice, int buyVolume, Price sellPr
 //	    } 
 	    public String toString() {
 			return String.format(getClass().getName()+ "Product: %s, buyPrice: %s, buyVolume: %s, sellPrice: %s, sellVolume: %s "
-					, getProduct(),getbuyPrice(), getbuyVolume(), getsellPrice(), getsellVolume());
+					, product, buyPrice, buyVolume, sellPrice, sellVolume);
 		}
 	
 

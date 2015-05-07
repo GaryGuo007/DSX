@@ -76,7 +76,6 @@ public class Message {
 	}
 
 	private void setSide(BookSide side)  throws InvalidTradableValue{
-		if(side != BookSide.BUY && side != BookSide.SELL) throw new InvalidTradableValue("Invalid argument: side"); 
 		this.side = side;
 	}
 

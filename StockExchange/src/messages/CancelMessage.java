@@ -1,6 +1,5 @@
 package messages;
 import price.Price;
-import DePaul.StockExchange.Price.*;
 import DePaul.StockExchange.*;
 
 /**
@@ -17,7 +16,7 @@ public class CancelMessage extends Message implements Comparable<CancelMessage>{
 	}
 	public CancelMessage(String user, String product, Price price, 
 			int volume, String details, BookSide side, String id) 
-					throws InvalidMessageArgumentException {
+					throws InvalidMessageArgumentException, InvalidTradableValue {
 		super(user, product, price, volume, details, side, id);
 	}
 	/**
@@ -47,12 +46,7 @@ public class CancelMessage extends Message implements Comparable<CancelMessage>{
 	
 	@Override
 	public int compareTo(CancelMessage cm) {
-		try{
-			
-		}
-		catch( ){
-			
-		}
+		if (cm == null) return -1;
 		return 0;
 	}
 	
