@@ -21,7 +21,10 @@ public class CancelMessage extends Message implements Comparable<CancelMessage>{
 	
 	@Override
 	public int compareTo(CancelMessage cm) {
-        return this.getPrice().compareTo(cm.getPrice());
+		if(cm != null) 
+			return this.getPrice().compareTo(cm.getPrice());
+		else 
+			return -1;
 	}
 	
 	public String toString() {

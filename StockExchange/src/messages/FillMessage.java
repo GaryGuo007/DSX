@@ -20,7 +20,10 @@ public class FillMessage extends Message implements Comparable<FillMessage>{
 
 	@Override
 	public int compareTo(FillMessage fm) {
-		return this.getPrice().compareTo(fm.getPrice());
+		if(fm != null)
+			return this.getPrice().compareTo(fm.getPrice());
+		else 
+			return -1;
 	}
 	
 	public String toString() {
