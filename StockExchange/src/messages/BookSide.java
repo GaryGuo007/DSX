@@ -1,5 +1,9 @@
 package messages;
-
-final class BookSide {
-
+/**
+ * @author Xin Guo
+ * @author Yuancheng Zhang
+ * @author junmin Liu
+ */
+enum BookSide {
+	BUY, SELL
 }
