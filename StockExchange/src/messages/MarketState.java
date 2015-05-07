@@ -6,6 +6,6 @@ package messages;
  * @author junmin Liu
  */
 
-enum MarketState {
+public enum MarketState {
 	CLOSED, PREOPEN, OPEN
 }

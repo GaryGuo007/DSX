@@ -19,9 +19,10 @@ constructor).
 	private MarketState state;
 	
 	public MarketMessage(MarketState state) throws InvalidMessageArgumentException{
-		if(state != MarketState.OPEN || state != MarketState.PREOPEN || state != MarketState.CLOSED) {
-			throw new InvalidMessageArgumentException("Invalid: market state");
-		} else {
+//		if(state != MarketState.OPEN || state != MarketState.PREOPEN || state != MarketState.CLOSED) {
+//			throw new InvalidMessageArgumentException("Invalid: market state");
+//		} else 
+		{
 			setState(state);
 		}
 	}

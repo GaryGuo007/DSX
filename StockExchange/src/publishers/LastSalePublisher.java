@@ -1,4 +1,7 @@
 package publishers;
+
+import client.User;
+
 /**
  * The LastSalePublisher should implement the “Singleton” design pattern, as we only want to have a single
 instance of the LastSalePublisher. Besides the subscribe/unsubscribe functionality common to all
@@ -16,6 +19,14 @@ public class LastSalePublisher {
 	 * For each User object in the HashSet or ArrayList for the specified stock symbol (i.e., the product), do
 the following:
      */
+	public synchronized void subscribe(User u, String product) throws AlreadySubscribedException{
+		
+	}
+	
+	public synchronized void unSubscribe(User u, String product) throws NotSubscribedException{
+		
+	}
+
 	public synchronized void publishLastSale(String product, Price p, int v){
 		/*
 		 * The String stock symbol passed into “publishLastSale” (i.e., the product).

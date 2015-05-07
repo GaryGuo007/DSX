@@ -1,5 +1,7 @@
 package publishers;
-import DePaul.StockExchange.Message;
+import client.User;
+import messages.*;
+//import DePaul.StockExchange.Message;
 /**
  * The MessagePublisher should implement the “Singleton” design pattern. Besides the
 subscribe/unsubscribe functionality common to all publishers, the MessagePublisher will need several
@@ -13,6 +15,13 @@ temporarily locked during use:
  * @author      Junmin Liu
  */
 public class MessagePublisher {
+	public synchronized void subscribe(User u, String product) throws AlreadySubscribedException{
+		
+	}
+	
+	public synchronized void unSubscribe(User u, String product) throws NotSubscribedException{
+		
+	}
 	/**
 	 * Find the individual User object in the HashSet or ArrayList for the specified stock symbol whose user
 name matches the user name found in the CancelMessage object passed into “publishCancel”. The
@@ -23,8 +32,12 @@ user name and stock symbol are found in the provided CancelMessage.
 	 * Once found, call the User object’s “acceptMessage” passing the CancelMessage object that was
 passed in.
 	 */
-	public synchronized void publishFill(FillMessage fm){
+	public synchronized void publishCel(CancelMessage cm) throws InvalidMessageArgumentException{
 		
+	}
+	
+	public synchronized void publishFill(FillMessage fm) throws InvalidMessageArgumentException{
+	}	
 		/**
 		 * Find the individual User object in the HashSet or ArrayList for the specified stock symbol whose user
 name matches the user name found in the FillMessage object passed into “publishFill”. The user
@@ -45,6 +58,6 @@ into “publishFill”
 “toString” method of the MarketMessage object passed in.
 			 */
 		}
-	}
+	
 
 }
