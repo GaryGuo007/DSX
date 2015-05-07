@@ -3,12 +3,12 @@ package publishers;
 import price.Price;
 import tradable.Tradable;
 /**
- * The MarketDataDTO class is based upon the “Data Transfer Object” pattern. This DTO will be used to
+ * The MarketDataDTO class is based upon the "Data Transfer Object" pattern. This DTO will be used to
  * encapsulate a set of data elements that detail the values that make up the current market. This
- * information is needed by many components of our trading system so rather then pass “real” market
+ * information is needed by many components of our trading system so rather then pass "real" market
  * data objects from the trading system, or pass each of the 5 data elements individually, this DTO will be
  * used to facilitate the data transfer. This class will work with the publishers so it should be put into a
- * package (i.e., “publishers”) that you will soon add the publishers to.
+ * package (i.e., "publishers") that you will soon add the publishers to.
  * @author      Xin Guo
  * @author      Yuancheng Zhang
  * @author      Junmin Liu
