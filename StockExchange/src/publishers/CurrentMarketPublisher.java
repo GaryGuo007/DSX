@@ -18,7 +18,7 @@ import client.*;
  * @author Yuancheng Zhang
  * @author Junmin Liu
  */
-public final class CurrentMarketPublisher extends Subscriber {
+public final class CurrentMarketPublisher  {
 	
 	private static CurrentMarketPublisher publishCurrentMarket;
 	
