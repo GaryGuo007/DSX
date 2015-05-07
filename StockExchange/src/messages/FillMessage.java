@@ -30,9 +30,17 @@ public class FillMessage extends Message implements Comparable<FillMessage>{
 		if(this.getPrice() < fm.getPrice())
 =======
 
+	@Override
 	public int compareTo(FillMessage fm) {
+<<<<<<< HEAD
 >>>>>>> c424e88ecbd7a9d5f0e57a883ce7a4d5557ef0bb
 		return 0;
+=======
+		if(fm != null)
+			return this.getPrice().compareTo(fm.getPrice());
+		else 
+			return -1;
+>>>>>>> c10b1cc68d93e03c425ddd2cd49f5a2f63762415
 	}
 	
 	public String toString() {

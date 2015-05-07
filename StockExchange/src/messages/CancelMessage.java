@@ -1,6 +1,6 @@
 package messages;
 import messages.BookSideClass.BookSide;
-import price.Price;
+import price.*;
 import DePaul.StockExchange.*;
 
 /**
@@ -22,10 +22,17 @@ public class CancelMessage extends Message implements Comparable<CancelMessage>{
 	@Override
 	public int compareTo(CancelMessage cm) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (cm == null) return -1;
 =======
 >>>>>>> c424e88ecbd7a9d5f0e57a883ce7a4d5557ef0bb
 		return 0;
+=======
+		if(cm != null) 
+			return this.getPrice().compareTo(cm.getPrice());
+		else 
+			return -1;
+>>>>>>> c10b1cc68d93e03c425ddd2cd49f5a2f63762415
 	}
 	
 	public String toString() {
