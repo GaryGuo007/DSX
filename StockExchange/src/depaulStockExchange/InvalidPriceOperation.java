@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange;
+package depaulStockExchange;
 
 /**
- * An exception class to tell user the value of tradable is invalid
- * 
+ * An exception class to tell user that the price 
+ * does not have an acceptable value.
  * @author      Xin Guo
  * @author      Yuancheng Zhang
  * @author      Junmin Liu
  */
-public class InvalidTradableValue extends Exception {
+public class InvalidPriceOperation extends Exception {
 
-    public InvalidTradableValue() {
+    public InvalidPriceOperation() {
         super();
     }
 
-    public InvalidTradableValue(String message) {
+    public InvalidPriceOperation(String message) {
         super(message);
     }
 }

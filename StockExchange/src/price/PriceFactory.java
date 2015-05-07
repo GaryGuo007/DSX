@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 package price;
-import DePaul.StockExchange.InvalidPriceOperation;
 import java.util.Hashtable;
+
+import depaulStockExchange.InvalidPriceOperation;
 
 /**
  * A factory help to create price object.

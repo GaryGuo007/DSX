@@ -1,8 +1,8 @@
 package tradable;
 
 
+import depaulStockExchange.InvalidTradableValue;
 import price.Price;
-import DePaul.StockExchange.InvalidTradableValue;
 
 /**
  * A factory help to create price object.

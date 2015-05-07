@@ -1,4 +1,4 @@
-package DePaul.StockExchange;
+package depaulStockExchange;
 
 public class AlreadySubscribedException extends Exception {
 	public AlreadySubscribedException() {

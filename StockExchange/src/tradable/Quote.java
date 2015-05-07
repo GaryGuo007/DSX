@@ -15,9 +15,9 @@
  */
 package tradable;
 
+import depaulStockExchange.InvalidTradableValue;
 import price.Price;
 import tradable.QuoteSide;
-import DePaul.StockExchange.InvalidTradableValue;
 
 /**
  * A Quote represents the prices and volumes of certain stock that 

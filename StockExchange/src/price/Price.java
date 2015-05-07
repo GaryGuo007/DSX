@@ -15,7 +15,7 @@
  */
 package price;
 
-import DePaul.StockExchange.InvalidPriceOperation;
+import depaulStockExchange.InvalidPriceOperation;
 
 
 /**

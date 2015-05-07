@@ -1,4 +1,4 @@
-package DePaul.StockExchange;
+package depaulStockExchange;
 
 public class InvalidPublisherDataException extends Exception {
 	static final long serialVersionUID = 1;

@@ -15,8 +15,8 @@
  */
 package tradable;
 
+import depaulStockExchange.InvalidTradableValue;
 import price.Price;
-import DePaul.StockExchange.InvalidTradableValue;
 
 /**
  * QuoteSide represents the price and volume for one side (BUY or SELL) of a Quote. 

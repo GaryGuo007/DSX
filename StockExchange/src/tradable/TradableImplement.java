@@ -1,7 +1,7 @@
 package tradable;
 
+import depaulStockExchange.InvalidTradableValue;
 import price.Price;
-import DePaul.StockExchange.InvalidTradableValue;
 
 //TradableImplement
 

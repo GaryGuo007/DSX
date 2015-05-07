@@ -1,4 +1,4 @@
-package DePaul.StockExchange;
+package depaulStockExchange;
 
 public class NotSubscribedException extends Exception {
 	public NotSubscribedException() {

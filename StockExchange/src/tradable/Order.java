@@ -16,8 +16,8 @@
 
 package tradable;
 
+import depaulStockExchange.InvalidTradableValue;
 import price.Price;
-import DePaul.StockExchange.InvalidTradableValue;
 
 /**
  * An Order represents a request from a user to BUY or SELL a specific quantity of 

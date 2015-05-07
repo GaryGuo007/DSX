@@ -1,6 +1,6 @@
 package messages;
 
-import DePaul.StockExchange.InvalidMessageArgumentException;
+import depaulStockExchange.InvalidMessageArgumentException;
 
 /**
  * The MarketMessage class encapsulates data related to the �state� of the market. The possible market

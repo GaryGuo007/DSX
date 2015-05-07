@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DePaul.StockExchange;
+package depaulStockExchange;
 
 import DePaul.StockExchange.Tradable.*;
 import DePaul.StockExchange.Price.*;

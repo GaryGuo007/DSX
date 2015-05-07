@@ -1,4 +1,4 @@
-package DePaul.StockExchange;
+package depaulStockExchange;
 
 /**
  * An exception class to tell user the argument of message is invalid

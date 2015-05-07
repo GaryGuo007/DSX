@@ -15,9 +15,9 @@
  */
 package tradable;
 
+import depaulStockExchange.InvalidPriceOperation;
+import depaulStockExchange.InvalidTradableValue;
 import price.Price;
-import DePaul.StockExchange.InvalidPriceOperation;
-import DePaul.StockExchange.InvalidTradableValue;
 
 /**
  * The Tradable interface will be used as the common generic type for anything 

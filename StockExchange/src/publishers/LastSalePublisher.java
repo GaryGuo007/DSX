@@ -2,8 +2,8 @@ package publishers;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import DePaul.StockExchange.InvalidPriceOperation;
 import client.User;
+import depaulStockExchange.InvalidPriceOperation;
 import price.*;
 
 /**
