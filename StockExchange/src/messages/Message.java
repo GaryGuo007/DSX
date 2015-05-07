@@ -2,7 +2,7 @@ package messages;
 
 import messages.CancelMessage.BookSide;
 import price.Price;
-import DePaul.StockExchange.InvalidTradableValue;
+import DePaul.StockExchange.*;
 
 public class Message {
 	private String user;
@@ -13,9 +13,33 @@ public class Message {
 	private BookSide side;
 	public String id;
 
+	/**
+	 * The Message class encapsulates data related to the cancellation and fill(trade) of 
+	 * an order or quote-side by a user, or by the trading system. 
+	 * CancelMessage objects should be immutable.
+	 * 
+	 * @param user
+	 * 		The String username of the user whose order or quote-side is being cancelled. 
+	 * 		Cannot be null or empty.
+	 * @param product
+	 * 		The string stock symbol that the cancelled order or 
+	 * 		quote-side was submitted for ("IBM", "GE", etc.). Cannot be null or empty.
+	 * @param price
+	 * 		The price specified in the cancelled order or quote-side. Cannot be null.
+	 * @param volume
+	 * 		The quantity of the order or quote-side that was cancelled. Cannot be negative.
+	 * @param details
+	 * 		A text description of the cancellation. Cannot be null.
+	 * @param side
+	 * 		The side (BUY/SELL) of the cancelled order or quote-side. Must be a valid side.
+	 * @param id
+	 * 		The String identifier of the cancelled order or quote-side. Cannot be null.
+	 * @throws InvalidMessageArgumentException
+	 */
+	
 	public Message(String user, String product, Price price, 
 			int volume, String details, BookSide side, String id) 
-					throws InvalidTradableValue {
+					throws InvalidMessageArgumentException {
 		setUser(user);
 		setProduct(product);
 		setPrice(price);
@@ -29,8 +53,8 @@ public class Message {
 		return user;
 	}
 
-	private void setUser(String user) throws InvalidTradableValue {
-		if(user == null || user.isEmpty()) throw new InvalidTradableValue("Invalid argument: user"); 
+	private void setUser(String user) throws InvalidMessageArgumentException {
+		if(user == null || user.isEmpty()) throw new InvalidMessageArgumentException("Invalid argument: user"); 
 		this.user = user;
 	}
 
@@ -38,8 +62,8 @@ public class Message {
 		return product;
 	}
 
-	private void setProduct(String product) throws InvalidTradableValue {
-		if(product == null || product.isEmpty()) throw new InvalidTradableValue("Invalid argument: product"); 
+	private void setProduct(String product) throws InvalidMessageArgumentException {
+		if(product == null || product.isEmpty()) throw new InvalidMessageArgumentException("Invalid argument: product"); 
 		this.product = product;
 	}
 
@@ -47,8 +71,8 @@ public class Message {
 		return price;
 	}
 
-	private void setPrice(Price price)  throws InvalidTradableValue{
-		if(price == null) throw new InvalidTradableValue("Invalid argument: price"); 
+	private void setPrice(Price price)  throws InvalidMessageArgumentException{
+		if(price == null) throw new InvalidMessageArgumentException("Invalid argument: price"); 
 		this.price = price;
 	}
 
@@ -56,8 +80,8 @@ public class Message {
 		return volume;
 	}
 
-	private void setVolume(int volume)  throws InvalidTradableValue{
-		if(volume < 0) throw new InvalidTradableValue("Invalid argument: Your volume is negative!"); 
+	private void setVolume(int volume)  throws InvalidMessageArgumentException{
+		if(volume < 0) throw new InvalidMessageArgumentException("Invalid argument: Your volume is negative!"); 
 		this.volume = volume;
 	}
 
@@ -66,8 +90,8 @@ public class Message {
 	}
 
 
-	private void setDetails(String details)  throws InvalidTradableValue{
-		if(details == null) throw new InvalidTradableValue("Invalid argument: details"); 
+	private void setDetails(String details)  throws InvalidMessageArgumentException{
+		if(details == null) throw new InvalidMessageArgumentException("Invalid argument: details"); 
 		this.details = details;
 	}
 
@@ -75,7 +99,12 @@ public class Message {
 		return side;
 	}
 
+<<<<<<< HEAD
 	private void setSide(BookSide side)  throws InvalidTradableValue{
+=======
+	private void setSide(BookSide side)  throws InvalidMessageArgumentException{
+		if(side != BookSide.BUY && side != BookSide.SELL) throw new InvalidMessageArgumentException("Invalid argument: side"); 
+>>>>>>> origin/master
 		this.side = side;
 	}
 
@@ -83,8 +112,8 @@ public class Message {
 		return id;
 	}
 
-	private void setId(String id)  throws InvalidTradableValue{
-		if(id == null || id.isEmpty()) throw new InvalidTradableValue("Invalid argument: id"); 
+	private void setId(String id)  throws InvalidMessageArgumentException{
+		if(id == null || id.isEmpty()) throw new InvalidMessageArgumentException("Invalid argument: id"); 
 		this.id = id;
 	}
 	
