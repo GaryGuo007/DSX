@@ -4,6 +4,34 @@ import messages.BookSide;
 import price.Price;
 import DePaul.StockExchange.*;
 
+/**
+ * The Message class encapsulates data related to the cancellation and fill(trade) of 
+ * an order or quote-side by a user, or by the trading system. 
+ * CancelMessage objects should be immutable.
+ * 
+ * @author Xin Guo
+ * @author Yuancheng Zhang
+ * @author junmin Liu
+ *
+ * @param user
+ * 		The String username of the user whose order or quote-side is being cancelled. 
+ * 		Cannot be null or empty.
+ * @param product
+ * 		The string stock symbol that the cancelled order or 
+ * 		quote-side was submitted for ("IBM", "GE", etc.). Cannot be null or empty.
+ * @param price
+ * 		The price specified in the cancelled order or quote-side. Cannot be null.
+ * @param volume
+ * 		The quantity of the order or quote-side that was cancelled. Cannot be negative.
+ * @param details
+ * 		A text description of the cancellation. Cannot be null.
+ * @param side
+ * 		The side (BUY/SELL) of the cancelled order or quote-side. Must be a valid side.
+ * @param id
+ * 		The String identifier of the cancelled order or quote-side. Cannot be null.
+ * @throws InvalidTradableValue
+ */
+
 public class Message {
 	private String user;
 	private String product;
@@ -13,30 +41,6 @@ public class Message {
 	private BookSide side;
 	public String id;
 
-	/**
-	 * The Message class encapsulates data related to the cancellation and fill(trade) of 
-	 * an order or quote-side by a user, or by the trading system. 
-	 * CancelMessage objects should be immutable.
-	 * 
-	 * @param user
-	 * 		The String username of the user whose order or quote-side is being cancelled. 
-	 * 		Cannot be null or empty.
-	 * @param product
-	 * 		The string stock symbol that the cancelled order or 
-	 * 		quote-side was submitted for ("IBM", "GE", etc.). Cannot be null or empty.
-	 * @param price
-	 * 		The price specified in the cancelled order or quote-side. Cannot be null.
-	 * @param volume
-	 * 		The quantity of the order or quote-side that was cancelled. Cannot be negative.
-	 * @param details
-	 * 		A text description of the cancellation. Cannot be null.
-	 * @param side
-	 * 		The side (BUY/SELL) of the cancelled order or quote-side. Must be a valid side.
-	 * @param id
-	 * 		The String identifier of the cancelled order or quote-side. Cannot be null.
-	 * @throws InvalidTradableValue
-	 */
-	
 	public Message(String user, String product, Price price, 
 			int volume, String details, BookSide side, String id) 
 					throws InvalidMessageArgumentException {
