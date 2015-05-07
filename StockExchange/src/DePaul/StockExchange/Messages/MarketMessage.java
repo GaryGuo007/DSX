@@ -13,10 +13,21 @@ PREOPEN, and OPEN). How you represent [MARKET STATE] is up to you (String, const
 etc). This value should be set in the MarketMessage constructor (so it needs to be passed into the
 constructor).
 	 */
-	private [MARKET STATE] state;
+	private MarketState state;
 	
-	//MarketMessage(String){
-		
+	public MarketMessage(MarketState state) throws InvalidArgumentException{
+		if(state != MarketState.OPEN || state != MarketState.PREOPEN || state != MarketState.CLOSED){
+			throw new InvalidArgumentException("Invalid: market state");
+		}
+		this.state = state;
+	}
+	
+	public MarketState getState(){
+		return state;
+	}
+	
+	public String toString(){
+		return "Market state = " + getState();
 	}
 
 }

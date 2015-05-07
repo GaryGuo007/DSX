@@ -10,18 +10,15 @@ import DePaul.StockExchange.*;
  * @author      Junmin Liu
  */
 
-public class CancelMessage implements Comparable<CancelMessage>{
+public class CancelMessage extends Message implements Comparable<CancelMessage>{
 	public enum BookSide {
 	    BUY, SELL
 	}
-	private String user;
-	private String product;
-	private Price price;
-	private int volume;
-	private String details;
-	private BookSide side;
-	public String id;
-
+	public CancelMessage(String user, String product, Price price, 
+			int volume, String details, BookSide side, String id) 
+					throws InvalidTradableValue {
+		super(user, product, price, volume, details, side, id);
+	}
 	/**
 	 * The CancelMessage class encapsulates data related to the cancellation of 
 	 * an order or quote-side by a user, or by the trading system. 
@@ -45,85 +42,22 @@ public class CancelMessage implements Comparable<CancelMessage>{
 	 * 		The String identifier of the cancelled order or quote-side. Cannot be null.
 	 * @throws InvalidTradableValue
 	 */
-	public CancelMessage(String user, String product, Price price, 
-			int volume, String details, BookSide side, String id) 
-					throws InvalidTradableValue {
-		this.setUser(user);
-		this.setProduct(product);
-		this.setPrice(price);
-		this.setVolume(volume);
-		this.setDetails(details);
-		this.setSide(side);
-		this.setId(id);
-	}
-		
-	public String getUser() {
-		return user;
-	}
-
-	private void setUser(String user) {
-		this.user = user;
-	}
-
-	public String getProduct() {
-		return product;
-	}
-
-	private void setProduct(String product) {
-		this.product = product;
-	}
-
-	public Price getPrice() {
-		return price;
-	}
-
-	private void setPrice(Price price) {
-		this.price = price;
-	}
-
-	public int getVolume() {
-		return volume;
-	}
-
-	private void setVolume(int volume) {
-		this.volume = volume;
-	}
-
-	public String getDetails() {
-		return details;
-	}
-
-
-	private void setDetails(String details) {
-		this.details = details;
-	}
-
-	public BookSide getSide() {
-		return side;
-	}
-
-	private void setSide(BookSide side) {
-		this.side = side;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	private void setId(String id) {
-		this.id = id;
-	}
-
+	
 	
 	@Override
 	public int compareTo(CancelMessage cm) {
-		// TODO Auto-generated method stub
+		try{
+			
+		}
+		catch( ){
+			
+		}
 		return 0;
 	}
 	
 	public String toString() {
 		return String.format("User: %s, Product: %s, Price: %s, Volume: %s, "
-				+ "Details: %s, Side: %s, Id: %s", user, product,
-				price, volume, details, side, id);
+				+ "Details: %s, Side: %s, Id: %s", getUser(), getProduct(),
+				getPrice(), getVolume(), getDetails(), getSide(), getId());
 	}
 }

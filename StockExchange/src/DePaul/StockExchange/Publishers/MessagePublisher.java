@@ -1,4 +1,5 @@
 package DePaul.StockExchange.Publishers;
+import DePaul.StockExchange.Message;
 /**
  * The MessagePublisher should implement the “Singleton” design pattern. Besides the
 subscribe/unsubscribe functionality common to all publishers, the MessagePublisher will need several
