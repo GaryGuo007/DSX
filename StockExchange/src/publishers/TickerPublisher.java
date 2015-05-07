@@ -1,5 +1,6 @@
 package publishers;
 import java.util.HashMap;
+
 import price.*;
 import client.User;
 /**
@@ -14,6 +15,21 @@ should be temporarily locked during use:
  * @author      Junmin Liu
  */
 public class TickerPublisher {
+	private TickerPublisher(){
+		
+	}
+	
+	
+	public synchronized void subscribe(User u, String product) throws AlreadySubscribedException{
+		
+	}
+	
+	public synchronized void unSubscribe(User u, String product) throws NotSubscribedException{
+		
+	}
+	
+	
+	
 	public synchronized void publishTicker(String product, Price p){
 		/**
 		 * Determine if the new trade Price for the provided stock symbol (product) is greater than (up), less

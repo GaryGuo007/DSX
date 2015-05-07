@@ -1,7 +1,10 @@
 package messages;
 import messages.BookSide;
 import price.*;
+<<<<<<< HEAD
 //import DePaul.StockExchange.*;
+=======
+>>>>>>> origin/master
 
 /**
  * The CancelMessage class encapsulates data related to the cancellation of an order or quote-side by a

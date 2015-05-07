@@ -1,4 +1,7 @@
 package publishers;
+
+import client.User;
+
 /**
  * The CurrentMarketPublisher should implement the “Singleton” design pattern, as we only want to have a
  * single instance of the CurrentMarketPublisher. Besides the subscribe/unsubscribe functionality common
@@ -12,6 +15,14 @@ package publishers;
  * @author      Junmin Liu
  */
 public class CurrentMarketPublisher {
+	public synchronized void subscribe(User u, String product) throws AlreadySubscribedException{
+		
+	}
+	
+public synchronized void unSubscribe(User u, String product) throws NotSubscribedException{
+		
+	}
+	
 	public synchronized void publishCurrentMarket(MarketDataDTO md){
 		/**
 		 * For each User object in the HashSet or ArrayList for the specified stock symbol (the stock symbol

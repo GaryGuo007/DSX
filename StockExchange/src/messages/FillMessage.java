@@ -1,7 +1,10 @@
 package messages;
 import messages.BookSide;
 import price.Price;
+<<<<<<< HEAD
 //import DePaul.StockExchange.*;
+=======
+>>>>>>> origin/master
 
 /**
  * The FillMessage class encapsulates data related to the fill (trade) of an order or quote-side. FillMessage
