@@ -2,10 +2,7 @@ package messages;
 
 import messages.BookSide;
 import price.Price;
-<<<<<<< HEAD
-//import DePaul.StockExchange.*;
-=======
->>>>>>> origin/master
+
 
 /**
  * The Message class encapsulates data related to the cancellation and fill(trade) of 
