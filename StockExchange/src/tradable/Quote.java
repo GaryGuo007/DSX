@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange.Tradable;
+package tradable;
 
+import price.Price;
+import tradable.QuoteSide;
 import DePaul.StockExchange.InvalidTradableValue;
-import DePaul.StockExchange.Tradable.QuoteSide;
-import DePaul.StockExchange.Price.Price;
 
 /**
  * A Quote represents the prices and volumes of certain stock that 

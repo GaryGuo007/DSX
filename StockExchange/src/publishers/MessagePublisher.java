@@ -1,4 +1,4 @@
-package DePaul.StockExchange.Publishers;
+package publishers;
 import DePaul.StockExchange.Message;
 /**
  * The MessagePublisher should implement the “Singleton” design pattern. Besides the

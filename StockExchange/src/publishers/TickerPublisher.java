@@ -1,4 +1,4 @@
-package DePaul.StockExchange.Publishers;
+package publishers;
 /**
  * The TickerPublisher should implement the “Singleton” design pattern, as we only want to have a single
 instance of the TickerPublisher. Besides the subscribe/unsubscribe functionality common to all publishers,

@@ -1,7 +1,7 @@
-package DePaul.StockExchange.Publishers;
+package publishers;
 
-import DePaul.StockExchange.Price.Price;
-import DePaul.StockExchange.Tradable.Tradable;
+import price.Price;
+import tradable.Tradable;
 /**
  * The MarketDataDTO class is based upon the “Data Transfer Object” pattern. This DTO will be used to
  * encapsulate a set of data elements that detail the values that make up the current market. This

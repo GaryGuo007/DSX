@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange.Tradable;
+package tradable;
 
+import price.Price;
 import DePaul.StockExchange.InvalidPriceOperation;
 import DePaul.StockExchange.InvalidTradableValue;
-import DePaul.StockExchange.Price.Price;
 
 /**
  * The Tradable interface will be used as the common generic type for anything 

@@ -1,4 +1,4 @@
-package DePaul.StockExchange.Publishers;
+package publishers;
 /**
  * The CurrentMarketPublisher should implement the “Singleton” design pattern, as we only want to have a
  * single instance of the CurrentMarketPublisher. Besides the subscribe/unsubscribe functionality common

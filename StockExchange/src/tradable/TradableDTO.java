@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package DePaul.StockExchange.Tradable;
+package tradable;
 
-import DePaul.StockExchange.Price.Price;
+import price.Price;
 
 /**
  * The TradableDTO class is based upon the�Data Transfer Object design pattern. 

@@ -1,4 +1,4 @@
-package DePaul.StockExchange.Publishers;
+package publishers;
 /**
  * The LastSalePublisher should implement the “Singleton” design pattern, as we only want to have a single
 instance of the LastSalePublisher. Besides the subscribe/unsubscribe functionality common to all

@@ -1,8 +1,8 @@
-package DePaul.StockExchange.Messages;
+package messages;
 
+import messages.CancelMessage.BookSide;
+import price.Price;
 import DePaul.StockExchange.InvalidTradableValue;
-import DePaul.StockExchange.Messages.CancelMessage.BookSide;
-import DePaul.StockExchange.Price.Price;
 
 /**
  * The FillMessage class encapsulates data related to the fill (trade) of an order or quote-side. FillMessage

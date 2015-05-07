@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package DePaul.StockExchange.Tradable;
+package tradable;
 
+import price.Price;
 import DePaul.StockExchange.InvalidTradableValue;
-import DePaul.StockExchange.Price.Price;
 
 /**
  * An Order represents a request from a user to BUY or SELL a specific quantity of 

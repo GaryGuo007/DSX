@@ -1,8 +1,8 @@
-package DePaul.StockExchange.Client;
+package client;
 
-import DePaul.StockExchange.Messages.CancelMessage;
-import DePaul.StockExchange.Messages.FillMessage;
-import DePaul.StockExchange.Price.Price;
+import messages.CancelMessage;
+import messages.FillMessage;
+import price.Price;
 /**
  * The “User” interface contains the method declarations that any class that wishes to be a “User” of the
  * DSX trading system must implement. Though we will use this User type in this phase, we will not actually

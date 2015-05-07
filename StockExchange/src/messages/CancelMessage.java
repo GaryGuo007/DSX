@@ -1,4 +1,5 @@
-package DePaul.StockExchange.Messages;
+package messages;
+import price.Price;
 import DePaul.StockExchange.Price.*;
 import DePaul.StockExchange.*;
 

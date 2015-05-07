@@ -1,4 +1,4 @@
-package DePaul.StockExchange.Messages;
+package messages;
 /**
  * The MarketMessage class encapsulates data related to the “state” of the market. The possible market
  * states are: CLOSED, PREOPEN, and OPEN. Only these values are legal market states.

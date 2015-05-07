@@ -1,39 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package DePaul.StockExchange;
+package driver;
+import messages.*;
+import price.*;
+import publishers.*;
+import tradable.*;
+// HERE you should add any imports for your classes that you need to make this class compile.
 
-import DePaul.StockExchange.Tradable.*;
-import DePaul.StockExchange.Price.*;
-import DePaul.StockExchange.Messages.*;
-import DePaul.StockExchange.Client.*;
-import DePaul.StockExchange.Publishers.*;
 
-import java.util.ArrayList;
-
-import client.User;
-import messages.CancelMessage;
-import messages.FillMessage;
-import messages.MarketMessage;
-import messages.MarketState;
-import price.Price;
-import price.PriceFactory;
-import publishers.CurrentMarketPublisher;
-import publishers.LastSalePublisher;
-import publishers.MarketDataDTO;
-import publishers.MessagePublisher;
-import publishers.TickerPublisher;
-
-/**
- * Main
- * 
- * @author      Xin Guo
- * @author      Yuancheng Zhang
- * @author      Junmin Liu
- */
-public class Main {
+public class Phase2Main {
 
     private static User u1, u2, u3, u4;
 
@@ -337,4 +310,3 @@ public class Main {
         }
     }
 }
-
