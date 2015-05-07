@@ -18,6 +18,7 @@ public class FillMessage extends Message implements Comparable<FillMessage>{
 		super(user, product, price, volume, details, side, id);
 	}
 
+	@Override
 	public int compareTo(FillMessage fm) {
 		return 0;
 	}
