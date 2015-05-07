@@ -1,8 +1,11 @@
 package messages;
-
-import messages.CancelMessage.BookSide;
+import messages.BookSideClass.BookSide;
 import price.Price;
+<<<<<<< HEAD
 //import DePaul.StockExchange.InvalidTradableValue;
+=======
+import DePaul.StockExchange.*;
+>>>>>>> c424e88ecbd7a9d5f0e57a883ce7a4d5557ef0bb
 
 /**
  * The FillMessage class encapsulates data related to the fill (trade) of an order or quote-side. FillMessage
@@ -12,15 +15,23 @@ import price.Price;
  * @author      Junmin Liu
  */
 public class FillMessage extends Message implements Comparable<FillMessage>{
+<<<<<<< HEAD
 	public enum BookSide {BUY, SELL}
+=======
+>>>>>>> c424e88ecbd7a9d5f0e57a883ce7a4d5557ef0bb
 	
 	public FillMessage(String user, String product, Price price, 
 			int volume, String details, BookSide side, String id) 
 					throws InvalidMessageArgumentException {
 		super(user, product, price, volume, details, side, id);
 	}
+<<<<<<< HEAD
 	public int compareTo(FillMessage fm) {
 		if(this.getPrice() < fm.getPrice())
+=======
+
+	public int compareTo(FillMessage fm) {
+>>>>>>> c424e88ecbd7a9d5f0e57a883ce7a4d5557ef0bb
 		return 0;
 	}
 	
