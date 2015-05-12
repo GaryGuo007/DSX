@@ -7,10 +7,18 @@ import depaul.stockexchange.publishers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 
 
 public class ProductBook {
+	private HashSet<String> userQuotes = new HashSet<>();
+	private HashMap<Price, ArrayList<Tradable>> oldEntries = new HashMap< Price, ArrayList<Tradable>>();
+	
+	
+	
+	
+	
 	public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(String userName){
 		ArrayList<TradableDTO> a = new ArrayList<TradableDTO>;
 		//BUY  a.getOrdersWithRemainingQty(userName);
@@ -19,25 +27,70 @@ public class ProductBook {
 		
 	}
 	public synchronized void checkTooLateToCancel(String orderId) {
-		
+		if (oldEntries.containsValue(orderId)){
+			CancelMessage()
+		}
+		else throw new OrderNotFoundException("The requested order could not be found.");
 	}
 	public synchronized String[ ][ ] getBookDepth(){
-		return null;
+		String[][] bd = new String[2][];
+		bd[0]= buy-side ProductBookSide.getBookDepth();
+		bd[1]= sell-side ProductBookSide.getBookDepth();
+		return bd;
 		
 	}
 	public synchronized MarketDataDTO getMarketData() {
+		bestBuySide price = buy-side ProductBookSide.topOfBookPrice();
+		bestSellSide price = sell-side ProductBookSide.topOfBookPrice();
+		best buy side volume = buy-side ProductBookSide’s “topOfBookVolume ();
+		best sell side volume = sell-side ProductBookSide.topOfBookVolume();
+		new MarketDataDTO
 		return null;
 		
 	}
 	
 	
 	public synchronized void addOldEntry(Tradable t) {
+		if (oldEntries.containsKey(t))
+			oldEntries.put(t, ArrayList<Tradable>);
+		cancelledVolume = t.getRemainingVolume();
+		t.setRemainingVolume(0);
+		oldEntries.get(oldEntries).add(t);  //?
 		
 	}
 	public synchronized void openMarket() {
-		
+		Price buyPrice =  BookSide.BUY.topOfBookPrice();
+		Price sellPrice =  BookSide.SELL.topOfBookPrice();
+		if (buyPrice == null || sellPrice == null) return;
+		while(buyPrice >= sellPrice || buyPrice.isMarket() || sellPrice.isMarket()){
+			topOfBuySide = new ArrayList<Tradable>>;
+			BookSide.BUY.getEntiresAtPrice();
+			allFills = new HashMap<String, FillMessage>;//Leave this as null for now
+			toRemove = new ArrayList<Tradable>>;
+					
+			for (each Tradable “t” in the “topOfBuySide” ArrayList){
+				
+				allFills = BookSide.SELL.tryTrade(t);
+			    if(t.getRemainingVolume() == 0)
+			    toRemove.//add “t” to the “toRemove” ArrayList.
+				}
+			for (each Tradable “t” in the “toRemove” ArrayList,){
+				BookSide.BUY.removeTradable(t);
+			}
+			updateCurrentMarket()
+			Price lastSalePrice = determineLastSalePrice(allFills);
+			int lastSaleVolume = determineLastSaleQuantity(allFills);
+			//Now publish a Last Sale message passing this book’s product symbol, the lastSalePrice, and the lastSaleVolume
+			Price buyPrice = BookSide.BUY.topOfBookPrice();
+			Price sellPrice = BookSide.SELL.topOfBookPrice();
+		    if (buyPrice == null || sellPrice == null) break;
+		}
 	}
 	public synchronized void closeMarket() {
+		BookSide.BUY.cancelAll();
+		BookSide.SELL.cancelAll();
+		updateCurrentMarket();
+		
 		
 	}
 	public synchronized void cancelOrder(BookSide side, String orderId) {
