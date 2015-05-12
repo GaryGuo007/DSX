@@ -10,82 +10,162 @@ import depaul.stockexchange.messages.*;
 import depaul.stockexchange.price.*;
 import depaul.stockexchange.publishers.*;
 import depaul.stockexchange.tradable.*;
-
+/**
+ * A ProductBookSide object maintains the content of one side (Buy or Sell) of a Stock (product) “book”.
+Recall that a stock’s “book” holds the buy and sell orders and quote sides for a stock that are not yet
+tradable. The buy-side of the book contains all buy-side orders and quote sides that are not yet tradable
+in descending order. The sell-side of the book contains all buy-side orders and quote sides that are not yet
+tradable in ascending order.
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
+ */
 public class ProductBookSide {
 	
 	BookSide side;
 	private HashMap<Price, ArrayList<Tradable>> bookEntries = new HashMap< Price, ArrayList<Tradable>>();
 	
-	
-	public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(String userName){
-		new ArrayList<TradableDTO>;
-		bookEntries.
+	/* This method will generate and return an ArrayList of TradableDTO’s containing information on all the orders in
+this ProductBookSide that have remaining quantity for the specified user.
+	*/
+	public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(String userName) throws NosuchProductException{
+		ArrayList<TradableDTO> tradableObjects = new ArrayList<TradableDTO>();
+		for(int i = 0; i < bookEntries.size(); i++){
+			Tradable t;
+			if(userName == null || userName.isEmpty()) throw new NosuchProductException("User name doesn't exist.");
+			else if (t.getUser() == userName && t.getRemainingVolume() > 0){
+			TradableDTO dto = new TradableDTO(t);
+			tradableObjects.add(dto);
+		}
 		
-		return null;
+		}
+		return tradableObjects;
 	}
 	
+	//this method should be “package-visible” so no “public” or “private” keyword
+	/*
+	 * This method should return an ArrayList of the Tradables that are at the best price in the “bookEntries”
+HashMap.
+	 */
 	synchronized ArrayList<Tradable> getEntriesAtTopOfBook(){
-		if (bookEntries == null)
+		if (bookEntries.isEmpty())
 			return null;
 		ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet()); // Get prices
 		Collections.sort(sorted); // Sort them
 		if (side == BookSide.BUY) {Collections.reverse(sorted);} // Reverse them
 		
-        return null;
+        return bookEntries.get(sorted.get(0));
 	  }
+	/*
+	 * This method should return an array of Strings, where each index holds a “Price x Volume” String.
+	 */
 	public synchronized String[] getBookDepth(){
-		if (bookEntries.isEmpty()) {
-			String[] ns = new String[];
-			
-			//make a new String array of size one, add the String “<Empty>” to it, and return that array.
-			return new String[]{"<Empty>"};
-			}
+		if (bookEntries.isEmpty()) {return new String[]{"<Empty>"};}
+		String [] array = new String[bookEntries.size()];
+		ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet()); // Get prices
+		Collections.sort(sorted); // Sort them
+		if (side == BookSide.BUY) {Collections.reverse(sorted);} // Reverse them
 		
-		return null;
+		String s;
+		for(int i = 0; i < sorted.size(); i++){
+			ArrayList<Tradable> a = bookEntries.get(sorted.get(i));//All is a tradable arrayList, and sorted.get(i) is price
+			int sum = 0;
+			for(int j = 0; j < a.size(); j++){
+				sum += a.get(j).getRemainingVolume();
+			}
+			s = sorted.get(i) + " X " + sum;
+			array[i] = s;
+		}
+		return array;
 		
 	}
+	
+	/*
+	 * This method should return all the Tradables in this book side at the specified price.
+	 */
 	synchronized ArrayList<Tradable> getEntriesAtPrice(Price price) {
 		if(!bookEntries.containsKey(price)) return null;
 		return bookEntries.get(price);
 	}
-	
+	/*
+	 * This method should return true if the product book (the “bookEntries” HashMap) contains a Market Price
+	 */
 	public synchronized boolean hasMarketPrice() {
-		if (!bookEntries.containsKey(getMarketPrice())) return true;
+		if (!bookEntries.containsKey(hasMarketPrice())) return true;
 		return false;
 	}
+	
+	/*
+	 * This method should return true if the ONLY Price in this product’s book is a Market Price
+	 */
 	public synchronized boolean hasOnlyMarketPrice() {
-		if(bookEntries.remove(getMarketPrice())==null) return true;
+		if(bookEntries.size()==1 && bookEntries.remove(hasMarketPrice())==null) return true;
 		return false;
 	}
+	
+	/*
+	 * This method should return the best Price in the book side.
+	 */
 	public synchronized Price topOfBookPrice() {
 		if(bookEntries.isEmpty()) return null;
+		else{
+			ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet()); // Get prices
+			Collections.sort(sorted); // Sort them
+			if (side == BookSide.BUY) {Collections.reverse(sorted);}// Reverse them
+			 return sorted.get(0);
+		}
 		
-		return null;
 	}
-	
+	/*
+	 * This method should return the volume associated with the best Price in the book side.
+	 */
 	public synchronized int topOfBookVolume() {
 		if(bookEntries.isEmpty())
 			return 0;
-		int sum;
+		else{
+			ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet()); // Get prices
+			Collections.sort(sorted); // Sort them
+			if (side == BookSide.BUY) {Collections.reverse(sorted);}// Reverse them
+		int sum = 0;
+		for(int i = 0; i< sorted.size(); i++){
+			ArrayList<Tradable> array = bookEntries.get(sorted.get(i));
+		for (int j = 0; j < sorted.size(); j++){
+			sum+=array.get(j).getRemainingVolume();
+		}
+		}
 		return sum;
+		}
 	}
-	
+	/*
+	 * Returns true if the product book (the “bookEntries” HashMap) is empty, false otherwise.
+	 */
 	public synchronized boolean isEmpty() {
 		if(bookEntries.isEmpty()) return true;
-
-		return false;
+           return false;
 	}
-	
+	/*
+	 * This method should cancel every Order or QuoteSide at every price in the book
+	 */
 	public synchronized void cancelAll() {
 		bookEntries.clear();
 		submitOrderCancel(String orderId)
 		submitQuoteCancel(String userName)
 		
 	}
+	/*
+	 * This method should search the book (the “bookEntries” HashMap) for a Quote from the specified user
+	 */
 	public synchronized TradableDTO removeQuote(String user) {
 		bookEntries.remove(price);
+		Tradable t;
+		TradableDTO dto = new TradableDTO(t);
+		return dto;
+		
 	}
-	
+	/*
+	 * This method should cancel the Order (if possible) that has the specified identifier. This method should search
+the book at all prices (the “bookEntries” HashMap) for the Order with the specified identifier.df
+	 */
 	public synchronized void submitOrderCancel(String orderId) {
 		String orderId = bookEntries.containsValue(orderId)
 		addOldEntry(Tradable)

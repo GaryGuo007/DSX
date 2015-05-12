@@ -27,14 +27,15 @@ public class TradeProcessorPriceTimeImpl {
 		 * Get the FillMessage from the “fillMessage” HashMap by using the String key you just generated as the key to
 the HashMap. Save the resulting FillMessage in a temporary variable (i.e., “oldFill”)
 		 */
-		oldFill = key.
-		if(oldFill.getSide()!= fillMessages.getSide()) return true;
+		
+		oldFill = fillMessages
+		if(oldFill.getSide()!= fillMessages.getSide(fm)) return true;
 		if(oldFill.getId() != fillMessages.getId()) return true;
 		return false;
 		
 	}
 	private void addFillMessage(FillMessage fm) {
-		String key =	this.makeFillKey(fm);
+		String key = this.makeFillKey(fm);
 		if (this.isNewFill(fm) == true)
 		  fillMessages.put(key, fm);
 		else
@@ -49,7 +50,7 @@ the “fillMessages” HashMap.
 		     * Update the fill volume of that fill message to be the existing FillMessage's volume PLUS the fill volume of
 the fill message passed in.
 		     */
-		    fillMessages.
+		    fillMessage.getVolume() = fillMessages.getRemaindingVolume() + fillMessages.getVolume();
 		    /*
 		     * Update the details of that fill message to be the details of the fill message passed in.
 · Note – you will need to change the “set” methods for the FillMessage’s fill volume and details data
