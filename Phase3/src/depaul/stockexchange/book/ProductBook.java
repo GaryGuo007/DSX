@@ -26,7 +26,7 @@ public class ProductBook {
 		return a;
 		
 	}
-	public synchronized void checkTooLateToCancel(String orderId) {
+	public synchronized static void checkTooLateToCancel(String orderId) {
 		if (oldEntries.containsValue(orderId)){
 			CancelMessage()
 		}
@@ -50,7 +50,7 @@ public class ProductBook {
 	}
 	
 	
-	public synchronized void addOldEntry(Tradable t) {
+	public synchronized void static addOldEntry(Tradable t) {
 		if (oldEntries.containsKey(t))
 			oldEntries.put(t, ArrayList<Tradable>);
 		cancelledVolume = t.getRemainingVolume();
