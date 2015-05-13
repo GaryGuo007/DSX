@@ -48,4 +48,14 @@ public class FillMessage extends MessageBase
                 this.getVolume(), this.getDetails(), this.getSide());
     }
 
+	public Object getFillVolume() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setFillVolume(Object fillVolume) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

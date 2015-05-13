@@ -34,7 +34,7 @@ public abstract class MessageBase {
     
     /**
      * The string stock symbol that the order or quote-side was 
-     * submitted for (“IBM”, “GE”, etc.). 
+     * submitted for (â€œIBMâ€�, â€œGEâ€�, etc.). 
      * Cannot be null or empty.
      */
     protected String product;
@@ -108,7 +108,7 @@ public abstract class MessageBase {
     
     /**
      * The string stock symbol that the order or quote-side was 
-     * submitted for (“IBM”, “GE”, etc.).
+     * submitted for (â€œIBMâ€�, â€œGEâ€�, etc.).
      * @return 
      *      The string stock symbol
      */
@@ -120,7 +120,7 @@ public abstract class MessageBase {
      * Set the stock symbol
      * @param product
      *      The string stock symbol that the order or quote-side was 
-     *      submitted for (“IBM”, “GE”, etc.).
+     *      submitted for (â€œIBMâ€�, â€œGEâ€�, etc.).
      * @throws InvalidMessageDataException 
      *      If the product passed in is null or empty
      */
@@ -199,7 +199,7 @@ public abstract class MessageBase {
      * @throws InvalidMessageDataException 
      *      If the details passed in is null
      */
-    protected void setDetails(String details) 
+    public void setDetails(String details) 
             throws InvalidMessageDataException {
         if (details == null) {
             throw new InvalidMessageDataException("The details passed in "

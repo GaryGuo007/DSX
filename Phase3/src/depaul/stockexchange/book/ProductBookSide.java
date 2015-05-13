@@ -147,19 +147,28 @@ HashMap.
 	 * This method should cancel every Order or QuoteSide at every price in the book
 	 */
 	public synchronized void cancelAll() {
-		bookEntries.clear();
-		submitOrderCancel(String orderId)
-		submitQuoteCancel(String userName)
-		
+		ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet());
+		Collections.sort(sorted);
+		if (side == BookSide.BUY) {Collections.reverse(sorted);}// Reverse them
+		for(int i = 0; i < bookEntries.size(); i++){
+			ArrayList<Tradable> a = bookEntries.get(sorted.get(i));
+			for(int j = 0; j < a.size(); j++){
+		//bookEntries.clear();
+		submitOrderCancel(a.get(j).getId());
+		submitQuoteCancel(a.get(j).getId());
+			}
+		}
 	}
 	/*
 	 * This method should search the book (the “bookEntries” HashMap) for a Quote from the specified user
 	 */
 	public synchronized TradableDTO removeQuote(String user) {
-		bookEntries.remove(price);
+		
+		{	bookEntries.remove(price);
 		Tradable t;
 		TradableDTO dto = new TradableDTO(t);
 		return dto;
+		}
 		
 	}
 	/*
@@ -167,47 +176,79 @@ HashMap.
 the book at all prices (the “bookEntries” HashMap) for the Order with the specified identifier.df
 	 */
 	public synchronized void submitOrderCancel(String orderId) {
-		String orderId = bookEntries.containsValue(orderId)
-		addOldEntry(Tradable)
-		bookEntries.remove(price)
-		Parent.ProductBook.checkTooLateToCancel(orderId)
+		String orderId = bookEntries.containsValue(orderId);
+		Tradable t;
+		addOldEntry(t);
+		bookEntries.remove(t.getPrice());
+		ProductBook.checkTooLateToCancel(orderId);
 	}
+	/*
+	 * This method should cancel the QuoteSide (if possible) that has the specified userName.
+	 */
 	public synchronized void submitQuoteCancel(String userName) {
 		if (bookEntries.removeQuote(username)==null); return;
 		MessagePublisher.getInstance().publishCancel(orderId);
 	}
+	/*
+	 * This method should add the Tradable passed in to the “parent” product book’s “old entries” list.
+	 */
 	public void addOldEntry(Tradable t) {
-		ProductBook.addOldEntry();
+		ProductBook.addOldEntry(t);
 	}
+	
+/*
+ * This method should add the Tradable passed in to the book (the “bookEntries” HashMap).
+ */
 	public synchronized void addToBook(Tradable trd) {
-		ArrayList<Tradable> a = bookEntries.get(trd);
-		a.add(trd);
+		if(!bookEntries.containsKey(trd.getPrice())){
+		ArrayList<Tradable> array = new ArrayList<Tradable>();
+		bookEntries.put(trd.getPrice(), array);
+		
+		}
+		else{bookEntries.get(trd.getPrice());}
 		
 	}
-	public HashMap<String, FillMessage> tryTrade(Tradable trd){
-		HashMap<String, FillMessage>allFills = new HashMap<String, FillMessage>;
+	
+	/*
+	 * This method will attempt a trade the provided Tradable against entries in this ProductBookSide.
+	 */
+	public HashMap<String, FillMessage> tryTrade(Tradable trd) throws InvalidPublisherDataException, NotSubscribedException, InvalidMessageDataException{
+		HashMap<String, FillMessage> allFills = new HashMap<String, FillMessage>();
 		if(side.equals("BUY"))
 			trySellAgainstBuySideTrade(trd);
 		else if (side.equals("SELL"))
 			tryBuyAgainstSellSideTrade(trd);
-		
-		MessagePublisher.getInstance().publishFill(aFillMessage);
+		for(int i = 0; i < allFills.size(); i++ ){
+			FillMessage aFillMessage = allFills.get(allFills);
+			MessagePublisher.getInstance().publishFill(aFillMessage);
+		}
 		return allFills;
 	}
-	
-	public synchronized HashMap<String, FillMessage> trySellAgainstBuySideTrade(Tradable trd){
+	/*
+	 * This method will try to fill the SELL side Tradable passed in against the content of the book.
+	 */
+	public synchronized HashMap<String, FillMessage> trySellAgainstBuySideTrade(Tradable trd) throws InvalidMessageDataException{
 		HashMap<String, FillMessage> allFills = new HashMap<String, FillMessage>();
 		HashMap<String, FillMessage> fillMsgs = new HashMap<String, FillMessage>();
-		while () {
-			HashMap<String, FillMessage> doTrade = new HashMap<String, FillMessage>;
+		//(trd.getRemainingVolume()> 0  && !bookEntries.isEmpty() && trd.getPrice() <= this.side.topOfBookPrice())
+	
+		while(trd.getRemainingVolume() > 0  && !bookEntries.isEmpty() && trd.getPrice().isMarket()) 
+		{
+			HashMap<String, FillMessage> doTrade = new HashMap<String, FillMessage>();
 			fillMsgs = mergeFills(fillMsgs, doTrade);
 			allFills.putAll(fillMsgs);
 		}
 		return allFills;
 	}
-	private HashMap<String, FillMessage> mergeFills(HashMap<String, FillMessage> existing, HashMap<String, FillMessage> newOnes{
-		return new HashMap<String, FillMessage>(newOnes);
-		HashMap<String, FillMessage> results = new HashMap<>(existing);
+	
+	/*
+	 * This method is designed to merge multiple fill messages together into one consistent list.
+	 */
+	//I haven't finish the getFillVolume() and setFillVolume() in MessageBase
+	private HashMap<String, FillMessage> mergeFills(HashMap<String, FillMessage> existing, 
+			HashMap<String, FillMessage> newOnes) throws InvalidMessageDataException{
+		if (existing.isEmpty()){return new HashMap<String, FillMessage>(newOnes);}
+		else{HashMap<String, FillMessage> results = new HashMap<>(existing);
 		for (String key : newOnes.keySet()) { // For each Trade Id key in the “newOnes” HashMap
 			if (!existing.containsKey(key)) { // If the “existing” HashMap does not have that key…
 			results.put(key, newOnes.get(key)); // …then simply add this entry to the “results” HashMap
@@ -219,32 +260,46 @@ the book at all prices (the “bookEntries” HashMap) for the Order with the specif
 			}
 			}
 			return results;
+		}
 	}
-	public synchronized HashMap<String, FillMessage> tryBuyAgainstSellSideTrade(Tradable trd){
+	
+	/*
+	 * This method will try to fill the BUY side Tradable passed in against the content of the book.
+	 */
+	public synchronized HashMap<String, FillMessage> tryBuyAgainstSellSideTrade(Tradable trd) throws InvalidMessageDataException{
 		HashMap<String, FillMessage> allFills = new HashMap<String, FillMessage>();
 		HashMap<String, FillMessage> fillMsgs = new HashMap<String, FillMessage>();
-		while() {
-			HashMap<String, FillMessage> doTrade = new HashMap<String, FillMessage>;
+		
+		//(trd.getRemainingVolume() > 0 && !bookEntries.isEmpty() && trd.getPrice() >= trd.topOfBookPrice())
+		while( trd.getRemainingVolume() > 0 && !bookEntries.isEmpty() && trd.getPrice().isMarket()) {
+			HashMap<String, FillMessage> doTrade = new HashMap<String, FillMessage>();
 			fillMsgs = mergeFills(fillMsgs, doTrade);
 			allFills.putAll(fillMsgs);
 		}
 		return allFills;
 
 	}
+	
+/*
+ * This method will remove an key/value pair from the book (the “bookEntries” HashMap) if the ArrayList
+associated with the Price passed in is empty.
+ */
 	public synchronized void clearIfEmpty(Price p) {
 		if (bookEntries.get(p).isEmpty())
 		bookEntries.remove(p);
-		
 	}
+	
+	/*
+	 * This method is design to remove the Tradable passed in from the book (when it has been traded or cancelled).
+	 */
 	public synchronized void removeTradable(Tradable t) {
 		ArrayList<Tradable> entries = bookEntries.get(t.getPrice());
 		if(entries == null) return;
 		else {  
 			 boolean n = entries.remove(t);
-		     if (n==false) return;
-		     else if{
-		    	 entries
-		    	 clearIfEmpty
+		     if (n == false) return;
+		     else if (entries.isEmpty()){
+		    	 clearIfEmpty(t.getPrice());
 		     }
 		
 		}
