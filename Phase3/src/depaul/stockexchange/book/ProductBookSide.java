@@ -164,7 +164,8 @@ HashMap.
 	 */
 	public synchronized TradableDTO removeQuote(String user) {
 		
-		{	bookEntries.remove(price);
+		{	bookEntries.remove(
+);
 		Tradable t;
 		TradableDTO dto = new TradableDTO(t);
 		return dto;
