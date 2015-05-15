@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/tradable/QuoteSide.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/book/ProductService.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/tradable/Tradable.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/TickerPublisher.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/InvalidPublisherDataException.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/NotSubscribedException.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/tradable/TradableImplement.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/book/TradeProcessorPriceTimeImpl.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/messages/FillMessage.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/book/TradeProcessor.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/tradable/Order.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/MessagePublisher.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/CurrentMarketPublisher.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/book/ProductBook.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/Utils.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/PublisherBase.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/MarketDataDTO.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/AlreadySubscribedException.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/messages/MessageBase.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/publishers/LastSalePublisher.java</file>
+            <file>file:/Users/jimliu/Dropbox/dev/StockExchange%20Phase2/src/depaul/stockexchange/book/ProductBookSide.java</file>
+        </group>
+    </open-files>
+</project-private>
