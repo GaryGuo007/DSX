@@ -58,6 +58,14 @@ members to “public” so they can be externally modified.
 		     */
 			
 	}
+	
+	
+	/*
+	 * This TradeProcessor method will be called when it has been determined that a Tradable (i.e., a Buy Order, a
+Sell QuoteSide, etc.) can trade against the content of the book. The return value from this function will be a
+HashMap<String, FillMessage> containing String trade identifiers (the key) and a Fill Message object (the
+value).
+	 */
 	public HashMap<String, FillMessage> doTrade(Tradable trd){
 		fillMessages = new HashMap<String, FillMessage>();
 		ArrayList<Tradable> tradedOut = new ArrayList<Tradable>();
