@@ -1,5 +1,6 @@
 package depaul.stockexchange.book;
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.Utils;
 import depaul.stockexchange.tradable.*;
 import depaul.stockexchange.messages.*;
 import depaul.stockexchange.price.*;
@@ -20,21 +21,38 @@ are not yet tradable in ascending order.
  * @author      Junmin Liu
  */
 public class ProductBook {
+	
+	private String product;
+	private void setProduct(String product) throws DataValidationException{
+		if(Utils.isNullOrEmpty(product)) throw new DataValidationException("The product can't be null or empty.");
+	    this.product = product;
+	}
+	
+	private ProductBookSide buySide;
+	private ProductBookSide sellSide;
+	
+	
+	
+	
 	private HashSet<String> userQuotes = new HashSet<>();
-	private HashMap<Price, ArrayList<Tradable>> oldEntries = new HashMap< Price, ArrayList<Tradable>>();
+	private HashMap<Price, ArrayList<Tradable>> oldEntries = new HashMap<Price, ArrayList<Tradable>>();
 	
 	
-	
+	public ProductBook(String product) throws DataValidationException{
+		this.setProduct(product);
+		this.buySide = new ProductBookSide(this, BookSide.BUY);
+		this.sellSide = new ProductBookSide(this, BookSide.SELL);
+	}
 	
 	/*
 	 * This method should return an ArrayList containing any orders for the specified user that have remaining
 quantity.
 	 */
 	public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(String userName){
-		ArrayList<TradableDTO> a = new ArrayList<TradableDTO>;
-		//BUY  a.getOrdersWithRemainingQty(userName);
-		//SELL a.getOrdersWithRemainingQty(userName);
-		return a;
+		ArrayList<TradableDTO> tradables = new ArrayList<TradableDTO>();
+		tradables.addAll(BookSide.BUY.getOrdersWithRemainingQty(userName));
+		tradables.add(BookSide.SELL.getOrdersWithRemainingQty(userName));
+		return tradables;
 		
 	}
 	
@@ -42,7 +60,7 @@ quantity.
 	 * This method id designed to determine if it is too late to cancel an order (meaning it has already been traded
 out or cancelled).
 	 */
-	public synchronized static void checkTooLateToCancel(String orderId) {
+	public synchronized void checkTooLateToCancel(String orderId) {
 		if (oldEntries.containsValue(orderId)){
 			CancelMessage()
 		}
@@ -78,7 +96,8 @@ side price an volume.
 	/*
 	 * This method should add the Tradable passed in to the “oldEntries” HashMap.
 	 */
-	public synchronized void static addOldEntry(Tradable t) {
+	public synchronized void addOldEntry(Tradable t) throws DataValidationException{
+		if(t ==null) throw new DataValidationException("The taradable can't be null");
 		if (oldEntries.containsKey(t))
 			oldEntries.put(t, ArrayList<Tradable>);
 		cancelledVolume = t.getRemainingVolume();
@@ -223,6 +242,11 @@ Buy/Sell ProductSideBook and handles the results of any trades the result from t
 				addToBook();
 			}
 		}
+	}
+
+	public void publishCancel(Tradable tradableFound, String details) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

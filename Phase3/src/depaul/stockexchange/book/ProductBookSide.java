@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import javafx.scene.Parent;
+//import javafx.scene.Parent;
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.Utils;
 import depaul.stockexchange.messages.*;
 import depaul.stockexchange.price.*;
 import depaul.stockexchange.publishers.*;
@@ -24,20 +25,45 @@ public class ProductBookSide {
 	
 	BookSide side;
 	private HashMap<Price, ArrayList<Tradable>> bookEntries = new HashMap< Price, ArrayList<Tradable>>();
+	@SuppressWarnings("unused")
+	private TradeProcessor tradeProcessor;
+	private ProductBook parent;
+	
+	private void setBookSide(BookSide side){
+		this.side = side;
+	}
+	
+	
+	private void setProductBook(ProductBook book) throws DataValidationException{
+		if (book == null) throw new DataValidationException("The product book parsed in can't be null.");
+	    this.parent = book;
+	}
+	
+	public ProductBookSide(ProductBook book, BookSide side) throws DataValidationException{
+		this.setProductBook(book);
+		this.setBookSide(side);
+		this.tradeProcessor = new TradeProcessorPriceTimeImpl(this);
+	}
+	
 	
 	/* This method will generate and return an ArrayList of TradableDTO’s containing information on all the orders in
 this ProductBookSide that have remaining quantity for the specified user.
 	*/
-	public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(String userName) throws NosuchProductException{
+	public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(String userName) throws Exception{
 		ArrayList<TradableDTO> tradableObjects = new ArrayList<TradableDTO>();
 		for(int i = 0; i < bookEntries.size(); i++){
-			Tradable t;
+			//Tradable t;
 			if(userName == null || userName.isEmpty()) throw new NosuchProductException("User name doesn't exist.");
-			else if (t.getUser() == userName && t.getRemainingVolume() > 0){
-			TradableDTO dto = new TradableDTO(t);
-			tradableObjects.add(dto);
 		}
 		
+		ArrayList<Tradable> orders = bookEntries.get(userName);
+		if (orders != null){
+			for(Tradable order: orders){
+			   if (order.getUser() == userName && order.getRemainingVolume() > 0){
+				   TradableDTO dto = new TradableDTO(order);
+				   tradableObjects.add(dto);
+			   }
+			}
 		}
 		return tradableObjects;
 	}
@@ -143,58 +169,113 @@ HashMap.
 		if(bookEntries.isEmpty()) return true;
            return false;
 	}
+	
+	
+	private ArrayList<Tradable> getAllTradables(){
+		ArrayList<Tradable> all = new ArrayList<>();
+		for(Price price: bookEntries.keySet()){
+			ArrayList<Tradable> tradables = bookEntries.get(price);
+			for(Tradable t : tradables){
+				all.add(t);
+			}
+		}
+		return all;
+	}
 	/*
 	 * This method should cancel every Order or QuoteSide at every price in the book
 	 */
-	public synchronized void cancelAll() {
+	public synchronized void cancelAll() throws Exception{
 		ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet());
 		Collections.sort(sorted);
-		if (side == BookSide.BUY) {Collections.reverse(sorted);}// Reverse them
-		for(int i = 0; i < bookEntries.size(); i++){
-			ArrayList<Tradable> a = bookEntries.get(sorted.get(i));
-			for(int j = 0; j < a.size(); j++){
+		ArrayList<Tradable> tradables = getAllTradables();
+		//if (side == BookSide.BUY) {Collections.reverse(sorted);}// Reverse them
+		for(Tradable t: tradables){
+//			ArrayList<Tradable> a = bookEntries.get(sorted.get(i));
+//			for(int j = 0; j < a.size(); j++){
 		//bookEntries.clear();
-		submitOrderCancel(a.get(j).getId());
-		submitQuoteCancel(a.get(j).getId());
+		submitOrderCancel(t.getId());
+		submitQuoteCancel(t.getId());
 			}
 		}
-	}
+	
 	/*
 	 * This method should search the book (the “bookEntries” HashMap) for a Quote from the specified user
 	 */
-	public synchronized TradableDTO removeQuote(String user) {
-		
-		{	bookEntries.remove(
-);
-		Tradable t;
-		TradableDTO dto = new TradableDTO(t);
-		return dto;
+	public synchronized TradableDTO removeQuote(String user) throws Exception {
+		if(Utils.isNullOrEmpty(user)) throw new DataValidationException("User can't be null or empty.");
+		Tradable tradableFound = null;
+		for(Price price: bookEntries.keySet()){
+			ArrayList<Tradable> tradables = bookEntries.get(price);
+			for(Tradable t: tradables){
+				if(user.equals(t.getUser())){
+					tradableFound = t;
+					tradables.remove(t);
+					break;
+			}
 		}
-		
-	}
+		if(tradableFound != null && tradables.isEmpty()){
+			bookEntries.remove(price);
+			break;
+		}
+		}
+	    if(tradableFound != null){
+	    	return new TradableDTO(tradableFound);
+	    }
+	
+		return null;
+		}
+
 	/*
 	 * This method should cancel the Order (if possible) that has the specified identifier. This method should search
 the book at all prices (the “bookEntries” HashMap) for the Order with the specified identifier.df
 	 */
-	public synchronized void submitOrderCancel(String orderId) {
-		String orderId = bookEntries.containsValue(orderId);
-		Tradable t;
-		addOldEntry(t);
-		bookEntries.remove(t.getPrice());
-		ProductBook.checkTooLateToCancel(orderId);
+	@SuppressWarnings("null")
+	public synchronized void submitOrderCancel(String orderId) throws DataValidationException, OrderNotFoundException {
+		if(Utils.isNullOrEmpty(orderId)) throw new DataValidationException("OrderId can't be null or Empty");
+		//String orderId = bookEntries.containsValue(orderId);
+		Tradable tradableFound = null;
+		for (Price price: bookEntries.keySet()){
+			ArrayList<Tradable> tradables= bookEntries.get(price);
+			for(Tradable t: tradables){
+				if(orderId.equals(t.getId())){
+					tradableFound = t;
+					tradables.remove(t);
+					break;
+				}
+			}
+	
+		
+		if(tradableFound != null && tradables.isEmpty()){
+			bookEntries.remove(price);
+			break;
+			}
+		}
+		if(tradableFound != null){
+			String details = "Order" + tradableFound.getSide() + "- Side Cancelled";
+			parent.publishCancel(tradableFound, details);
+			addOldEntry(tradableFound);
+		}
+		else parent.checkTooLateToCancel(tradableFound.getId());
 	}
 	/*
 	 * This method should cancel the QuoteSide (if possible) that has the specified userName.
 	 */
-	public synchronized void submitQuoteCancel(String userName) {
-		if (bookEntries.removeQuote(username)==null); return;
-		MessagePublisher.getInstance().publishCancel(orderId);
+	public synchronized void submitQuoteCancel(String userName) throws Exception {
+		if(Utils.isNullOrEmpty(userName)) throw new DataValidationException("Username can't be null or empty.");
+		TradableDTO dto = removeQuote(userName);
+		if(dto == null){return;}
+		else{
+			String details = "Quote" + dto.side + "- Side Cancelled";
+			CancelMessage cm = new CancelMessage(dto.user, dto.product, dto.price, dto.remainingVolume, details, dto.side, dto.id);;
+			MessagePublisher.getInstance().publishCancel(cm);
+			}
 	}
 	/*
 	 * This method should add the Tradable passed in to the “parent” product book’s “old entries” list.
 	 */
-	public void addOldEntry(Tradable t) {
-		ProductBook.addOldEntry(t);
+	public void addOldEntry(Tradable t) throws DataValidationException{
+		if(t == null) throw new DataValidationException("The tradable can't be null.");
+		parent.addOldEntry(t);
 	}
 	
 /*
