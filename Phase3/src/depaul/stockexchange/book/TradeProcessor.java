@@ -18,8 +18,9 @@ QuoteSide, etc.) can trade against the content of the book. The return value fro
 HashMap<String, FillMessage> containing String trade identifiers (the key) and a Fill Message object (the value).
 	 * @param trd
 	 * @return
+	 
 	 */
 	
-	public HashMap<String, FillMessage> doTrade(Tradable trd);
+	public HashMap<String, FillMessage> doTrade(Tradable trd) throws InvalidMarketStateException, InvalidMessageDataException, InvalidTradableValue, Exception;
 
 }
