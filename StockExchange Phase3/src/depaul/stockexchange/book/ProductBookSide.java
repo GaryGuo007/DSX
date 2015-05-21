@@ -474,16 +474,12 @@ public class ProductBookSide {
             throw new DataValidationException("The tradable can't be null.");
         }
 
-        // If side is null
-        if (trd.getSide() == null) {
-            throw new DataValidationException("The side of tradable is not valid.");
-        }
 
         HashMap<String, FillMessage> allFills = null;
 
-        if (trd.getSide() == BookSide.BUY) {
+        if (side == BookSide.BUY) {
             allFills = trySellAgainstBuySideTrade(trd);
-        } else if (trd.getSide() == BookSide.SELL) {
+        } else if (side == BookSide.SELL) {
             allFills = tryBuyAgainstSellSideTrade(trd);
         }
 
@@ -512,14 +508,16 @@ public class ProductBookSide {
         if (trd.getPrice() == null) {
             throw new DataValidationException("The price of tradable can't be null.");
         }
+        
+        if(trd.getSide() != BookSide.SELL) {
+            throw new DataValidationException("The BookSide is not a sell side.");
+        }
 
         HashMap<String, FillMessage> allFills = new HashMap<>();
         HashMap<String, FillMessage> fillMsgs = new HashMap<>();
         // @todo: verify the loop
-        while ((trd.getRemainingVolume() > 0 && !this.isEmpty()
-                && trd.getPrice().lessOrEqual(this.topOfBookPrice()))
-                || (trd.getRemainingVolume() > 0 && !this.isEmpty()
-                && trd.getPrice().isMarket())) {
+        while (trd.getRemainingVolume() > 0 && !isEmpty() && 
+                (trd.getPrice().isMarket() || trd.getPrice().lessOrEqual(topOfBookPrice()))) {
             fillMsgs = mergeFills(fillMsgs, tradeProcessor.doTrade(trd));
         }
         allFills.putAll(fillMsgs);
@@ -583,14 +581,16 @@ public class ProductBookSide {
             throw new DataValidationException("The price of tradable can't be null.");
         }
 
+        if(trd.getSide() != BookSide.BUY) {
+            throw new DataValidationException("The BookSide is not a buy side.");
+        }
+
         HashMap<String, FillMessage> allFills = new HashMap<>();
         HashMap<String, FillMessage> fillMsgs = new HashMap<>();
 
         // @todo: verify the loop
-        while ((trd.getRemainingVolume() > 0 && !this.isEmpty()
-                && trd.getPrice().greaterOrEqual(this.topOfBookPrice()))
-                || (trd.getRemainingVolume() > 0 && !this.isEmpty()
-                && trd.getPrice().isMarket())) {
+        while (trd.getRemainingVolume() > 0 && !isEmpty() && 
+                (trd.getPrice().isMarket() || trd.getPrice().greaterOrEqual(topOfBookPrice()))) {
             HashMap<String, FillMessage> someMsgs = this.tradeProcessor.doTrade(trd);
             fillMsgs = mergeFills(fillMsgs, someMsgs);
         }

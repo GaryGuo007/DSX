@@ -176,7 +176,9 @@ public class ProductService {
      */
     public synchronized void setMarketState(MarketState ms) 
             throws InvalidMarketStateTransition, NotSubscribedException, DataValidationException, OrderNotFoundException {
-        
+        if (ms == null) {
+            throw new DataValidationException("MarketState can't be null.");
+        }
         if (this.currentMarketState == MarketState.CLOSED 
                 && ms != MarketState.PREOPEN) {
             String action = ms == MarketState.CLOSED ? "close" : "open";
@@ -201,11 +203,7 @@ public class ProductService {
         currentMarketState = ms;
         
         MarketMessage mm = new MarketMessage(ms);
-        try {
-            MessagePublisher.getInstance().publishMarketMessage(mm);
-        } catch (DataValidationException ex) {
-            // @Todo
-        }
+        MessagePublisher.getInstance().publishMarketMessage(mm);
         
         for (ProductBook pb : allBooks.values()) {
             if (ms == MarketState.OPEN) {
@@ -320,6 +318,9 @@ public class ProductService {
             BookSide side,String orderId) throws InvalidMarketStateException, 
                 DataValidationException, NoSuchProductException, OrderNotFoundException {
         
+        if (side == null) {
+            throw new DataValidationException("Bookside can't be null.");
+        }
         if (Utils.isNullOrEmpty(product)) {
             throw new DataValidationException("The provided product could not "
                     + "be null or empty");
