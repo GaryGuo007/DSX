@@ -243,8 +243,8 @@ public class ProductBook {
             oldEntries.put(p, new ArrayList<Tradable>());
         }
 
-        t.setCancelledVolume(t.getRemainingVolume());
         t.setRemainingVolume(0);
+        t.setCancelledVolume(t.getRemainingVolume());
 
         oldEntries.get(p).add(t);
     }
