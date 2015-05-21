@@ -3,6 +3,7 @@ package depaul.stockexchange.messages;
 import depaul.stockexchange.BookSide;
 import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.price.Price;
+import depaul.stockexchange.tradable.Tradable;
 
 /**
  * The CancelMessage class encapsulates data related to the cancellation 

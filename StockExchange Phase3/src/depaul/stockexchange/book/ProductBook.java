@@ -417,10 +417,10 @@ public class ProductBook {
      */
     public synchronized void updateCurrentMarket() throws DataValidationException {
         Price buyPrice = this.buySide.topOfBookPrice();
+        Price sellPrice = this.sellSide.topOfBookPrice();
         if (buyPrice == null) {
             buyPrice = PriceFactory.makeLimitPrice(0);
         }
-        Price sellPrice = this.sellSide.topOfBookPrice();
         if (sellPrice == null) {
             sellPrice = PriceFactory.makeLimitPrice(0);
         }

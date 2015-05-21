@@ -139,7 +139,8 @@ public class ProductBookSide {
      * @return
      */
     private ArrayList<Price> sortedPrices() {
-        ArrayList<Price> sorted = new ArrayList<>(bookEntries.keySet()); // Get prices Collections.sort(sorted); // Sort them
+        ArrayList<Price> sorted = new ArrayList<>(bookEntries.keySet()); // Get prices 
+        Collections.sort(sorted); // Sort them
         if (side == BookSide.BUY) {
             Collections.reverse(sorted); // Reverse them 
         }
@@ -156,10 +157,10 @@ public class ProductBookSide {
         if (bookEntries.isEmpty()) {
             return null;
         }
-
-        ArrayList<Price> sorted = sortedPrices();
-
-        return bookEntries.get(sorted.get(0));
+    	Price top = topOfBookPrice();
+        if (top == null) 
+            return null;
+        return bookEntries.get(top);
     }
 
     /**
@@ -175,7 +176,11 @@ public class ProductBookSide {
 
         String[] bookDepth = new String[bookEntries.size()];
 
-        ArrayList<Price> sorted = sortedPrices();
+        ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet());
+        Collections.sort(sorted);
+        if (side == BookSide.BUY) {
+            Collections.reverse(sorted);
+        }
         for (int i = 0; i < sorted.size(); i++) {
             int total = 0;
             Price price = sorted.get(i);
@@ -251,7 +256,11 @@ public class ProductBookSide {
         if (bookEntries.isEmpty()) {
             return null;
         }
-        ArrayList<Price> sorted = sortedPrices();
+        ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet());
+        Collections.sort(sorted);
+        if (side == BookSide.BUY) {
+            Collections.reverse(sorted);
+        }
         return sorted.get(0);
     }
 
@@ -450,11 +459,13 @@ public class ProductBookSide {
         if (trd.getPrice() == null) {
             throw new DataValidationException("The price of tradable can't be null.");
         }
+        
+        Price price = trd.getPrice();
 
-        ArrayList<Tradable> tradables = bookEntries.get(trd.getPrice());
+        ArrayList<Tradable> tradables = bookEntries.get(price);
         if (tradables == null) { // can't find by price, add it
             tradables = new ArrayList<>();
-            bookEntries.put(trd.getPrice(), tradables);
+            bookEntries.put(price, tradables);
         }
         tradables.add(trd);
     }
