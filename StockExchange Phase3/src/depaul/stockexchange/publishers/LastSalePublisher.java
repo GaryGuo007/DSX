@@ -82,6 +82,7 @@ public class LastSalePublisher extends PublisherBase {
             // call the user object's "acceptLastSale"
             u.acceptLastSale(product, p, v);
         }
+	TickerPublisher.getInstance().publishTicker(product, p);		
     }
 
 }

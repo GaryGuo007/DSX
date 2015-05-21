@@ -17,6 +17,7 @@
 package depaul.stockexchange.tradable;
 
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.price.Price;
 
 /**
@@ -50,7 +51,7 @@ public class Order extends TradableImplement implements Tradable {
      * 		the original volume (i.e., the original quantity) of the Order
      * @param side
      * 		"BUT" or "SELL" side
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      *		If the user name is either null or an empty string, throws an exception. 
      * 		If the product symbol is either null or an empty string, throws an exception. 
      * 		If the original volume is set as zero or negative number, throws an exception.
@@ -59,7 +60,7 @@ public class Order extends TradableImplement implements Tradable {
      * 		exceeds the original volume), throw an exception.
      */
     public Order(String userName, String productSymbol, Price orderPrice, 
-            int originalVolume, BookSide side) throws InvalidTradableValue {
+            int originalVolume, BookSide side) throws DataValidationException {
         this.setPrice(orderPrice);
         this.setUser(userName);
         this.setProduct(productSymbol);
