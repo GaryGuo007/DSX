@@ -2,7 +2,10 @@ package depaul.stockexchange;
 
 // HERE you should add any imports for your classes that you need to make this class compile.
 
+import java.util.ArrayList;
+
 import depaul.stockexchange.price.InvalidPriceOperation;
+import depaul.stockexchange.client.TradableUserData;
 import depaul.stockexchange.client.User;
 import depaul.stockexchange.messages.CancelMessage;
 import depaul.stockexchange.messages.FillMessage;
@@ -15,6 +18,7 @@ import depaul.stockexchange.publishers.LastSalePublisher;
 import depaul.stockexchange.publishers.MarketDataDTO;
 import depaul.stockexchange.publishers.MessagePublisher;
 import depaul.stockexchange.publishers.TickerPublisher;
+import depaul.stockexchange.tradable.TradableDTO;
 
 
 
@@ -326,5 +330,140 @@ public class Phase2Main {
         public void acceptCurrentMarket(String product, Price bp, int bv, Price sp, int sv) {
             System.out.println("User " + getUserName() + " Received Current Market for " + product + " " + bv + "@" + bp + " - " + sv + "@" + sp);
         }
+
+		@Override
+		public void connect() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void disConnect() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void showMarketDisplay() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String submitOrder(String product, Price price, int volume,
+				BookSide side) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void submitOrderCancel(String product, BookSide side,
+				String orderId) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void submitQuote(String product, Price buyPrice, int buyVolume,
+				Price sellPrice, int sellVolume) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void submitQuoteCancel(String product) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void subscribeCurrentMarket(String product) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void subscribeLastSale(String product) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void subscribeMessages(String product) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void subscribeTicker(String product) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Price getAllStockValue() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Price getAccountCosts() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Price getNetAccountValue() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String[][] getBookDepth(String product) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String getMarketState() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public ArrayList<TradableUserData> getOrderIds() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public ArrayList<String> getProductList() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Price getStockPositionValue(String sym) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int getStockPositionVolume(String product) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public ArrayList<String> getHoldings() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public ArrayList<TradableDTO> getOrdersWithRemainingQty(String product) {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
 }
