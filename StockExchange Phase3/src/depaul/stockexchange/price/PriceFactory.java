@@ -14,83 +14,90 @@
  * limitations under the License.
  */
 package depaul.stockexchange.price;
-import depaul.stockexchange.price.Price;
+
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.HashMap;
 
 /**
- * A factory help to create price object.
- * Price objects should not be created by classes across the entire application. 
- * This would couple other classes to the specifics of Price object creation. 
- * Instead, a globally accessible Factory called PriceFactory should perform 
- * the creation of Price objects 
- * (i.e., using the Factory design pattern).
- * 
- * @author      Xin Guo
- * @author      Yuancheng Zhang
- * @author      Junmin Liu
+ * A factory help to create price object. Price objects should not be created by
+ * classes across the entire application. This would couple other classes to the
+ * specifics of Price object creation. Instead, a globally accessible Factory
+ * called PriceFactory should perform the creation of Price objects (i.e., using
+ * the Factory design pattern).
+ *
+ * @author Xin Guo
+ * @author Yuancheng Zhang
+ * @author Junmin Liu
  */
-public class PriceFactory {
-
-    private static final HashMap<Long, Price> prices = new HashMap<>();
-    private static final Price marketPrice = new Price();
-    /**
-     * Creates a (limit) price object representing the 
-     * value held in the provided String value.
-     * 
-     * @param value
-     * 		Desired value of price in Sting format.
-     * @return PriceFactory 
-     * 		Return the price object representing the 
-     * 		value held in the provided String value.
-     * @throws InvalidPriceOperation
-     * 		If either Price is a Market Price, or the Price passed in is null, 
-     * 		throws InvalidPriceOperation.
+public final class PriceFactory {
+    /*
+     * The cent change to dollar by multiply it.
      */
-    public static Price makeLimitPrice(String value) throws InvalidPriceOperation {
+
+    final static double MULTIPLIER = 100.0;
+    final static double ROUNDING = 0.000001;
+    /*
+     * FlyWeight Pattern: Share pool for same price value.
+     */
+    private static HashMap<Long, Price> prices = new HashMap<Long, Price>();
+    private static Price marketPrice = new Price();
+
+    /**
+     * Creates a (limit) price object representing the value held in the
+     * provided String value.
+     *
+     * @param value
+     * @throws InvalidPriceOperationException
+     */
+    public static Price makeLimitPrice(String value)
+            throws InvalidPriceOperation {
+        value = value.replaceAll("[$,]", "");
         double d = 0;
-        try
-        {
-            d = Double.parseDouble(value.replaceAll("[$,]", ""));
+        if (isNumeric(value)) {
+            d = Double.parseDouble(value);
+        } else {
+            throw new InvalidPriceOperation(
+                    "The Price value must be a numeric format");
         }
-        //if invalid value was entered
-        catch(NumberFormatException ne)
-        {
-            throw new InvalidPriceOperation("InvalidPriceOperationException");
-        }
-        return PriceFactory.makeLimitPrice((long) (d * 100.0));
+
+        return PriceFactory.makeLimitPrice((long) (d * MULTIPLIER + ROUNDING));
     }
 
     /**
      * Creates a (limit) price object representing the value held in the
-     * provided long value. This long value is the price in cents. 
-     * A value of 1499 represents a price of $14.99.
-     * 
+     * provided long value. This long value is the price in cents. A value of
+     * 1499 represents a price of $14.99
+     *
      * @param value
-     * 		Desired value of price in long format.
-     * 		This long value is the price in cents. 
-     * 		A value of 1499 represents a price of $14.99.
-     * @return p
-     * 		Return the price object representing the value held 
-     * 		in the provided long value.
      */
     public static Price makeLimitPrice(long value) {
-        Price p = prices.get(value);
-        if (p == null) {  
-            p = new Price(value);
+        if (!prices.containsKey(value)) {
+            Price p = new Price(value);
             prices.put(value, p);
-        } 
-        return p;
+            return p;
+        } else {
+            return prices.get(value);
+        }
     }
 
     /**
-     * Creates a market price object
-     * 
-     * @return  marketPrice
-     * 		Return the market price object.
-     * @see     Price
+     * Creates a market price object.
+     *
      */
     public static Price makeMarketPrice() {
         return marketPrice;
     }
-}
 
+    /*
+     * Check a string is a valid numeric format
+     * 
+     * @param str
+     */
+    private static boolean isNumeric(String str) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        ParsePosition pos = new ParsePosition(0);
+        formatter.parse(str, pos);
+        return str.length() == pos.getIndex();
+    }
+}

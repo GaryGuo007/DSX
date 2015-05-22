@@ -16,8 +16,7 @@
 package depaul.stockexchange.tradable;
 
 import depaul.stockexchange.BookSide;
-import depaul.stockexchange.price.InvalidPriceOperation;
-import depaul.stockexchange.tradable.InvalidTradableValue;
+import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.price.Price;
 
 /**
@@ -66,7 +65,7 @@ public interface Tradable {
 	 * value is negative, or if the requested cancelled volume plus the current
 	 * remaining volume exceeds the original volume).
 	 */
-	void setCancelledVolume(int newCancelledVolume) throws InvalidTradableValue;
+	void setCancelledVolume(int newCancelledVolume) throws DataValidationException;
 
 	/*
 	 * Sets the Tradable's remaining quantity to the value passed in. This
@@ -74,7 +73,7 @@ public interface Tradable {
 	 * value is negative, or if the requested remaining volume plus the current
 	 * cancelled volume exceeds the original volume).
 	 */
-	void setRemainingVolume(int newRemainingVolume) throws InvalidTradableValue;
+	void setRemainingVolume(int newRemainingVolume) throws DataValidationException;
 
 	/*
 	 * Returns the User id associated with the Tradable.

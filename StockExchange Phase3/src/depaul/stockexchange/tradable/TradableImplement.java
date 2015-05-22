@@ -1,6 +1,7 @@
 package depaul.stockexchange.tradable;
 
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.Utils;
 import depaul.stockexchange.price.Price;
 
@@ -33,11 +34,11 @@ public abstract class TradableImplement implements Tradable {
      * 
      * @param price
      * 		the tradable price (e.g. $257.09)
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      */
-    protected void setPrice(Price price) throws InvalidTradableValue {
+    protected void setPrice(Price price) throws DataValidationException {
         if (price == null) {
-            throw new InvalidTradableValue("The price passed in can't be null;"); 
+            throw new DataValidationException("The price passed in can't be null;"); 
         }
         this.price = price;
     }
@@ -47,12 +48,12 @@ public abstract class TradableImplement implements Tradable {
      * 
      * @param userName
      * 		the user name (e.g. �REX�)
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      * 		If the user name is either null or an empty string, throws an exception. 
      */
-    protected void setUser(String userName) throws InvalidTradableValue {
+    protected void setUser(String userName) throws DataValidationException {
         if (Utils.isNullOrEmpty(userName)) {
-            throw new InvalidTradableValue("Username can't be null or empty"); 
+            throw new DataValidationException("Username can't be null or empty"); 
         }
         this.user = userName;
     }
@@ -62,12 +63,12 @@ public abstract class TradableImplement implements Tradable {
      * 
      * @param productSymbol
      * 		the product (stock) symbol (e.g. �AMZN�)
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      * 		If the product symbol is either null or an empty string, throws an exception. 
      */
-    protected void setProduct(String productSymbol) throws InvalidTradableValue {
+    protected void setProduct(String productSymbol) throws DataValidationException {
         if (Utils.isNullOrEmpty(productSymbol)) {
-            throw new InvalidTradableValue("Invalid product symbol: " 
+            throw new DataValidationException("Invalid product symbol: " 
                     + productSymbol); 
         }
         this.product = productSymbol;
@@ -92,9 +93,9 @@ public abstract class TradableImplement implements Tradable {
      * 		If the original volume is set as zero or negative number, throws an exception.
      */
     protected void setOriginalVolume(int originalVolume) 
-            throws InvalidTradableValue {
+            throws DataValidationException {
         if (originalVolume <= 0) {
-            throw new InvalidTradableValue("Invalid Order Volume: " 
+            throw new DataValidationException("Invalid Order Volume: " 
                     + originalVolume); 
         }
         this.originalVolume = originalVolume;
@@ -160,23 +161,23 @@ public abstract class TradableImplement implements Tradable {
      * 
      * @param newCancelledVolume
      * 		A new Tradable's cancelled quantity to the value passed in. 
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      * 		If the value is invalid (i.e., if the value is negative, 
      * 		or if the requested cancelled volume plus the current remaining volume 
      * 		exceeds the original volume), throw an exception.
      */
     @Override
     public void setCancelledVolume(int newCancelledVolume) 
-            throws InvalidTradableValue {
+            throws DataValidationException {
         if (newCancelledVolume < 0) {
-            throw new InvalidTradableValue("Invalid Cancelled Volume: " + newCancelledVolume);
+            throw new DataValidationException("Invalid Cancelled Volume: " + newCancelledVolume);
         }
         if (newCancelledVolume + this.remainingVolume > this.originalVolume) {
             String errorMessage = String.format("Requested new Cancelled Volume "
                     + "(%s) plus the Remaining Volume (%s) exceeds the "
                     + "tradable's Original Volume (%s)"
                     , newCancelledVolume, this.remainingVolume, this.originalVolume);
-            throw new InvalidTradableValue(errorMessage);
+            throw new DataValidationException(errorMessage);
         }
         this.cancelledVolume = newCancelledVolume;
     }
@@ -189,16 +190,16 @@ public abstract class TradableImplement implements Tradable {
      * 
      * @param newRemainingVolume
      * 		A new Tradable�s remaining quantity to the value passed in.
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      * 		If the value is invalid (i.e., if the value is negative, 
      * 		or if the requested cancelled volume plus the current remaining volume 
      * 		exceeds the original volume), throw an exception.
      */
     @Override
     public void setRemainingVolume(int newRemainingVolume) 
-            throws InvalidTradableValue {
+            throws DataValidationException {
         if (newRemainingVolume < 0) {
-            throw new InvalidTradableValue("Invalid Remaining Volume: " 
+            throw new DataValidationException("Invalid Remaining Volume: " 
                     + newRemainingVolume);
         }
         if (newRemainingVolume + this.cancelledVolume > this.originalVolume) {
@@ -206,7 +207,7 @@ public abstract class TradableImplement implements Tradable {
                     + "(%s) plus the Cancelled Volume (%s) exceeds the "
                     + "tradable's Original Volume (%s)"
                     , newRemainingVolume, this.cancelledVolume, this.originalVolume);
-            throw new InvalidTradableValue(errorMessage);
+            throw new DataValidationException(errorMessage);
         }
         this.remainingVolume = newRemainingVolume;
     }
@@ -240,7 +241,6 @@ public abstract class TradableImplement implements Tradable {
     /**
      * Returns the Tradable �id� � the value each tradable is given once it is received by the system.
      * @return 
-     * @return  
      */
     @Override
     public String getId() {
