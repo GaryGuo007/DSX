@@ -15,6 +15,7 @@
  */
 package depaul.stockexchange.book;
 
+import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.messages.FillMessage;
 import depaul.stockexchange.tradable.Tradable;
 import java.util.HashMap;
@@ -38,5 +39,6 @@ public interface TradeProcessor {
      *      A HashMap<String, FillMessage> containing String trade identifiers 
      *      (the key) and a Fill Message object (the value).
      */
-    public HashMap<String,FillMessage>doTrade(Tradable trd);
+    public HashMap<String,FillMessage>doTrade(Tradable trd)
+            throws DataValidationException;
 }

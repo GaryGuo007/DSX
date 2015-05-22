@@ -22,12 +22,7 @@ package depaul.stockexchange.book;
 
 public class NoSuchProductException extends Exception {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public NoSuchProductException() {
+    public NoSuchProductException() {
         super();
     }
 

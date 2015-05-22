@@ -1,196 +1,133 @@
+/*
+ * Copyright 2015 jimliu.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package depaul.stockexchange.book;
-/**
-The TradeProcessorPriceTimeImpl interface is the interface that a class that will act as a trading processor
-needs to implement. This Tradeprocessor implementer contains the functionality needed to “execute”
-actual trades between Tradable objects in this book side using a price-time algorithm (orders are traded in
-order of price, then in order of arrival).
- * @author      Xin Guo
- * @author      Yuancheng Zhang
- * @author      Junmin Liu
- */
-import java.security.acl.NotOwnerException;
+
+import depaul.stockexchange.DataValidationException;
+import depaul.stockexchange.messages.FillMessage;
+import depaul.stockexchange.price.Price;
+import depaul.stockexchange.tradable.Tradable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import depaul.stockexchange.messages.*;
-import depaul.stockexchange.price.Price;
-import depaul.stockexchange.tradable.*;
-
 /**
-The TradeProcessorPriceTimeImpl interface is the interface that a class that will act as a trading processor
-needs to implement. This Tradeprocessor implementer contains the functionality needed to “execute”
-actual trades between Tradable objects in this book side using a price-time algorithm (orders are traded in
-order of price, then in order of arrival).
- * @author      Xin Guo
- * @author      Yuancheng Zhang
- * @author      Junmin Liu
+ * Implements the TradeProcessor interface.
+ *
+ * @author jimliu
  */
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import depaul.stockexchange.messages.*;
-import depaul.stockexchange.price.Price;
-import depaul.stockexchange.tradable.*;
-
-
-
-
 public class TradeProcessorPriceTimeImpl implements TradeProcessor {
-	
-	/*
-	 * Constructor – This constructor needs to accept a ProductBookSide parameter – a reference to the
-book side this TradeProcessor belongs to.
-	 */
-	public TradeProcessorPriceTimeImpl(ProductBookSide productBookSideIn){
-		  book = productBookSideIn;
-	}
-	
 
-//	public HashMap<String, FillMessage> doTrade(Tradable trd){
-//		throw new UnsupportedOperationException("Not supported yet.");
-//	}
+    private HashMap<String, FillMessage> fillMessages = new HashMap<>();
+    private ProductBookSide side;
 
-	
-	private HashMap<String, FillMessage> fillMessages = new HashMap<String, FillMessage>();
-	private ProductBookSide book;
-	/*
-	 * This method will be used at various times when executing a trade.
-	 */
-	private String makeFillKey(FillMessage fm) {
-		String key = fm.getUser() + fm.getId() + fm.getPrice();
-		return key;
-	}
-	
-	/*
-	 * This Boolean method checks the content of the “fillMessages” HashMap to see if the FillMessage passed in is a fill
-message for an existing known trade or if it is for a new previously unrecorded trade.
-	 */
-	private boolean isNewFill(FillMessage fm) {
-		String fillKey = this.makeFillKey(fm);
-		if(!fillMessages.keySet().contains(fillKey)) {
-			return true;
-		}
-		FillMessage oldFill = fillMessages.get(fillKey);
-		if(!oldFill.getSide().equals(fm.getSide())){ 
-			return true;
-			}
-		if(!oldFill.getId().equals(fm.getId())){
-			return true;
-		}
-		return false;
-		}
-	
-	
-	/*
-	 * This method should add a FillMessage either to the “fillMessages” HashMap if it is a new trade, or should update
-an existing fill message is another part of an existing trade.
-	 */
-	/////////////////////////////////////////
-	private void addFillMessage(FillMessage fm) throws NotOwnerException, BadParameterException, InvalidMessageDataException {
-		//String key = this.makeFillKey(fm);
-		String result = makeFillKey(fm);
-		if (isNewFill(fm)){
-		  
-		  fillMessages.put(result, fm);
-		}
-		else{
-			String fillKey = makeFillKey(fm);
-		    FillMessage oldFill = fillMessages.get(fillKey);
-		    oldFill.setFillVolume(oldFill.getVolume() + fm.getVolume());
-		    oldFill.setDetails(fm.getDetails());
-	    }
-	}
-	
-	
-	/*
-	 * This TradeProcessor method will be called when it has been determined that a Tradable (i.e., a Buy Order, a
-Sell QuoteSide, etc.) can trade against the content of the book. The return value from this function will be a
-HashMap<String, FillMessage> containing String trade identifiers (the key) and a Fill Message object (the
-value).
-	 */
-	////throws 
-	public HashMap<String, FillMessage> doTrade(Tradable trd) throws BadParameterException, DataValidationException {
-		fillMessages = new HashMap<String, FillMessage>();
-		ArrayList<Tradable> tradedOut = new ArrayList<Tradable>();
-		ArrayList<Tradable> entriesAtPrice = book.getEntriesAtTopOfBook();
-		Price tPrice;
-		
-		
-		for(Tradable t: entriesAtPrice)
-		{
-			if(trd.getRemainingVolume()== 0)
-			{
-				//Follow the "NO" path
-				for(Tradable x: tradedOut)
-				{
-					entriesAtPrice.remove(x);
-				}
-				
-				if(entriesAtPrice.isEmpty())
-				{
-					book.clearIfEmpty(book.topOfBookPrice());
-				}
-				return fillMessages;
-			}
-	
-			
-		
-			else{
-		
-				if(trd.getRemainingVolume() >= t.getRemainingVolume())
-				{
-				//Follow the "Yes" path	
-					tradedOut.add(t);
-					if(t.getPrice().isMarket())
-					{
-						tPrice = trd.getPrice();
-					}
-					else
-					{
-						tPrice = t.getPrice();
-					}
-					FillMessage fmT= new FillMessage(t.getUser(),t.getProduct(),tPrice,t.getRemainingVolume(),"leaving 0",t.getSide(),t.getId());
-					addFillMessage(fmT);
-					FillMessage fmTrd= new FillMessage(trd.getUser(),trd.getProduct(),tPrice,t.getRemainingVolume(),"leaving "+(trd.getRemainingVolume()-t.getRemainingVolume()),trd.getSide(),trd.getId());
-					addFillMessage(fmTrd);
-					trd.setRemainingVolume(trd.getRemainingVolume()-t.getRemainingVolume());
-					t.setRemainingVolume(0);
-					book.addOldEntry(t);
-					}
-				else 
-				{
-					int remaninder = t.getRemainingVolume() - trd.getRemainingVolume();
-					if(t.getPrice().isMarket())
-					{
-						tPrice = trd.getPrice();
-					}
-					else
-					{ 
-						tPrice = t.getPrice();
-					}
-					FillMessage fmT= new FillMessage(t.getUser(),t.getProduct(),tPrice,trd.getRemainingVolume(),"leaving "+remaninder,t.getSide(),t.getId());
-					addFillMessage(fmT);
-					FillMessage fmTrd= new FillMessage(trd.getUser(),trd.getProduct(),tPrice,trd.getRemainingVolume(),"leaving 0",trd.getSide(),trd.getId());
-					addFillMessage(fmTrd);
-					trd.setRemainingVolume(0);
-					t.setRemainingVolume(remaninder);
-					book.addOldEntry(trd);
-				 }
-			}
-		}
-		
-         for(Tradable t: tradedOut){
-        	// HashMap<String, FillMessage> entriesAtPrice;
-			entriesAtPrice.remove(t);
-         }
-         
-         if(entriesAtPrice.isEmpty()){
-        	 book.clearIfEmpty(book.topOfBookPrice());
-         }
-         return fillMessages;
-	}
+    void setBookSide(ProductBookSide productBookSide) throws DataValidationException {
+        if (productBookSide == null) {
+            throw new DataValidationException("Invalid argument: BookSide cann't be null");
+        }
+        this.side = productBookSide;
+    }
+
+    public TradeProcessorPriceTimeImpl(ProductBookSide productBookSide)
+            throws DataValidationException {
+        setBookSide(productBookSide);
+    }
+
+    private String makeFillKey(FillMessage fm) {
+        return fm.getUser() + fm.getId() + fm.getPrice().toString();
+    }
+
+    private boolean isNewFill(FillMessage fm) {
+        String key = makeFillKey(fm);
+        if (!fillMessages.containsKey(key)) {
+            return true;
+        }
+        FillMessage oldFill = fillMessages.get(key);
+        if (oldFill.getSide() != fm.getSide()) {
+            return true;
+        }
+        if (!oldFill.getId().equals(fm.getId())) {
+            return true;
+        }
+        return false;
+    }
+
+    private void addFillMesaage(FillMessage fm)
+            throws DataValidationException {
+        String key = makeFillKey(fm);
+        if (isNewFill(fm)) {
+            fillMessages.put(key, fm);
+        } else {
+            fillMessages.get(key).setVolume(
+                    fillMessages.get(key).getVolume() + fm.getVolume());
+            fillMessages.get(key).setDetails(fm.getDetails());
+        }
+    }
+
+    @Override
+    public HashMap<String, FillMessage> doTrade(Tradable trd)
+            throws DataValidationException {
+        if (trd == null) {
+            throw new DataValidationException("Invalid argument: trd cann't be null");
+        }
+        fillMessages.clear();
+        ArrayList<Tradable> tradedOut = new ArrayList<>();
+        ArrayList<Tradable> entriesAtPrice = side.getEntriesAtTopOfBook();
+        for (Tradable t : entriesAtPrice) {
+            if (trd.getRemainingVolume() == 0) {
+                break;
+            }
+
+            Price tPrice = t.getPrice().isMarket() ? trd.getPrice() : t.getPrice();
+
+            if (trd.getRemainingVolume() >= t.getRemainingVolume()) {
+
+                tradedOut.add(t);
+
+                addFillMesaage(new FillMessage(t.getUser(), t.getProduct(), tPrice,
+                        t.getRemainingVolume(), "leaving 0", t.getSide(), t.getId()));
+                addFillMesaage(new FillMessage(trd.getUser(), trd.getProduct(), tPrice,
+                        t.getRemainingVolume(), "leaving "
+                        + (trd.getRemainingVolume() - t.getRemainingVolume()),
+                        trd.getSide(), trd.getId()));
+
+                trd.setRemainingVolume(trd.getRemainingVolume() - t.getRemainingVolume());
+                t.setRemainingVolume(0);
+                side.addOldEntry(t);
+            } else {
+                int remainder = t.getRemainingVolume() - trd.getRemainingVolume();
+
+                addFillMesaage(new FillMessage(t.getUser(), t.getProduct(), tPrice,
+                        trd.getRemainingVolume(), "leaving " + remainder, t.getSide(), t.getId()));
+                addFillMesaage(new FillMessage(trd.getUser(), trd.getProduct(), tPrice,
+                        trd.getRemainingVolume(), "leaving 0", trd.getSide(), trd.getId()));
+
+                trd.setRemainingVolume(0);
+                t.setRemainingVolume(remainder);
+                side.addOldEntry(trd);
+                break;
+            }
+        }
+
+        for (Tradable tOut : tradedOut) {
+            entriesAtPrice.remove(tOut);
+        }
+
+        if (entriesAtPrice.isEmpty()) {
+            side.clearIfEmpty(side.topOfBookPrice());
+        }
+        return fillMessages;
+    }
+
 }
-
-
-
-
