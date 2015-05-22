@@ -110,16 +110,16 @@ Order request
      */
     String submitOrder(String product, Price price, int volume, BookSide side) throws DataValidationException {
     	if (Utils.isNullOrEmpty(product)) {
-    		throw new DataValidationException("Product is null.");
+    		throw new DataValidationException("Product should not be null.");
     	}
     	if (price == null) {
-    		throw new DataValidationException();
+    		throw new DataValidationException("Price should not be null");
     	}
     	if (volume <= 0) {
-    		throw new DataValidationException();
+    		throw new DataValidationException("Volume should not less than 0.");
     	}
     	if (side == null) {
-    		throw new DataValidationException();
+    		throw new DataValidationException("Side should not be null");
     	}
     	return null;
     }

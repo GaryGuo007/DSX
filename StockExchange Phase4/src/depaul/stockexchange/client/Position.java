@@ -7,7 +7,7 @@ import depaul.stockexchange.BookSide;
 import depaul.stockexchange.price.Price;
 
 public class Position {
-	HashMap<String, Integer> holdingsOfUser = new HashMap<stockSymbol, shares>();
+	HashMap<String, Integer> holdings = new HashMap<stockSymbol, shares>();
 	/*
 	 * This will keep a running balance between the “money out” for
 	stock purchases, and the “money in” for stock sales. This should be initialized to a (value) price object with a value of
