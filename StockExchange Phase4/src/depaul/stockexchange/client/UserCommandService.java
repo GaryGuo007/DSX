@@ -12,26 +12,32 @@ public class UserCommandService {
 	A HashMap<String, Long> to hold user name and connection id pairs. Initially this “connected user ids” HashMap
 	should be empty.
 	*/
-	HashMap<String, Long> connectedUserIds = new HashMap<>();
+	HashMap<String, Long> connectedUserIds = new HashMap<String, Long>();
 	
 	/*
 	· A HashMap<String, User> to hold user name and user object pairs. Initially this“connected users” HashMap should be
 	empty.
 	*/
-	HashMap<String, User> connectedUsers = new HashMap<>();
+	HashMap<String, User> connectedUsers = new HashMap<String, User>();
 	
 	/*
 	· A HashMap<String, Long> to hold user name and connection-time pairs (connection time is stored as a long). Initially
 	this“connected time” HashMap should be empty.
     */
-	HashMap<String, Long> connectedTime = new HashMap<>();
+	HashMap<String, Long> connectedTime = new HashMap<String, Long>();
 	
 	/*
 	 * This is a utility method that will be used by many of the
 methods in this class to verify the integrity of the user name and connection id passed in with many of the method calls
 found here.
 	 */
-	private void verifyUser(String userName, long connId){
+	private void verifyUser(String userName, long connId) throws InvalidConnectionIdException, UserNotConnectedException {
+		if (!connectedUserIds.containsKey(userName)){
+			throw new UserNotConnectedException("This user is not actually connected.");
+		}
+		if (connId != connectedUserIds.get(userName)){
+			throw new InvalidConnectionIdException("This user is not actually connected.");
+		}
 		
 	}
 	
