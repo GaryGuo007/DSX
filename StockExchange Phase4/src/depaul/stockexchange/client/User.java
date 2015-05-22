@@ -2,7 +2,7 @@ package depaul.stockexchange.client;
 
 import java.util.ArrayList;
 
-import depaul.stockexchange.BookSide;
+import depaul.stockexchange.*;
 import depaul.stockexchange.messages.CancelMessage;
 import depaul.stockexchange.messages.FillMessage;
 import depaul.stockexchange.price.Price;
@@ -119,7 +119,7 @@ public interface User {
      * Allows the User object to submit a new
 Order request
      */
-    String submitOrder(String product, Price price, int volume, BookSide side);
+    String submitOrder(String product, Price price, int volume, BookSide side) throws DataValidationException;
     /**
      * Allows the User object to submit a new Order
 Cancel request

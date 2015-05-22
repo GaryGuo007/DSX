@@ -3,6 +3,8 @@ package depaul.stockexchange.client;
 import java.util.ArrayList;
 
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.DataValidationException;
+import depaul.stockexchange.Utils;
 import depaul.stockexchange.messages.*;
 import depaul.stockexchange.price.Price;
 import depaul.stockexchange.tradable.Tradable;
@@ -102,10 +104,25 @@ will display the Current Market data in the market display:
 	 * This method forwards the new order
 	request to the user command service and saves the resulting order id.
 	 */
-	String submitOrder(String product, Price price, int volume, BookSide side){
-		return product;
-		
-	}
+	/**
+     * Allows the User object to submit a new
+Order request
+     */
+    String submitOrder(String product, Price price, int volume, BookSide side) throws DataValidationException {
+    	if (Utils.isNullOrEmpty(product)) {
+    		throw new DataValidationException("Product is null.");
+    	}
+    	if (price == null) {
+    		throw new DataValidationException();
+    	}
+    	if (volume <= 0) {
+    		throw new DataValidationException();
+    	}
+    	if (side == null) {
+    		throw new DataValidationException();
+    	}
+    	return null;
+    }
 	
 	/*
 	 * This method forwards the order cancel request

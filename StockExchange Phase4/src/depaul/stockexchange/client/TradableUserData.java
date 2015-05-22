@@ -132,7 +132,7 @@ public class TradableUserData {
 	
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("User %s," userName));
+        sb.append(String.format("User %s,", userName));
         sb.append(String.format(", %s", side));
         sb.append(String.format(" %s", stockSymbol));
         sb.append(String.format("(%s)", id));

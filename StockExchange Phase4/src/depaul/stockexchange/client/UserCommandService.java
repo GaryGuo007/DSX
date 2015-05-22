@@ -85,7 +85,8 @@ available stocks on this system, received from the ProductService.
 	 * This method will create an order object using the data passed in, and will forward the
 order to the ProductService’s “submitOrder” method.
 	 */
-	public String submitOrder(String userName, long connId, String product, Price price, int volume, GlobalConstants.BookSide side){
+	public String submitOrder(String userName, long connId, String product, Price price, int volume, BookSide side){
+		return null;
 		
 	}
 	/*
