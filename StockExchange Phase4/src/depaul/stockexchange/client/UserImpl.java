@@ -39,7 +39,15 @@ and the market display.
 updateLastSale method, passing the same 3 parameters that were passed in.
 	 */
 	public void acceptLastSale(String product, Price price, int volume){
+		try{
+			
+		}
+		catch{
+			
+		}
 		
+		user display manager’s
+		updateLastSale(product, price, volume);
 	}
 	/*
 	 * This method will display the Fill Message in the market display and will
