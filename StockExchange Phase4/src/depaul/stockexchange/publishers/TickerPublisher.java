@@ -70,22 +70,23 @@ public class TickerPublisher extends PublisherBase {
         // Get previous ticker value for this product
         Price previousPrice = mostRecentTickers.get(product);
         // If can't get the previous ticker value, assume it's $0.00
+        char direction;
         if (previousPrice == null) {
             previousPrice = PriceFactory.makeLimitPrice(0);
-        }
-        
-        char direction;
-        if (p.greaterThan(previousPrice)) {
-            direction = (char) 8593; //'↑' 
-        } else if (p.lessThan(previousPrice)) {
-            direction = (char) 8595; //' ↓'
+            direction = ' ';
         } else {
-            direction = '=';
+            if (p.greaterThan(previousPrice)) {
+                direction = (char) 8593; //'↑' 
+            } else if (p.lessThan(previousPrice)) {
+                direction = (char) 8595; //' ↓'
+            } else {
+                direction = '=';
+            }
+            
         }
-        
+
         // set the current price as last sale price
         mostRecentTickers.put(product, p);
-        
         
         // get all subscribers
         HashSet<User> subscribers = super.getSubscribers(product);

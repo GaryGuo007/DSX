@@ -16,6 +16,7 @@
 package depaul.stockexchange.tradable;
 
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.price.Price;
 
 /**
@@ -46,7 +47,7 @@ public final class QuoteSide extends TradableImplement implements Tradable {
      * 		the original volume (i.e., the original quantity) of the QuoteSides
      * @param side
      * 		"BUT" or "SELL" side
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      * 		If the price is market price, throws an exception.
      * 		If the user name is either null or an empty string, throws an exception. 
      * 		If the product symbol is either null or an empty string, throws an exception. 
@@ -58,7 +59,7 @@ public final class QuoteSide extends TradableImplement implements Tradable {
      */
     public QuoteSide(String userName, String productSymbol, Price sidePrice,
                     int originalVolume, BookSide side) 
-            throws InvalidTradableValue {
+            throws DataValidationException {
         this.setPrice(sidePrice);
         this.setUser(userName);
         this.setProduct(productSymbol);
@@ -96,13 +97,13 @@ public final class QuoteSide extends TradableImplement implements Tradable {
      * Set the QuoteSide's Price.
      * @param price
      * 		the order price (e.g. $257.09)
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      * 		If the price is market price, throws this exception.
      */
     @Override
-    protected void setPrice(Price price) throws InvalidTradableValue {
+    protected void setPrice(Price price) throws DataValidationException {
         if (price.isMarket()) {
-            throw new InvalidTradableValue("Invalid price, "
+            throw new DataValidationException("Invalid price, "
                     + "Quotes can only use limit prices.");
         }
         this.price = price;

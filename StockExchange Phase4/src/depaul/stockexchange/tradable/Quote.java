@@ -16,6 +16,7 @@
 package depaul.stockexchange.tradable;
 
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.price.Price;
 
 /**
@@ -53,11 +54,11 @@ public class Quote {
      * 		the price of sell-side QuoteSide
      * @param sellVolume
      * 		the volume of sell-side QuoteSide
-     * @throws InvalidTradableValue
+     * @throws DataValidationException
      */
     public Quote(String userName, String productSymbol, Price buyPrice,
                     int buyVolume, Price sellPrice, int sellVolume) 
-            throws InvalidTradableValue {
+            throws DataValidationException {
         this.setUserName(userName);
         this.setProduct(productSymbol);
         this.setBuyQuoteSide(userName, productSymbol, buyPrice, buyVolume);
@@ -68,7 +69,7 @@ public class Quote {
      * Creates an buy-side Quote object. 
      */
     private void setBuyQuoteSide(String userName, String productSymbol,
-                    Price sidePrice, int volume) throws InvalidTradableValue {
+                    Price sidePrice, int volume) throws DataValidationException {
         this.buyQuoteSide = new QuoteSide(userName, productSymbol, sidePrice,
                                 volume, BookSide.BUY);
     }
@@ -77,7 +78,7 @@ public class Quote {
      * Creates an sell-side Quote object.
      */
     private void setSellQuoteSide(String userName, String productSymbol,
-                    Price sidePrice, int volume) throws InvalidTradableValue {
+                    Price sidePrice, int volume) throws DataValidationException {
         this.sellQuoteSide = new QuoteSide(userName, productSymbol, sidePrice,
                                 volume, BookSide.SELL);
     }
@@ -85,7 +86,7 @@ public class Quote {
     /**
      * Sets the Quote's user name.
      */
-    private void setUserName(String userName) throws InvalidTradableValue {
+    private void setUserName(String userName) throws DataValidationException {
         this.user = userName;
     }
 

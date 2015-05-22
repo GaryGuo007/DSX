@@ -31,10 +31,7 @@ public class UserCommandService {
 methods in this class to verify the integrity of the user name and connection id passed in with many of the method calls
 found here.
 	 */
-	private void verifyUser(String userName, long connId) throws UserNotConnectedException{
-		if(!connectedUserIds.containsKey(userName)){
-			throw new UserNotConnectedException("");
-		}
+	private void verifyUser(String userName, long connId){
 		
 	}
 	

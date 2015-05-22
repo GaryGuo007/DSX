@@ -49,11 +49,14 @@ public class MarketDataDTO {
 
     @Override
     public String toString() {
+        return String.format("%s %d@%s x %d@%s", product, buyVolume, buyPrice, sellVolume, sellPrice);
+            /*
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Product: %s,", product));
         sb.append(String.format(", buyVolume: %s, buyPrice: %s", buyVolume, buyPrice));
         sb.append(String.format(", sellVolume: %s, sellPrice: %s", sellVolume, sellPrice));
         return sb.toString();	
+                    */
     }
 	
 
