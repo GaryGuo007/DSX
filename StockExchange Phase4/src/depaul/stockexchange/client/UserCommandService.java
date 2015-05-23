@@ -5,13 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import depaul.stockexchange.*;
-import depaul.stockexchange.book.InvalidMarketStateException;
-import depaul.stockexchange.book.NoSuchProductException;
-import depaul.stockexchange.book.ProductService;
+import depaul.stockexchange.book.*;
 import depaul.stockexchange.price.Price;
-import depaul.stockexchange.tradable.Order;
-import depaul.stockexchange.tradable.Quote;
-import depaul.stockexchange.tradable.TradableDTO;
+import depaul.stockexchange.publishers.*;
+import depaul.stockexchange.tradable.*;
 
 public class UserCommandService {
 	/*
@@ -105,9 +102,9 @@ ProductService.
 	 * This method should return a sorted list of the
 available stocks on this system, received from the ProductService.
 	 */
-	public ArrayList<String> getProducts(String userName, long connId){
+	public ArrayList<String> getProducts(String userName, long connId) throws InvalidConnectionIdException, UserNotConnectedException{
 		verifyUser(userName, connId);
-		ArrayList<String> h = ProductService.getProductList();
+		ArrayList<String> h = ProductService.getInstance().getProductList();
 		Collections.sort(h); 
 		return h;
 		
@@ -116,10 +113,10 @@ available stocks on this system, received from the ProductService.
 	 * This method will create an order object using the data passed in, and will forward the
 order to the ProductService’s “submitOrder” method.
 	 */
-	public String submitOrder(String userName, long connId, String product, Price price, int volume, BookSide side){
+	public String submitOrder(String userName, long connId, String product, Price price, int volume, BookSide side) throws InvalidMarketStateException, DataValidationException, NoSuchProductException, NotSubscribedException, InvalidConnectionIdException, UserNotConnectedException{
 		verifyUser(userName, connId);
-		Order subOrder = new Order(name, product, price, volume, side);
-		String orderId = ProductService.submitOrder();
+		Order subOrder = new Order(userName, product, price, volume, side);
+		String orderId = ProductService.getInstance().submitOrder(subOrder);
 		return orderId;
 		
 	}
@@ -127,9 +124,9 @@ order to the ProductService’s “submitOrder” method.
 	 * This
 method will forward the provided information to the ProductService’s “submitOrderCancel” method.
 	 */
-	public void submitOrderCancel(String userName, long connId, String product, BookSide side, String orderId){
+	public void submitOrderCancel(String userName, long connId, String product, BookSide side, String orderId) throws InvalidConnectionIdException, UserNotConnectedException, InvalidMarketStateException, DataValidationException, NoSuchProductException, OrderNotFoundException{
 		verifyUser(userName, connId);
-		return ProductService.getInstance().submitOrderCancel(product, side, orderId);
+		ProductService.getInstance().submitOrderCancel(product, side, orderId);
 
 	}
 	/*
@@ -137,9 +134,10 @@ method will forward the provided information to the ProductService’s “submitOrde
 ProductService’s “submitQuote” method.
 	 */
 	public void submitQuote(String userName, long connId, String product, Price bPrice, int bVolume, Price sPrice, int
-			sVolume){
+			sVolume) throws DataValidationException, InvalidMarketStateException, NoSuchProductException, NotSubscribedException, InvalidConnectionIdException, UserNotConnectedException{
 		verifyUser(userName, connId);
-		Quote QuoteObject = new Quote(name, product, buy price, buy volume, sell price, sellVolume);
+		 
+		Quote QuoteObject = new Quote(userName, product, bPrice, bVolume, sPrice, sVolume);
 		ProductService.getInstance().submitQuote(QuoteObject);
 	}
 	/*
@@ -155,33 +153,33 @@ data to the ProductService’s “submitQuoteCancel” method.
 	 * This method will forward the
 subscription request to the CurrentMarketPublisher.
 	 */
-	public void subscribeCurrentMarket(String userName, long connId, String product){
+	public void subscribeCurrentMarket(String userName, long connId, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
 		verifyUser(userName, connId);
-		CurrentMarketPublisher.subscribe(connectedUsers.get(userName), product);
+		CurrentMarketPublisher.getInstance().subscribe(connectedUsers.get(userName), product);
 	}
 	/*
 	 * This method will forward the
 subscription request to the LastSalePublisher.
 	 */
-	public void subscribeLastSale(String userName, long connId, String product){
+	public void subscribeLastSale(String userName, long connId, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
 		verifyUser(userName, connId);
-		LastSalePublisher.subscribe(connectedUsers.get(userName),product);
+		LastSalePublisher.getInstance().subscribe(connectedUsers.get(userName),product);
 	}
 	/*
 	 * This method will forward the subscription
 request to the MessagePublisher.
 	 */
-	public void subscribeMessages(String userName, long conn, String product){
-		verifyUser(userName, connId);
-		MessagePublisher.subscribe(connectedUsers.get(userName),product);
+	public void subscribeMessages(String userName, long conn, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+		verifyUser(userName, conn);
+		MessagePublisher.getInstance().subscribe(connectedUsers.get(userName),product);
 	}
 	/*
 	 * This method will forward the subscription
 request to the TickerPublisher.
 	 */
-	public void subscribeTicker(String userName, long conn, String product){
-		verifyUser(userName, connId);
-		TickerPublisher.subscribe(connectedUsers.get(userName),product);
+	public void subscribeTicker(String userName, long conn, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+		verifyUser(userName, conn);
+		TickerPublisher.getInstance().subscribe(connectedUsers.get(userName),product);
 	}
 	
 	/*
@@ -189,34 +187,34 @@ request to the TickerPublisher.
 request to the CurrentMarketPublisher.
 	 */
 	
-	public void unSubscribeCurrentMarket(String userName, long conn, String product){
-		verifyUser(userName, connId);
-		CurrentMarketPublisher.subscribe(connectedUsers.get(userName),product);
+	public void unSubscribeCurrentMarket(String userName, long conn, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+		verifyUser(userName, conn);
+		CurrentMarketPublisher.getInstance().subscribe(connectedUsers.get(userName),product);
 	}
 	/*
 	 * This method will forward the unsubscribe
 request to the LastSalePublisher.
 	 */
-	public void unSubscribeLastSale(String userName, long conn, String product){
-		verifyUser(userName, connId);
-		LastSalePublisher.subscribe(connectedUsers.get(userName),product);
+	public void unSubscribeLastSale(String userName, long conn, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+		verifyUser(userName, conn);
+		LastSalePublisher.getInstance().subscribe(connectedUsers.get(userName),product);
 	}
 	
 	/*
 	 * method will forward the un-subscribe
 request to the TickerPublisher.
 	 */
-	public void unSubscribeTicker(String userName, long conn, String product) {
-		verifyUser(userName, connId);
-		TickerPublisher.subscribe(connectedUsers.get(userName),product);
+	public void unSubscribeTicker(String userName, long conn, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException {
+		verifyUser(userName, conn);
+		TickerPublisher.getInstance().subscribe(connectedUsers.get(userName),product);
 	}
 	/*
 	 * This method will forward the unsubscribe
 request to the MessagePublisher
 	 */
-	public void unSubscribeMessages(String userName, long conn, String product){
-		verifyUser(userName, connId);
-		MessagePublisher.subscribe(connectedUsers.get(userName),product);
+	public void unSubscribeMessages(String userName, long conn, String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+		verifyUser(userName, conn);
+		MessagePublisher.getInstance().subscribe(connectedUsers.get(userName),product);
 	}
 	
 	
