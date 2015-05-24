@@ -17,7 +17,14 @@ import depaul.stockexchange.tradable.Tradable;
 import depaul.stockexchange.tradable.TradableDTO;
 import depaul.stockexchange.gui.*;
 
-
+/**
+ *The UserImpl class (this class can go in the same package as “User” interface) is our application’s
+implementation of the “User” interface. This represents a “real” user in the trading system; many of these
+objects can be active in our system.
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
+ */
 
 public class UserImpl  {
 	/*
@@ -35,6 +42,15 @@ and the market display.
 	long connectionId;
 	ArrayList<Tradable> stocksAvailable = new ArrayList<Tradable>();
 	ArrayList<Tradable> TradableUserData = new ArrayList<Tradable>();
+	
+	//not sure
+	private Postion position;
+	//
+	private  void UserDisplayManager(){
+		
+	}
+	
+	
 	
 	
 	
@@ -55,15 +71,15 @@ updateLastSale method, passing the same 3 parameters that were passed in.
 	 */
 	public void acceptLastSale(String product, Price price, int volume){
 		try{
-			
+			UserDisplayManager.getInstance().updateLastSale(product, price, volume);
+			Position.getInstance().updateLastSale(product, price);
 		}
-		catch{
-			
+		catch(Exception e){
+			   System.out.println(e.getMessage());	
 		}
 		
 		
-		UserDisplayManager.updateLastSale(product, price, volume);
-		Position.updateLastSale(product, price);
+		
 
 	}
 	/*
@@ -72,32 +88,31 @@ forward the data to the Position object:
 	 */
 	public void acceptMessage(FillMessage fm){
 		try{
-			
+			Object Timestamp = new Timestamp(System.currentTimeMillis());
+			String summary = Timestamp + fm.getSide() + fm.g;
+			UserDisplayManager.getInstance().updateMarketActivity(summary);
+			Position.getInstance().updatePosition(fm.getProduct(), fm.getPrice(), fm.getSide(), fm.getVolume());
 		}
-		catch{
-			
+		catch(Exception e){
+			   System.out.println(e.getMessage());	
 		}
 		
-		Object Timestamp = new Timestamp(System.currentTimeMillis());
-		String summary = Timestamp + fm.getSide() + fm.g;
-		UserDisplayManager.updateMarketActivity(summary);
-		Position.updatePosition(stockSymbol, fillPrice, side, fillVolume)
 	}
 	/*
 	 * This method will display the Cancel Message in the market display:
 	 */
 	public void acceptMessage(CancelMessage cm){
 		try{
-			
+			Object Timestamp = new Timestamp(System.currentTimeMillis());
+			String summary = ;
+			UserDisplayManager.getInstance().updateMarketActivity(summary);
+
 		}
-		catch{
-			
+		catch(Exception e){
+			   System.out.println(e.getMessage());	
 		}
 		
-		Object Timestamp = new Timestamp(System.currentTimeMillis());
-		String summary = ;
-		UserDisplayManager.updateMarketActivity(summary);
-
+		
 	}
 	/*
 	 * This method will display the Market Message in the market
@@ -106,14 +121,15 @@ display:
 	
 	public void acceptMarketMessage(String message){
 		try{
-			
+			UserDisplayManager.getInstance().updateMarketState(message);
+
 		}
-		catch{
-			
+		catch(Exception e){
+		   System.out.println(e.getMessage());	
 		}
 		
 		
-		UserDisplayManager.updateMarketState(message);
+		//UserDisplayManager.getInstance().updateMarketState(message);
 
 	}
 	
@@ -123,13 +139,12 @@ market display:
 	 */
 	public void acceptTicker(String product, Price price, char direction){
 		try{
-			
+			UserDisplayManager.getInstance().updateTicker(product, price, direction);
 		}
-		catch{
-			
+		catch(Exception e){
+			   System.out.println(e.getMessage());	
 		}
 		
-		UserDisplayManager.updateTicker(product, price, direction);
 	}
 	/*
 	 * This method
@@ -137,21 +152,20 @@ will display the Current Market data in the market display:
 	 */
 	public void acceptCurrentMarket(String product, Price bPrice, int bVolume, Price sPrice, int sVolume){
 		try{
-			
+			UserDisplayManager.getInstance().updateMarketData(product, bPrice, bVolume, sPrice, sVolume);
 		}
-		catch{
-			
+		catch(Exception e){
+			   System.out.println(e.getMessage());	
 		}
 		
-		UserDisplayManager.updateMarketData(product, bPrice, bVolume, sPrice, sVolume);
 	}
 	
 	/*
 	 * This method will connect the user to the trading system
 	 */
 	void connect(){
-		 UserCommandService.getInstance().connect(userName, connectionId);
-
+		connectionId = UserCommandService.getInstance().connect(userName);
+		ArrayList<Tradable> stocksAvailable = UserCommandService.getInstance().getProducts(userName, connectionId);
 	}
 	
 	/*
@@ -167,7 +181,14 @@ will display the Current Market data in the market display:
 	 */
 	
 	void showMarketDisplay(){
-		
+		if(stocksAvailable == null){
+			throw new UserNotConnectedException);
+		}
+		if(TradableUserData == null){
+			// not sure
+			UserDisplayManager marketDisplay = new UserDisplayManager();
+		}
+		UserDisplayManager.getInstance().showMarketDisplay();
 	}
 	
 	/*

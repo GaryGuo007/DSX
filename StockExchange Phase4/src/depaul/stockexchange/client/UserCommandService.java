@@ -9,6 +9,14 @@ import depaul.stockexchange.book.*;
 import depaul.stockexchange.price.Price;
 import depaul.stockexchange.publishers.*;
 import depaul.stockexchange.tradable.*;
+/**
+The UserCommand class (this class can go in the same package as “User” interface) acts as a façade between a
+user and the trading system. This class should be a Singleton, as there is only one User Command Service
+that all users will work with.
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
+ */
 
 public class UserCommandService {
 	/*

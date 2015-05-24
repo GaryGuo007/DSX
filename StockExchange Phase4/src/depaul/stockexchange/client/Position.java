@@ -6,7 +6,14 @@ import java.util.HashMap;
 import depaul.stockexchange.BookSide;
 import depaul.stockexchange.book.ProductService;
 import depaul.stockexchange.price.Price;
-
+/**
+The Position class (this class can go in the same package as “User” interface) is used to hold an individual users
+profit and loss information, including how much they have spent buying stock, how much they gained or
+lost selling stock, and the value of the stock they currently own.
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
+ */
 public class Position {
 	HashMap<String, Integer> holdings = new HashMap<String, Integer>();
 	/*
