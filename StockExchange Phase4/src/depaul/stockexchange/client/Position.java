@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import depaul.stockexchange.BookSide;
+import depaul.stockexchange.book.ProductService;
 import depaul.stockexchange.price.Price;
 
 public class Position {
@@ -19,6 +20,21 @@ public class Position {
 	 * the stocks they own. Initially this will be empty.
 	 */
 	HashMap<String, Price> lastSales = new HashMap<>();
+	
+	private volatile static Position instance;
+	
+	 public static Position getInstance() {
+	        if (instance == null) {
+	            synchronized(Position.class) {
+	                if (instance == null) {
+	                    instance = new Position();
+	                }
+	            }
+	        }
+	        return instance;
+	    }
+	
+	
 	
 	/*
 	 * This method will update the

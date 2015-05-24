@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package depaul.stockexchange.gui;
 
-import client.User;
-import price.Price;
+import depaul.stockexchange.client.Position;
+import depaul.stockexchange.client.User;
+import depaul.stockexchange.price.*;
 
 /**
  *
@@ -15,13 +16,38 @@ public class UserDisplayManager {
 
     private User user;
     private MarketDisplay marketDisplay;
+    
+    
+    private volatile static UserDisplayManager instance;
+	
+	 public static UserDisplayManager getInstance() {
+	        if (instance == null) {
+	            synchronized(UserDisplayManager.class) {
+	                if (instance == null) {
+	                    instance = new UserDisplayManager();
+	                }
+	            }
+	        }
+	        return instance;
+	    }
+	  
+	    public UserDisplayManager() {
+			// TODO Auto-generated constructor stub
+		}
+
 
     public UserDisplayManager(User u) {
         user = u;
         marketDisplay = new MarketDisplay(u, this);
     }
 
-    public void showMarketDisplay() throws Exception {
+    
+   
+	
+    
+  
+
+	public void showMarketDisplay() throws Exception {
         marketDisplay.setVisible(true);
     }
 

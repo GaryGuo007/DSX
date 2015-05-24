@@ -29,6 +29,22 @@ public class UserCommandService {
     */
 	HashMap<String, Long> connectedTime = new HashMap<String, Long>();
 	
+	
+	private volatile static UserCommandService instance;
+	
+	 public static UserCommandService getInstance() {
+	        if (instance == null) {
+	            synchronized(UserCommandService.class) {
+	                if (instance == null) {
+	                    instance = new UserCommandService();
+	                }
+	            }
+	        }
+	        return instance;
+	    }
+	
+	
+	
 	/*
 	 * This is a utility method that will be used by many of the
 methods in this class to verify the integrity of the user name and connection id passed in with many of the method calls
