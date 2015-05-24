@@ -1,8 +1,9 @@
 
-package gui;
+package depaul.stockexchange.gui;
 
-import client.User;
-import price.Price;
+//import depaul.stockexchange.client.Position;
+import depaul.stockexchange.client.User;
+import depaul.stockexchange.price.*;
 
 
 public class MarketDisplay {

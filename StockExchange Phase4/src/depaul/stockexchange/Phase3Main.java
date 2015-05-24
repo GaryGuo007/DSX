@@ -447,6 +447,7 @@ public class Phase3Main {
     }
 
     //////////////////////////////////////////
+
     static class UserImpl implements User {
 
         private final String uname;

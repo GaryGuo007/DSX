@@ -16,7 +16,10 @@ import depaul.stockexchange.publishers.NotSubscribedException;
 import depaul.stockexchange.tradable.Tradable;
 import depaul.stockexchange.tradable.TradableDTO;
 import depaul.stockexchange.gui.*;
-public class UserImpl {
+
+
+
+public class UserImpl  {
 	/*
 	 * 1. A String to hold their user name
 2. A long value to hold their “connection id” – provided to them when they connect to the system.
@@ -33,6 +36,12 @@ and the market display.
 	ArrayList<Tradable> stocksAvailable = new ArrayList<Tradable>();
 	ArrayList<Tradable> TradableUserData = new ArrayList<Tradable>();
 	
+	
+	
+	//private UserImpl(){};
+	public UserImpl(String string) {
+		// TODO Auto-generated constructor stub
+	}
 	/*
 	 * This method should return the String username of this user.
 	 */
@@ -141,7 +150,7 @@ will display the Current Market data in the market display:
 	 * This method will connect the user to the trading system
 	 */
 	void connect(){
-		 UserCommandService.getInstance().connect(this.userName, connectionId);
+		 UserCommandService.getInstance().connect(userName, connectionId);
 
 	}
 	

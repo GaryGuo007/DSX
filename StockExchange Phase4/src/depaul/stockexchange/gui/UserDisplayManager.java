@@ -4,13 +4,14 @@
  */
 package depaul.stockexchange.gui;
 
-import depaul.stockexchange.client.Position;
+//import depaul.stockexchange.client.Position;
 import depaul.stockexchange.client.User;
 import depaul.stockexchange.price.*;
 
 /**
- *
- * @author hieldc
+ * @author      Xin Guo
+ * @author      Yuancheng Zhang
+ * @author      Junmin Liu
  */
 public class UserDisplayManager {
 
@@ -31,9 +32,7 @@ public class UserDisplayManager {
 	        return instance;
 	    }
 	  
-	    public UserDisplayManager() {
-			// TODO Auto-generated constructor stub
-		}
+	public UserDisplayManager() {}
 
 
     public UserDisplayManager(User u) {
