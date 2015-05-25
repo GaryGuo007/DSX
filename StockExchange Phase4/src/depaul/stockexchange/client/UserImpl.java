@@ -2,6 +2,7 @@ package depaul.stockexchange.client;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import depaul.stockexchange.BookSide;
 import depaul.stockexchange.DataValidationException;
@@ -10,6 +11,7 @@ import depaul.stockexchange.book.InvalidMarketStateException;
 import depaul.stockexchange.book.NoSuchProductException;
 import depaul.stockexchange.book.OrderNotFoundException;
 import depaul.stockexchange.messages.*;
+import depaul.stockexchange.price.InvalidPriceOperation;
 import depaul.stockexchange.price.Price;
 import depaul.stockexchange.publishers.AlreadySubscribedException;
 import depaul.stockexchange.publishers.NotSubscribedException;
@@ -26,7 +28,7 @@ objects can be active in our system.
  * @author      Junmin Liu
  */
 
-public class UserImpl  {
+public class UserImpl implements User{
 	/*
 	 * 1. A String to hold their user name
 2. A long value to hold their “connection id” – provided to them when they connect to the system.
@@ -40,15 +42,15 @@ and the market display.
 	 */
 	String userName;
 	long connectionId;
-	ArrayList<Tradable> stocksAvailable = new ArrayList<Tradable>();
+	List[] stocks ;
 	ArrayList<Tradable> TradableUserData = new ArrayList<Tradable>();
 	
 	//not sure
-	private Postion position;
+	private Position position;
 	//
-	private  void UserDisplayManager(){
+	private UserDisplayManager userDisplay;
 		
-	}
+	
 	
 	
 	
@@ -89,7 +91,7 @@ forward the data to the Position object:
 	public void acceptMessage(FillMessage fm){
 		try{
 			Object Timestamp = new Timestamp(System.currentTimeMillis());
-			String summary = Timestamp + fm.getSide() + fm.g;
+			String summary = "{"+Timestamp +"} Fill Message: " + fm.getSide() + " " + fm.getVolume() + " " + fm.getProduct() + " " + fm.getPrice() + " " + fm.getDetails() + " " +"[Tradable Id: " + fm.getId() + "]";
 			UserDisplayManager.getInstance().updateMarketActivity(summary);
 			Position.getInstance().updatePosition(fm.getProduct(), fm.getPrice(), fm.getSide(), fm.getVolume());
 		}
@@ -104,7 +106,7 @@ forward the data to the Position object:
 	public void acceptMessage(CancelMessage cm){
 		try{
 			Object Timestamp = new Timestamp(System.currentTimeMillis());
-			String summary = ;
+			String summary = "{"+Timestamp +"} Cancel Message: " + cm.getSide() + " " + cm.getVolume() + " " + cm.getProduct() + " " + cm.getPrice() + " " + cm.getDetails() + " " +"[Tradable Id: " + cm.getId() + "]";
 			UserDisplayManager.getInstance().updateMarketActivity(summary);
 
 		}
@@ -163,26 +165,25 @@ will display the Current Market data in the market display:
 	/*
 	 * This method will connect the user to the trading system
 	 */
-	void connect(){
-		connectionId = UserCommandService.getInstance().connect(userName);
-		ArrayList<Tradable> stocksAvailable = UserCommandService.getInstance().getProducts(userName, connectionId);
+	public void connect() throws AlreadyConnectedException, InvalidConnectionIdException, UserNotConnectedException{
+		connectionId = UserCommandService.getInstance().connect(this);
+		stocks = UserCommandService.getInstance().getProducts(userName, connectionId);
 	}
 	
 	/*
 	 * This method will disconnect the user to the trading system.
 	 */
-	void disConnect(){
+	public void disConnect() throws InvalidConnectionIdException, UserNotConnectedException{
 		 UserCommandService.getInstance().disConnect(userName, connectionId);
-
 	}
 	
 	/*
 	 * This method qwill activate the market display.
 	 */
 	
-	void showMarketDisplay(){
-		if(stocksAvailable == null){
-			throw new UserNotConnectedException);
+	public void showMarketDisplay() throws Exception{
+		if(stocks == null){
+			throw new UserNotConnectedException("");
 		}
 		if(TradableUserData == null){
 			// not sure
@@ -199,7 +200,7 @@ will display the Current Market data in the market display:
      * Allows the User object to submit a new
 Order request
      */
-    String submitOrder(String product, Price price, int volume, BookSide side) throws DataValidationException {
+    public String submitOrder(String product, Price price, int volume, BookSide side) throws DataValidationException {
     	if (Utils.isNullOrEmpty(product)) {
     		throw new DataValidationException("Product should not be null.");
     	}
@@ -219,7 +220,7 @@ Order request
 	 * This method forwards the order cancel request
 to the user command service as follows
 	 */
-	void submitOrderCancel(String product, BookSide side, String orderId) throws InvalidConnectionIdException, UserNotConnectedException, InvalidMarketStateException, DataValidationException, NoSuchProductException, OrderNotFoundException{
+	public void submitOrderCancel(String product, BookSide side, String orderId) throws InvalidConnectionIdException, UserNotConnectedException, InvalidMarketStateException, DataValidationException, NoSuchProductException, OrderNotFoundException{
 		 UserCommandService.getInstance().submitOrderCancel(userName, connectionId, product, side, orderId);
 
 	}
@@ -229,7 +230,7 @@ to the user command service as follows
 quote request to the user command service as follows:
 	 */
 	
-	void submitQuote(String product, Price bPrice, int bVolume, Price sPrice, int sVolume) throws DataValidationException, InvalidMarketStateException, NoSuchProductException, NotSubscribedException, InvalidConnectionIdException, UserNotConnectedException{
+	public void submitQuote(String product, Price bPrice, int bVolume, Price sPrice, int sVolume) throws DataValidationException, InvalidMarketStateException, NoSuchProductException, NotSubscribedException, InvalidConnectionIdException, UserNotConnectedException{
 		 UserCommandService.getInstance().submitQuote(userName, connectionId, product, bPrice, bVolume, sPrice, sVolume);
 
 	}
@@ -238,7 +239,7 @@ quote request to the user command service as follows:
 	 * This method forwards the quote cancel request to the user command service
 as follows:
 	 */
-	void submitQuoteCancel(String product) throws InvalidConnectionIdException, UserNotConnectedException, InvalidMarketStateException, DataValidationException, NoSuchProductException{
+	public void submitQuoteCancel(String product) throws InvalidConnectionIdException, UserNotConnectedException, InvalidMarketStateException, DataValidationException, NoSuchProductException{
 		 UserCommandService.getInstance().submitQuoteCancel(userName, connectionId, product);
 
 	}
@@ -248,7 +249,7 @@ as follows:
 command service as follows:
 	 */
 	
-	void subscribeCurrentMarket(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+	public void subscribeCurrentMarket(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
 		 UserCommandService.getInstance().subscribeCurrentMarket(userName, connectionId, product);
 
 	}
@@ -258,7 +259,7 @@ command service as follows:
 as follows:
 	 */
 	
-	void subscribeLastSale(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+	public void subscribeLastSale(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
 		 UserCommandService.getInstance().subscribeLastSale(userName, connectionId, product);
 
 	}
@@ -266,7 +267,7 @@ as follows:
 	 * This method forwards the message subscription to the user command service
 as follows:
 	 */
-	void subscribeMessages(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+	public void subscribeMessages(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
 		 UserCommandService.getInstance().subscribeMessages(userName, connectionId, product);
 
 	}
@@ -275,7 +276,7 @@ as follows:
 	 * This method forwards the ticker subscription to the user command service as
 follows:
 	 */
-	void subscribeTicker(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
+	public void subscribeTicker(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException{
 		 UserCommandService.getInstance().subscribeTicker(userName, connectionId, product);
 
 	}
@@ -283,7 +284,7 @@ follows:
 	 * Returns the value of the all Sock the User owns (has bought but not sold).
 	 */
 	
-	Price getAllStockValue(){
+	public Price getAllStockValue() throws InvalidPriceOperation{
 		return Position.getInstance().getAllStockValue();
 		
 	}
@@ -291,7 +292,7 @@ follows:
 	/*
 	 * Returns the difference between cost of all stock purchases and stock sales.
 	 */
-	Price getAccountCosts(){
+	public Price getAccountCosts(){
 		return Position.getInstance().getAccountCosts();
 		
 	}
@@ -299,7 +300,7 @@ follows:
 	 * Returns the difference between current value of all stocks owned and the account costs.
 	 */
 	
-	Price getNetAccountValue(){
+	public Price getNetAccountValue(){
 		return Position.getInstance().getNetAccountValue();
 		
 	}
@@ -309,7 +310,7 @@ follows:
 stock. To do this, return the results of a call to the user command service’s “getBookDepth” method passing this user’s
 user name, connection id, and the String product passed into this method as the parameters to that method.
 	 */
-	String[][] getBookDepth(String product) throws DataValidationException, NoSuchProductException, InvalidConnectionIdException, UserNotConnectedException{
+	public String[][] getBookDepth(String product) throws DataValidationException, NoSuchProductException, InvalidConnectionIdException, UserNotConnectedException{
 		return UserCommandService.getInstance().getBookDepth(userName, connectionId, product);
 		
 	}
@@ -319,7 +320,7 @@ user name, connection id, and the String product passed into this method as the 
 return the results of a call to the user command service’s “getMarketState” method passing this user’s user name,
 connection id as the parameters to that method.
 	 */
-	String getMarketState() throws InvalidConnectionIdException, UserNotConnectedException{
+	public String getMarketState() throws InvalidConnectionIdException, UserNotConnectedException{
 		return UserCommandService.getInstance().getMarketState(userName, connectionId);
 		
 	}
@@ -327,23 +328,23 @@ connection id as the parameters to that method.
 	 * Returns a list of order id’s (a data member) for the orders this user has
 submitted.
 	 */
-	ArrayList< TradableUserData> getOrderIds(){
-		return null;
+	public ArrayList< TradableUserData> getOrderIds(){
+		return 
 		
 	}
 	
 	/*
 	 * Returns a list of stocks (a data member) available in the trading system.
 	 */
-	ArrayList<String> getProductList(){
-		return null;
+	public ArrayList<String> getProductList(){
+		return userName.
 		
 	}
 	
 	/*
 	 * Returns the value of the specified stock that this user owns.
 	 */
-	Price getStockPositionValue(String product) {
+	public Price getStockPositionValue(String product) throws InvalidPriceOperation {
 		return Position.getInstance().getStockPositionValue(product);
 		
 	}
@@ -351,14 +352,14 @@ submitted.
 	/*
 	 * Returns the value of the specified stock that this user owns.
 	 */
-	int getStockPositionVolume(String product) {
+	public int getStockPositionVolume(String product) {
 		return Position.getInstance().getStockPositionVolume(product);
 		
 	}
 	/*
 	 * Returns a list of all the Stocks the user owns.
 	 */
-	ArrayList<String> getHoldings(){
+	public ArrayList<String> getHoldings(){
 		return Position.getInstance().getHoldings();
 		
 	}
@@ -367,7 +368,7 @@ submitted.
 	 * Gets a list of DTO’s containing information on
 all Orders for this user for the specified product with remaining volume.
 	 */
-	ArrayList<TradableDTO> getOrdersWithRemainingQty(String product) throws InvalidConnectionIdException, UserNotConnectedException, DataValidationException, NoSuchProductException{
+	public ArrayList<TradableDTO> getOrdersWithRemainingQty(String product) throws InvalidConnectionIdException, UserNotConnectedException, DataValidationException, NoSuchProductException{
 		
 		return UserCommandService.getInstance().getOrdersWithRemainingQty(userName, connectionId, product);
 		

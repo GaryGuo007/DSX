@@ -1,11 +1,14 @@
 package depaul.stockexchange.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import depaul.stockexchange.BookSide;
 import depaul.stockexchange.book.ProductService;
+import depaul.stockexchange.price.InvalidPriceOperation;
 import depaul.stockexchange.price.Price;
+import depaul.stockexchange.price.PriceFactory;
 /**
 The Position class (this class can go in the same package as “User” interface) is used to hold an individual users
 profit and loss information, including how much they have spent buying stock, how much they gained or
@@ -47,13 +50,15 @@ public class Position {
 	 * This method will update the
 holdings list and the account costs when some market activity occurs.
 	 */
-	public void updatePosition(String product, Price price, BookSide side, int volume){
-		int  adjustedVolume;
-		if(BookSide.BUY){
+	 
+	 // logic bugs here
+	public void updatePosition(String product, Price price, BookSide side, int volume) throws InvalidPriceOperation{
+		int  adjustedVolume = 0;
+		if(side.equals(BookSide.BUY)){
 			 adjustedVolume = volume;
 		 }
-		 else if (BookSide.SELL){
-			 adjustedVolume = -volume;
+		 else if (side.equals(BookSide.SELL)){
+			 adjustedVolume = volume*(-1);
 		 }
 		
 		
@@ -62,17 +67,20 @@ holdings list and the account costs when some market activity occurs.
 			 holdings.put(product, adjustedVolume);
 		 }
 		 else{
-			 holdings.put(volume, );
+			 holdings.put(product, holdings.get(product) + adjustedVolume);
+		
+			 
 		 }
 		 
 		 
-		 if(BookSide.BUY)
-		 accountCosts = accountCosts.subtract(totalPrice);
-		 else if (BookSide.SELL)
-		 accountCosts = accountCosts.add(totalPrice);
-		
+		 if(side.equals(BookSide.BUY)){
+			 accountCosts = accountCosts.subtract(price);
+		 }
+		 else if (side.equals(BookSide.SELL)){
+			 accountCosts = accountCosts.add(price);
+		 }
 	}
-	}
+	
 	
 	/*
 	 * This method should insert the last sale for the specified stock
@@ -90,7 +98,7 @@ owns.
 	public int getStockPositionVolume(String product){
 		if(!holdings.containsKey(product))
 		    return 0;
-		return holdings.getStockPositionVolume(product).
+		return holdings.get(product);
 	}
 
 		
@@ -110,41 +118,49 @@ symbols this user owns.
 	 * This method will return the current value of the stock symbol
 passed in that is owned by the user.
 	 */
-	public Price getStockPositionValue(String product){
+	public Price getStockPositionValue(String product) throws InvalidPriceOperation{
 		Price priceIn;
 		if(!holdings.containsKey(product)) 
 			{
-			priceIn = 0.00;
+			priceIn = PriceFactory.makeLimitPrice(0);
 			return priceIn;
 			}
-		else if (lastSales.get(product)==null){
-			lastSales.put(product, 0.00);
+		else if (lastSales.get(product) == null){
+			priceIn = PriceFactory.makeLimitPrice(0);
+			return priceIn;
 		}
-		holdingsOfUser.
-		return ;
-		return this.getStockPositionValue(product);
+		
+		return (lastSales.get(product)).multiply(holdings.get(product));
+		
+		//return this.getStockPositionValue(product);
 
 	}
 	/*
 	 * This method simply returns the “account costs” data member.
 	 */
 	public Price getAccountCosts(){
-		return this.getAccountCosts();
+		return accountCosts;
 
 	}
 	/*
 	 * This method should return the total current value of all stocks this user owns.
 	 */
-	public Price getAllStockValue(){
-		return this.getAllStockValue();
-
+	public Price getAllStockValue() throws InvalidPriceOperation{
+		Price sum = null;
+		for(String p: holdings.keySet()){
+		    sum.add(getStockPositionValue(p));		
+		}
+		return sum;
 	}
 	/*
 	 * This method should return the total current value of all stocks this user owns PLUS
 the account costs.
 	 */
-	public Price getNetAccountValue(){
-		return this.getNetAccountValue();
+	public Price getNetAccountValue() throws InvalidPriceOperation{
+		//Price sum = null;
+//		for(String p: holdings.keySet()){
+//		    sum.add(getStockPositionValue(p));		
+//		}
+		return accountCosts.add(getAllStockValue());
 	}
-
 }

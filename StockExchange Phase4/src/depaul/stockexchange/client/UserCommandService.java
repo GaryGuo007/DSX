@@ -76,7 +76,7 @@ found here.
 		if (connectedUserIds.containsKey(user)){
 			throw new AlreadyConnectedException("This user is alreday connected.");
 		}
-		connectedUserIds.put(user, System.nanoTime());
+		connectedUserIds.put(user.getUserName(), System.nanoTime());
 		return 0;
 		
 	}
@@ -84,11 +84,11 @@ found here.
      * This method will disconnect the user from the
 trading system.
      */
-	public synchronized void disConnect(String userName, long connId){
+	public synchronized void disConnect(String userName, long connId) throws InvalidConnectionIdException, UserNotConnectedException{
 		verifyUser(userName, connId);
-		connectedUserIds.remove(userName, value);
-		connectedUsers.remove(userName, value);
-		connectedTime.remove(userName, value);
+		connectedUserIds.remove(userName);
+		connectedUsers.remove(userName);
+		connectedTime.remove(userName);
 		
 	}
 	

@@ -62,8 +62,9 @@ public class UserDisplayManager {
         marketDisplay.updateTicker(product, p, direction);
     }
     
-    public void updateMarketActivity(String activityText) {
+    public String updateMarketActivity(String activityText) {
         marketDisplay.updateMarketActivity(activityText);
+		return activityText;
     }
     
     public void updateMarketState(String message) {
