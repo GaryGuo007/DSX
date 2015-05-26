@@ -209,8 +209,9 @@ Stock.
     Price getAccountCosts();
     /**
      * Returns the difference between current value of all stocks owned and the account costs
+     * @throws InvalidPriceOperation 
      */
-    Price getNetAccountValue();
+    Price getNetAccountValue() throws InvalidPriceOperation;
     /**
      * Allows the User object to submit a Book Depth request for the specified stock.
      * @throws UserNotConnectedException 
@@ -235,8 +236,9 @@ Stock.
     ArrayList<String> getProductList();
     /**
      * Returns the value of the specified stock that this user owns
+     * @throws InvalidPriceOperation 
      */
-    Price getStockPositionValue(String sym);
+    Price getStockPositionValue(String sym) throws InvalidPriceOperation;
     /**
      * Returns the volume of the specified stock that this user owns
      */

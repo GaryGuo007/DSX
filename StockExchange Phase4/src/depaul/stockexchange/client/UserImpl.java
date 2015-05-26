@@ -42,8 +42,8 @@ and the market display.
 	 */
 	String userName;
 	long connectionId;
-	List[] stocks ;
-	ArrayList<Tradable> TradableUserData = new ArrayList<Tradable>();
+	ArrayList<String> stocks  = new ArrayList<>();
+	ArrayList<TradableUserData> TUserData = new ArrayList<TradableUserData>();
 	
 	//not sure
 	private Position position;
@@ -185,7 +185,7 @@ will display the Current Market data in the market display:
 		if(stocks == null){
 			throw new UserNotConnectedException("");
 		}
-		if(TradableUserData == null){
+		if(TUserData == null){
 			// not sure
 			UserDisplayManager marketDisplay = new UserDisplayManager();
 		}
@@ -300,7 +300,7 @@ follows:
 	 * Returns the difference between current value of all stocks owned and the account costs.
 	 */
 	
-	public Price getNetAccountValue(){
+	public Price getNetAccountValue() throws InvalidPriceOperation{
 		return Position.getInstance().getNetAccountValue();
 		
 	}
@@ -329,15 +329,15 @@ connection id as the parameters to that method.
 submitted.
 	 */
 	public ArrayList< TradableUserData> getOrderIds(){
-		return 
-		
+		//return User.getOrderIds();
+		return TUserData;
 	}
 	
 	/*
 	 * Returns a list of stocks (a data member) available in the trading system.
 	 */
 	public ArrayList<String> getProductList(){
-		return userName.
+		return stocks;
 		
 	}
 	
