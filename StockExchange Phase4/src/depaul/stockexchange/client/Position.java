@@ -34,7 +34,7 @@ public final class Position {
 	 */
 	private HashMap<String, Price> lastSales = new HashMap<>();
 	
-	public Position() { };
+	Position() { };
 
 //	private volatile static Position instance;
 //

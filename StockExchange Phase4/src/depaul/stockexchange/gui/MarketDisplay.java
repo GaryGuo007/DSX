@@ -1,7 +1,6 @@
 
 package depaul.stockexchange.gui;
 
-//import depaul.stockexchange.client.Position;
 import depaul.stockexchange.client.User;
 import depaul.stockexchange.price.*;
 
