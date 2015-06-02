@@ -5,6 +5,7 @@ import depaul.stockexchange.Utils;
 import depaul.stockexchange.client.User;
 import depaul.stockexchange.price.Price;
 import depaul.stockexchange.price.PriceFactory;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -23,7 +24,7 @@ public class TickerPublisher extends PublisherBase {
      * so it can determine if the stock price have 
      * moved up, down, or stayed the same. 
      */
-    private final HashMap<String, Price> mostRecentTickers = new HashMap();
+    private final HashMap<String, Price> mostRecentTickers = new HashMap<String, Price>();
     
     private TickerPublisher() {}
     

@@ -21,9 +21,10 @@ package depaul.stockexchange.publishers;
  * @author      Yuancheng Zhang
  * @author      Junmin Liu
  */
+@SuppressWarnings("serial")
 public class NotSubscribedException extends Exception {
     
-    public NotSubscribedException() {
+	public NotSubscribedException() {
         super();
     }
 
