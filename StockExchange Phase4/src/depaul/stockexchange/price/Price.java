@@ -38,7 +38,7 @@ public final class Price implements Comparable<Price> {
      *      The value of price, a long value passed in of 1499 represents $14.99, 
      *      12850 represents $128.50, etc.
      */
-    Price(long value) {
+    public Price(long value) {
         this.priceValue = value;
         this.market = false;
     }
