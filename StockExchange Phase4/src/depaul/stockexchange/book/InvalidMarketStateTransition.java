@@ -16,9 +16,9 @@
 package depaul.stockexchange.book;
 
 /**
- *
  * @author jimliu
  */
+@SuppressWarnings("serial")
 public class InvalidMarketStateTransition extends Exception {
 
     public InvalidMarketStateTransition() {

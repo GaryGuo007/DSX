@@ -16,9 +16,9 @@
 package depaul.stockexchange.book;
 
 /**
- *
  * @author jimliu
  */
+@SuppressWarnings("serial")
 public class ProductAlreadyExistsException extends Exception {
 
     public ProductAlreadyExistsException() {

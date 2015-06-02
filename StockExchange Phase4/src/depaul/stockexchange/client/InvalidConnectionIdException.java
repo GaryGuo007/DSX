@@ -1,5 +1,6 @@
 package depaul.stockexchange.client;
 
+@SuppressWarnings("serial")
 public class InvalidConnectionIdException extends Exception {
 
 	public InvalidConnectionIdException() {

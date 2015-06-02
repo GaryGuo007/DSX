@@ -22,9 +22,10 @@ package depaul.stockexchange.price;
  * @author      Yuancheng Zhang
  * @author      Junmin Liu
  */
+@SuppressWarnings("serial")
 public class InvalidPriceOperation extends Exception {
 
-    public InvalidPriceOperation() {
+	public InvalidPriceOperation() {
         super();
     }
 

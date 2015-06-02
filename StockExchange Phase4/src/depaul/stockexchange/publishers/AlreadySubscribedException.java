@@ -21,9 +21,10 @@ package depaul.stockexchange.publishers;
  * @author      Yuancheng Zhang
  * @author      Junmin Liu
  */
+@SuppressWarnings("serial")
 public class AlreadySubscribedException extends Exception {
     
-    public AlreadySubscribedException() {
+	public AlreadySubscribedException() {
         super();
     }
 

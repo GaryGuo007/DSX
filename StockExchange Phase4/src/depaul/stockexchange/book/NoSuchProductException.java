@@ -16,10 +16,10 @@
 package depaul.stockexchange.book;
 
 /**
- *
  * @author jimliu
  */
 
+@SuppressWarnings("serial")
 public class NoSuchProductException extends Exception {
 
     public NoSuchProductException() {

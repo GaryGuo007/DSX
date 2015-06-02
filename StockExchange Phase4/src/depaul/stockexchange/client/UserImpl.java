@@ -74,7 +74,7 @@ updateLastSale method, passing the same 3 parameters that were passed in.
 	public void acceptLastSale(String product, Price price, int volume){
 		try{
 			UserDisplayManager.getInstance().updateLastSale(product, price, volume);
-			Position.getInstance().updateLastSale(product, price);
+			position.updateLastSale(product, price);
 		}
 		catch(Exception e){
 			   System.out.println(e.getMessage());	

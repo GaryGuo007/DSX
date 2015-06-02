@@ -19,6 +19,7 @@ package depaul.stockexchange.book;
  *
  * @author jimliu
  */
+@SuppressWarnings("serial")
 public class OrderNotFoundException extends Exception {
     
     public OrderNotFoundException() {

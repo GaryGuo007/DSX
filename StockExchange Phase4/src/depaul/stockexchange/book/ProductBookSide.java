@@ -25,12 +25,13 @@ import depaul.stockexchange.publishers.MessagePublisher;
 import depaul.stockexchange.publishers.NotSubscribedException;
 import depaul.stockexchange.tradable.Tradable;
 import depaul.stockexchange.tradable.TradableDTO;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 /**
- * Owns a list of the “booked” Tradable objects, organized by Price and by time
+ * Owns a list of the â€œbookedâ€� Tradable objects, organized by Price and by time
  * of arrival. An individual ProductBookSide represents the Buy side or the Sell
  * side. Each ProductBookSide also owns a TradeProcessor object.
  *
@@ -39,12 +40,12 @@ import java.util.HashMap;
 public class ProductBookSide {
 
     /**
-     * The “side” that this ProductBookSide represents – BUY or SELL.
+     * The â€œsideâ€� that this ProductBookSide represents â€“ BUY or SELL.
      */
     private BookSide side;
 
     /**
-     * Set the “side” that this ProductBookSide represents
+     * Set the â€œsideâ€� that this ProductBookSide represents
      *
      * @param side The side
      */
@@ -92,7 +93,7 @@ public class ProductBookSide {
      *
      * @param book A reference to the ProductBook object that this
      * ProductBookSide belongs to
-     * @param side A side indicator (BUY or SELL) that specifies the “side” that
+     * @param side A side indicator (BUY or SELL) that specifies the â€œsideâ€� that
      * this ProductBookSide represents
      * @throws DataValidationException If the book is null
      */
@@ -104,7 +105,7 @@ public class ProductBookSide {
     }
 
     /**
-     * This method will generate and return an ArrayList of TradableDTO’s
+     * This method will generate and return an ArrayList of TradableDTOâ€™s
      * containing information on all the orders in this ProductBookSide that
      * have remaining quantity for the specified user.
      *
@@ -119,9 +120,9 @@ public class ProductBookSide {
 
         ArrayList<TradableDTO> tradables = new ArrayList<>();
 
-        // Get the Orders in the book (in “the “bookEntries” HashMap) for the specified userName
+        // Get the Orders in the book (in â€œthe â€œbookEntriesâ€� HashMap) for the specified userName
         for (ArrayList<Tradable> orders : bookEntries.values()) {
-            // for every Order in the book (in “the “bookEntries” HashMap) 
+            // for every Order in the book (in â€œthe â€œbookEntriesâ€� HashMap) 
             // for the specified userName that has remaining volume > 0
             for (Tradable order : orders) {
                 if (userName.equals(order.getUser()) && order.getRemainingVolume() > 0) {
@@ -138,7 +139,8 @@ public class ProductBookSide {
      *
      * @return
      */
-    private ArrayList<Price> sortedPrices() {
+    @SuppressWarnings("unused")
+	private ArrayList<Price> sortedPrices() {
         ArrayList<Price> sorted = new ArrayList<>(bookEntries.keySet()); // Get prices 
         Collections.sort(sorted); // Sort them
         if (side == BookSide.BUY) {
@@ -149,7 +151,7 @@ public class ProductBookSide {
 
     /**
      * This method should return an ArrayList of the Tradables that are at the
-     * best price in the “bookEntries” HashMap.
+     * best price in the â€œbookEntriesâ€� HashMap.
      *
      * @return Get the first Price in that ArrayList
      */
@@ -165,7 +167,7 @@ public class ProductBookSide {
 
     /**
      * This method should return an array of Strings, where each index holds a
-     * “Price x Volume” String.
+     * â€œPrice x Volumeâ€� String.
      *
      * @return An array of Strings
      */
@@ -214,14 +216,14 @@ public class ProductBookSide {
     }
 
     /*publicsynchronizedbooleanhasMarketPrice()
-     This method should return true if the product book (the “bookEntries” HashMap) contains a Market Price 
-     (if a MarketPrice is a key in the “bookEntries” HashMap you return true, otherwise false).
+     This method should return true if the product book (the â€œbookEntriesâ€� HashMap) contains a Market Price 
+     (if a MarketPrice is a key in the â€œbookEntriesâ€� HashMap you return true, otherwise false).
      */
     /**
-     * This method should return true if the product book (the “bookEntries”
+     * This method should return true if the product book (the â€œbookEntriesâ€�
      * HashMap) contains a Market Price.
      *
-     * @return if a MarketPrice is a key in the “bookEntries” HashMap you return
+     * @return if a MarketPrice is a key in the â€œbookEntriesâ€� HashMap you return
      * true, otherwise false
      */
     public synchronized boolean hasMarketPrice() {
@@ -234,10 +236,10 @@ public class ProductBookSide {
     }
 
     /**
-     * This method should return true if the ONLY Price in this product’s book
+     * This method should return true if the ONLY Price in this productâ€™s book
      * is a Market Price.
      *
-     * @return if there is only one key in the “bookEntries” HashMap and it is a
+     * @return if there is only one key in the â€œbookEntriesâ€� HashMap and it is a
      * Market Price, you return true, otherwise false
      */
     public synchronized boolean hasOnlyMarketPrice() {
@@ -248,7 +250,7 @@ public class ProductBookSide {
     /**
      * This method should return the best Price in the book side.
      *
-     * @return If the “bookEntries” HashMap is empty, then return null.
+     * @return If the â€œbookEntriesâ€� HashMap is empty, then return null.
      * Otherwise, create a sorted ArrayList of Prices. Then return the first
      * Price in that list.
      */
@@ -268,12 +270,12 @@ public class ProductBookSide {
      * This method should return the volume associated with the best Price in
      * the book side.
      *
-     * @return If the “bookEntries” HashMap is empty, then return zero.
+     * @return If the â€œbookEntriesâ€� HashMap is empty, then return zero.
      * Otherwise, sum up all the remaining volume values for the top price
      */
     public synchronized int topOfBookVolume() {
         Price price = this.topOfBookPrice();
-        // the “bookEntries” HashMap is empty
+        // the â€œbookEntriesâ€� HashMap is empty
         if (price == null) {
             return 0;
         }
@@ -288,12 +290,12 @@ public class ProductBookSide {
 
     /*
      publicsynchronizedbooleanisEmpty()
-     Returns true if the product book (the “bookEntries” HashMap) is empty, false otherwise.
+     Returns true if the product book (the â€œbookEntriesâ€� HashMap) is empty, false otherwise.
      */
     /**
      * Check if the product book is empty
      *
-     * @return If the product book (the “bookEntries” HashMap) is empty, return
+     * @return If the product book (the â€œbookEntriesâ€� HashMap) is empty, return
      * true, Otherwise false
      */
     public synchronized boolean isEmpty() {
@@ -323,7 +325,7 @@ public class ProductBookSide {
     /**
      * This method should search the book for a Quote from the specified user.
      * Note, if the Quote was the last Tradable in the ArrayList of Tradables at
-     * that price, remove the price entry from the “bookEntries” HashMap
+     * that price, remove the price entry from the â€œbookEntriesâ€� HashMap
      *
      * @param user The specified user
      * @return Return the DTO from the method
@@ -368,7 +370,8 @@ public class ProductBookSide {
      *
      * @param orderId The specified identifier.
      */
-    public synchronized void submitOrderCancel(String orderId)
+    @SuppressWarnings("null")
+	public synchronized void submitOrderCancel(String orderId)
             throws DataValidationException, OrderNotFoundException {
         if (Utils.isNullOrEmpty(orderId)) {
             throw new DataValidationException("orderId can't be null or empty.");
@@ -399,9 +402,9 @@ public class ProductBookSide {
             // Publish a Cancel message
             String details = "Order " + tradableFound.getSide() + "-Side Cancelled";
             parent.publishCancel(tradableFound, details);
-
             addOldEntry(tradableFound);
-        } else { // If NO order is found with the specified Id, then it was already filled or cancelled.
+        } else { 
+        	// If NO order is found with the specified Id, then it was already filled or cancelled.
             parent.checkTooLateToCancel(tradableFound.getId());
         }
     }
@@ -428,8 +431,8 @@ public class ProductBookSide {
     }
 
     /**
-     * This method should add the Tradable passed in to the “parent” product
-     * book’s “old entries” list.
+     * This method should add the Tradable passed in to the â€œparentâ€� product
+     * bookâ€™s â€œold entriesâ€� list.
      *
      * @param t The Tradable to be added
      * @throws DataValidationException If t is null
@@ -445,7 +448,7 @@ public class ProductBookSide {
 
     /**
      * This method should add the Tradable passed in to the book (the
-     * “bookEntries” HashMap).
+     * â€œbookEntriesâ€� HashMap).
      *
      * @param trd The Tradable passed in
      * @throws DataValidationException If trd is null
@@ -537,8 +540,8 @@ public class ProductBookSide {
 
     /**
      * This method is designed to merge multiple fill messages together into one
-     * consistent list. When one user’s Order of QuoteSide trades against
-     * multiple Tradable objects at the same price – only ONE fill should be
+     * consistent list. When one userâ€™s Order of QuoteSide trades against
+     * multiple Tradable objects at the same price â€“ only ONE fill should be
      * sent (for the total traded volume).
      *
      * @param existing The existing Order of QuoteSide trades
@@ -562,12 +565,12 @@ public class ProductBookSide {
 
         HashMap<String, FillMessage> results = new HashMap<>(existing);
         // @Todo: check if the value is null
-        for (String key : newOnes.keySet()) { // For each Trade Id key in the “newOnes” HashMap
-            if (!existing.containsKey(key)) { // If the “existing” HashMap does not have that key...
-                results.put(key, newOnes.get(key)); // ...then simply add this entry to the “results” HashMap
-            } else { // Otherwise, the “existing” HashMap does have that key – we need to update the data
-                FillMessage fm = results.get(key); // Get the FillMessage from the “results” HashMap
-                // NOTE – for the below, you will need to make these 2 FillMessage methods “public”!
+        for (String key : newOnes.keySet()) { // For each Trade Id key in the â€œnewOnesâ€� HashMap
+            if (!existing.containsKey(key)) { // If the â€œexistingâ€� HashMap does not have that key...
+                results.put(key, newOnes.get(key)); // ...then simply add this entry to the â€œresultsâ€� HashMap
+            } else { // Otherwise, the â€œexistingâ€� HashMap does have that key â€“ we need to update the data
+                FillMessage fm = results.get(key); // Get the FillMessage from the â€œresultsâ€� HashMap
+                // NOTE â€“ for the below, you will need to make these 2 FillMessage methods â€œpublicâ€�!
                 fm.setVolume(newOnes.get(key).getVolume()); // Update the fill volume 
                 fm.setDetails(newOnes.get(key).getDetails()); // Update the fill details
             }

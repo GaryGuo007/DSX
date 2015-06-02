@@ -1,5 +1,6 @@
 package depaul.stockexchange.client;
 
+@SuppressWarnings("serial")
 public class AlreadyConnectedException extends Exception {
 
 	public AlreadyConnectedException() {
