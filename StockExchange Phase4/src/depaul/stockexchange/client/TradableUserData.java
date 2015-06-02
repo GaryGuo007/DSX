@@ -2,8 +2,6 @@ package depaul.stockexchange.client;
 import depaul.stockexchange.BookSide;
 import depaul.stockexchange.DataValidationException;
 import depaul.stockexchange.Utils;
-import depaul.stockexchange.price.Price;
-import depaul.stockexchange.DataValidationException;
 public class TradableUserData {
 	 /**
      * The String username of the user whose order or quote-side. 

@@ -34,7 +34,7 @@ public abstract class PublisherBase {
     /**
      * Users subscribe for data. 
      * @param u
-     *      A “User” reference (a reference to themselves)
+     *      A "User" reference (a reference to themselves)
      * @param product
      *      The String stock symbol they are interested.
      * @throws AlreadySubscribedException
@@ -65,7 +65,7 @@ public abstract class PublisherBase {
         
         // if there is no HashSet with this product, create a new one
         if (subscribers == null) {
-            subscribers = new HashSet();
+            subscribers = new HashSet<User>();
             subscriptions.put(product, subscribers);
         }
         
@@ -77,7 +77,7 @@ public abstract class PublisherBase {
     /**
      * Users un-subscribe for data. 
      * @param u
-     *      A “User” reference (a reference to themselves)
+     *      A â€œUserâ€� reference (a reference to themselves)
      * @param product
      *      The String stock symbol they wish to un-subscribe from.
      * @throws NotSubscribedException

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import depaul.stockexchange.BookSide;
-import depaul.stockexchange.book.ProductService;
 import depaul.stockexchange.price.InvalidPriceOperation;
 import depaul.stockexchange.price.Price;
 import depaul.stockexchange.price.PriceFactory;
@@ -20,7 +19,7 @@ import depaul.stockexchange.price.PriceFactory;
  * @author Yuancheng Zhang
  * @author Junmin Liu
  */
-public class Position {
+public final class Position {
 	private HashMap<String, Integer> holdings = new HashMap<String, Integer>();
 	/*
 	 * This will keep a running balance between the “money out” for stock
@@ -34,19 +33,21 @@ public class Position {
 	 * Initially this will be empty.
 	 */
 	private HashMap<String, Price> lastSales = new HashMap<>();
+	
+	public Position() { };
 
-	private volatile static Position instance;
-
-	public static Position getInstance() {
-		if (instance == null) {
-			synchronized (Position.class) {
-				if (instance == null) {
-					instance = new Position();
-				}
-			}
-		}
-		return instance;
-	}
+//	private volatile static Position instance;
+//
+//	public static Position getInstance() {
+//		if (instance == null) {
+//			synchronized (Position.class) {
+//				if (instance == null) {
+//					instance = new Position();
+//				}
+//			}
+//		}
+//		return instance;
+//	}
 
 	/*
 	 * This method will update the holdings list and the account costs when some
