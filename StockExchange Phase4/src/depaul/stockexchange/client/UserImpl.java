@@ -59,6 +59,31 @@ public class UserImpl implements User {
 		setUserDisplay(UserDisplayManager.getInstance());
 	}
 
+	@Override
+	public String getUserName() {
+		return this.userName;
+	}
+	
+	private long getConnId() {
+		return connId;
+	}
+
+	private ArrayList<String> getStocks() {
+		return stocks;
+	}
+
+	private ArrayList<TradableUserData> getTradUserData() {
+		return tradUserData;
+	}
+
+	private Position getPosition() {
+		return position;
+	}
+
+	private UserDisplayManager getUserDisplay() {
+		return userDisplay;
+	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
@@ -81,11 +106,6 @@ public class UserImpl implements User {
 
 	private void setUserDisplay(UserDisplayManager userDisplay) {
 		this.userDisplay = userDisplay;
-	}
-	
-	@Override
-	public String getUserName() {
-		return this.userName;
 	}
 	
 	/*
@@ -208,9 +228,14 @@ public class UserImpl implements User {
 	 */
 	/**
 	 * Allows the User object to submit a new Order request
+	 * @throws UserNotConnectedException 
+	 * @throws InvalidConnectionIdException 
+	 * @throws NotSubscribedException 
+	 * @throws NoSuchProductException 
+	 * @throws InvalidMarketStateException 
 	 */
-	public String submitOrder(String product, Price price, int volume,
-			BookSide side) throws DataValidationException {
+	public String submitOrder(String product, Price price, int volume, BookSide side) 
+			throws DataValidationException {
 		if (Utils.isNullOrEmpty(product)) {
 			throw new DataValidationException("Product should not be null.");
 		}
@@ -222,6 +247,18 @@ public class UserImpl implements User {
 		}
 		if (side == null) {
 			throw new DataValidationException("Side should not be null");
+		}
+		// something not sure below; 
+		try {
+			String id = UserCommandService.getInstance().submitOrder(userName, connId, product, price, volume, side );
+			TradableUserData t = new TradableUserData(userName, product, side, id);
+			tradUserData.add(t);
+			return id;
+		} catch (InvalidMarketStateException | NoSuchProductException
+				| NotSubscribedException | InvalidConnectionIdException
+				| UserNotConnectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
