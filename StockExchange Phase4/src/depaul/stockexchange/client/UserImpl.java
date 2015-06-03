@@ -55,7 +55,6 @@ public class UserImpl implements User {
 		setStocks(new ArrayList<>());
 		setTradUserData();
 		setPosition(new Position());
-		//setUserDisplay(UserDisplayManager.getInstance());
 	}
 
 	@Override
