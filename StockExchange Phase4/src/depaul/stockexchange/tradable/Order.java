@@ -91,7 +91,6 @@ public class Order extends TradableImplement implements Tradable {
     public boolean isQuote() {
         return false;
     }
-    
 
     /**
      * Generates a String representing the key values in this order. 

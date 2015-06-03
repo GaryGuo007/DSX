@@ -136,5 +136,15 @@ public class TradableUserData {
         sb.append(String.format("(%s)", id));
         return sb.toString();	
     }
-	
+
+
+	public String getProduct() {
+		return this.stockSymbol;
+	}
+
+
+	public String getOrderId() {
+		return getId();
+	}
+
 }
