@@ -11,8 +11,8 @@ import depaul.stockexchange.publishers.*;
 import depaul.stockexchange.tradable.*;
 
 /**
- * The UserCommand class (this class can go in the same package as “User”
- * interface) acts as a façade between a user and the trading system. This class
+ * The UserCommand class (this class can go in the same package as ï¿½Userï¿½
+ * interface) acts as a faï¿½ade between a user and the trading system. This class
  * should be a Singleton, as there is only one User Command Service that all
  * users will work with.
  * 
@@ -24,19 +24,19 @@ import depaul.stockexchange.tradable.*;
 public class UserCommandService {
 	/*
 	 * A HashMap<String, Long> to hold user name and connection id pairs.
-	 * Initially this “connected user ids” HashMap should be empty.
+	 * Initially this ï¿½connected user idsï¿½ HashMap should be empty.
 	 */
 	private HashMap<String, Long> connectedUserIds = new HashMap<String, Long>();
 
 	/*
-	 * · A HashMap<String, User> to hold user name and user object pairs.
-	 * Initially this“connected users” HashMap should be empty.
+	 * ï¿½ A HashMap<String, User> to hold user name and user object pairs.
+	 * Initially thisï¿½connected usersï¿½ HashMap should be empty.
 	 */
 	private HashMap<String, User> connectedUsers = new HashMap<String, User>();
 
 	/*
-	 * · A HashMap<String, Long> to hold user name and connection-time pairs
-	 * (connection time is stored as a long). Initially this“connected time”
+	 * ï¿½ A HashMap<String, Long> to hold user name and connection-time pairs
+	 * (connection time is stored as a long). Initially thisï¿½connected timeï¿½
 	 * HashMap should be empty.
 	 */
 	private HashMap<String, Long> connectedTime = new HashMap<String, Long>();
@@ -85,7 +85,7 @@ public class UserCommandService {
 		connectedUserIds.put(userName, System.nanoTime());
 		connectedUsers.put(userName, user);
 		connectedTime.put(userName, System.currentTimeMillis());
-		return 0;
+		return connectedUserIds.get(userName);
 
 	}
 
@@ -102,7 +102,7 @@ public class UserCommandService {
 	}
 
 	/*
-	 * Forwards the call of “getBookDepth” to the ProductService.
+	 * Forwards the call of ï¿½getBookDepthï¿½ to the ProductService.
 	 */
 	public String[][] getBookDepth(String userName, long connId, String product)
 			throws DataValidationException, NoSuchProductException,
@@ -112,7 +112,7 @@ public class UserCommandService {
 	}
 
 	/*
-	 * Forwards the call of “getMarketState” to the ProductService.
+	 * Forwards the call of ï¿½getMarketStateï¿½ to the ProductService.
 	 */
 	public String getMarketState(String userName, long connId)
 			throws InvalidConnectionIdException, UserNotConnectedException {
@@ -121,7 +121,7 @@ public class UserCommandService {
 	}
 
 	/*
-	 * Forwards the call of “getOrdersWithRemainingQty” to the ProductService.
+	 * Forwards the call of ï¿½getOrdersWithRemainingQtyï¿½ to the ProductService.
 	 */
 	public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(
 			String userName, long connId, String product)
@@ -146,7 +146,7 @@ public class UserCommandService {
 
 	/*
 	 * This method will create an order object using the data passed in, and
-	 * will forward the order to the ProductService’s “submitOrder” method.
+	 * will forward the order to the ProductServiceï¿½s ï¿½submitOrderï¿½ method.
 	 */
 	public String submitOrder(String userName, long connId, String product,
 			Price price, int volume, BookSide side)
@@ -160,8 +160,8 @@ public class UserCommandService {
 	}
 
 	/*
-	 * This method will forward the provided information to the ProductService’s
-	 * “submitOrderCancel” method.
+	 * This method will forward the provided information to the ProductServiceï¿½s
+	 * ï¿½submitOrderCancelï¿½ method.
 	 */
 	public void submitOrderCancel(String userName, long connId, String product,
 			BookSide side, String orderId) throws InvalidConnectionIdException,
@@ -174,7 +174,7 @@ public class UserCommandService {
 
 	/*
 	 * This method will create a quote object using the data passed in, and will
-	 * forward the quote to the ProductService’s “submitQuote” method.
+	 * forward the quote to the ProductServiceï¿½s ï¿½submitQuoteï¿½ method.
 	 */
 	public void submitQuote(String userName, long connId, String product,
 			Price bPrice, int bVolume, Price sPrice, int sVolume)
@@ -188,8 +188,8 @@ public class UserCommandService {
 	}
 
 	/*
-	 * This method will forward the provided data to the ProductService’s
-	 * “submitQuoteCancel” method.
+	 * This method will forward the provided data to the ProductServiceï¿½s
+	 * ï¿½submitQuoteCancelï¿½ method.
 	 */
 	public void submitQuoteCancel(String userName, long connId, String product)
 			throws InvalidConnectionIdException, UserNotConnectedException,

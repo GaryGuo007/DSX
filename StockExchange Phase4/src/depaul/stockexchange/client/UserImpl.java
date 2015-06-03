@@ -52,11 +52,10 @@ public class UserImpl implements User {
 
 	public UserImpl(String userName) {
 		setUserName(userName);
-		setConnId(0);
 		setStocks(new ArrayList<>());
 		setTradUserData(new ArrayList<TradableUserData>());
 		setPosition(new Position());
-		setUserDisplay(UserDisplayManager.getInstance());
+		//setUserDisplay(UserDisplayManager.getInstance());
 	}
 
 	@Override
@@ -104,8 +103,8 @@ public class UserImpl implements User {
 		this.position = position;
 	}
 
-	private void setUserDisplay(UserDisplayManager userDisplay) {
-		this.userDisplay = userDisplay;
+	private void setUserDisplay() {
+		this.userDisplay = new UserDisplayManager(this);
 	}
 	
 	/*
@@ -195,8 +194,7 @@ public class UserImpl implements User {
 	 */
 	public void connect() throws AlreadyConnectedException,
 			InvalidConnectionIdException, UserNotConnectedException {
-		connId = UserCommandService.getInstance().connect(this);
-		setConnId(connId);
+		setConnId(UserCommandService.getInstance().connect(this));
 		setStocks(UserCommandService.getInstance().getProducts(getUserName(), getConnId()));
 	}
 
@@ -213,13 +211,13 @@ public class UserImpl implements User {
 	 */
 
 	public void showMarketDisplay() throws Exception {
-		if (stocks == null) {
+		if (getStocks() == null) {
 			throw new UserNotConnectedException("The user is not connected.");
 		}
-		if (userDisplay == null) {
-			setUserDisplay(UserDisplayManager.getInstance());
+		if (getUserDisplay() == null) {
+			setUserDisplay();
 		}
-		userDisplay.showMarketDisplay();
+		getUserDisplay().showMarketDisplay();
 	}
 
 	/*

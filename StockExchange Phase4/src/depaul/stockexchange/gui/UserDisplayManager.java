@@ -28,6 +28,7 @@ public class UserDisplayManager {
 				}
 			}
 		}
+		System.out.println("no p.");
 		return instance;
 	}
 
