@@ -72,8 +72,7 @@ public class ProductService {
      * @throws NoSuchProductException 
      *      If can't find the product
      */
-    public synchronized ArrayList<TradableDTO> 
-        getOrdersWithRemainingQty(String userName, String product) 
+    public synchronized ArrayList<TradableDTO> getOrdersWithRemainingQty(String userName, String product) 
                 throws DataValidationException, NoSuchProductException {
         if (Utils.isNullOrEmpty(userName)) {
             throw new DataValidationException("The username could not be null or empty.");
@@ -281,6 +280,8 @@ public class ProductService {
     public synchronized String submitOrder(Order o) 
             throws InvalidMarketStateException, DataValidationException, 
                     NoSuchProductException, NotSubscribedException {
+    	
+    	//System.out.println(o);
         if (o == null) {
             throw new DataValidationException("The provided order could not be null");
         }
@@ -302,7 +303,7 @@ public class ProductService {
                     + "contained within the Order object");
         }
         book.addToBook(o);      
-        
+        //System.out.println(o);
         return o.getId();
     }
     

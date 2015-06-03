@@ -86,6 +86,8 @@ public class ProductBookSide {
         }
         this.parent = book;
     }
+    
+    
 
     /**
      * Constructor
@@ -138,7 +140,7 @@ public class ProductBookSide {
      *
      * @return
      */
-    private ArrayList<Price> sortedPrices() {
+    private synchronized ArrayList<Price> sortedPrices() {
         ArrayList<Price> sorted = new ArrayList<>(bookEntries.keySet()); // Get prices 
         Collections.sort(sorted); // Sort them
         if (side == BookSide.BUY) {
@@ -157,6 +159,7 @@ public class ProductBookSide {
         if (bookEntries.isEmpty()) {
             return null;
         }
+
     	Price top = topOfBookPrice();
         if (top == null) 
             return null;
@@ -176,11 +179,13 @@ public class ProductBookSide {
 
         String[] bookDepth = new String[bookEntries.size()];
 
+
         ArrayList<Price> sorted = new ArrayList<Price>(bookEntries.keySet());
         Collections.sort(sorted);
         if (side == BookSide.BUY) {
             Collections.reverse(sorted);
         }
+
         for (int i = 0; i < sorted.size(); i++) {
             int total = 0;
             Price price = sorted.get(i);
@@ -190,7 +195,7 @@ public class ProductBookSide {
             }
             bookDepth[i] = String.format("%s x %d", price, total);
         }
-
+        
         return bookDepth;
     }
 

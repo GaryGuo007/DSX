@@ -24,7 +24,12 @@ package depaul.stockexchange.price;
  */
 public class InvalidPriceOperation extends Exception {
 
-    public InvalidPriceOperation() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public InvalidPriceOperation() {
         super();
     }
 

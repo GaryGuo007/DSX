@@ -60,7 +60,7 @@ public final class PriceFactory {
             throw new InvalidPriceOperation(
                     "The Price value must be a numeric format");
         }
-
+        
         return PriceFactory.makeLimitPrice((long) (d * MULTIPLIER + ROUNDING));
     }
 
