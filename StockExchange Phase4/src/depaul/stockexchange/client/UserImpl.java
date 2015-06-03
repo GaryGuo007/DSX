@@ -20,9 +20,9 @@ import depaul.stockexchange.tradable.TradableDTO;
 import depaul.stockexchange.gui.*;
 
 /**
- * The UserImpl class (this class can go in the same package as “User”
- * interface) is our application’s implementation of the “User” interface. This
- * represents a “real” user in the trading system; many of these objects can be
+ * The UserImpl class (this class can go in the same package as ï¿½Userï¿½
+ * interface) is our applicationï¿½s implementation of the ï¿½Userï¿½ interface. This
+ * represents a ï¿½realï¿½ user in the trading system; many of these objects can be
  * active in our system.
  * 
  * @author Xin Guo
@@ -33,14 +33,14 @@ import depaul.stockexchange.gui.*;
 public class UserImpl implements User {
 	/*
 	 * 1. A String to hold their user name 2. A long value to hold their
-	 * “connection id” – provided to them when they connect to the system. 3. A
+	 * ï¿½connection idï¿½ ï¿½ provided to them when they connect to the system. 3. A
 	 * String list of the stocks available in the trading system. The user fills
 	 * this list once connected based upon data received from the trading
 	 * system. 4. A list of TradableUserData objects that contains information
 	 * on the orders this user has submitted (needed for cancelling). 5. A
 	 * reference to a Position object (part of this assignment) which holds the
 	 * values of the users stocks, costs, etc. 6. A reference to a
-	 * UserDisplayManager object (part of this assignment) that acts as a façade
+	 * UserDisplayManager object (part of this assignment) that acts as a faï¿½ade
 	 * between the user and the market display.
 	 */
 	private String userName;
@@ -109,7 +109,7 @@ public class UserImpl implements User {
 	}
 	
 	/*
-	 * This method should call the user display manager’s updateLastSale method,
+	 * This method should call the user display managerï¿½s updateLastSale method,
 	 * passing the same 3 parameters that were passed in.
 	 */
 	public void acceptLastSale(String product, Price price, int volume) {
@@ -197,7 +197,7 @@ public class UserImpl implements User {
 			InvalidConnectionIdException, UserNotConnectedException {
 		connId = UserCommandService.getInstance().connect(this);
 		setConnId(connId);
-		setStocks(UserCommandService.getInstance().getProducts(userName, connId));
+		setStocks(UserCommandService.getInstance().getProducts(getUserName(), getConnId()));
 	}
 
 	/*
@@ -205,7 +205,7 @@ public class UserImpl implements User {
 	 */
 	public void disConnect() throws InvalidConnectionIdException,
 			UserNotConnectedException {
-		UserCommandService.getInstance().disConnect(userName, connId);
+		UserCommandService.getInstance().disConnect(getUserName(), getConnId());
 	}
 
 	/*
@@ -250,8 +250,8 @@ public class UserImpl implements User {
 		}
 		// something not sure below; 
 		try {
-			String id = UserCommandService.getInstance().submitOrder(userName, connId, product, price, volume, side );
-			TradableUserData t = new TradableUserData(userName, product, side, id);
+			String id = UserCommandService.getInstance().submitOrder(getUserName(), getConnId(), product, price, volume, side );
+			TradableUserData t = new TradableUserData(getUserName(), product, side, id);
 			tradUserData.add(t);
 			return id;
 		} catch (InvalidMarketStateException | NoSuchProductException
@@ -271,8 +271,8 @@ public class UserImpl implements User {
 			throws InvalidConnectionIdException, UserNotConnectedException,
 			InvalidMarketStateException, DataValidationException,
 			NoSuchProductException, OrderNotFoundException {
-		UserCommandService.getInstance().submitOrderCancel(userName,
-				connId, product, side, orderId);
+		UserCommandService.getInstance().submitOrderCancel(getUserName(),
+				getConnId(), product, side, orderId);
 
 	}
 
@@ -286,7 +286,7 @@ public class UserImpl implements User {
 			InvalidMarketStateException, NoSuchProductException,
 			NotSubscribedException, InvalidConnectionIdException,
 			UserNotConnectedException {
-		UserCommandService.getInstance().submitQuote(userName, connId,
+		UserCommandService.getInstance().submitQuote(getUserName(), getConnId(),
 				product, bPrice, bVolume, sPrice, sVolume);
 
 	}
@@ -299,8 +299,8 @@ public class UserImpl implements User {
 			throws InvalidConnectionIdException, UserNotConnectedException,
 			InvalidMarketStateException, DataValidationException,
 			NoSuchProductException {
-		UserCommandService.getInstance().submitQuoteCancel(userName,
-				connId, product);
+		UserCommandService.getInstance().submitQuoteCancel(getUserName(),
+				getConnId(), product);
 
 	}
 
@@ -312,8 +312,8 @@ public class UserImpl implements User {
 	public void subscribeCurrentMarket(String product)
 			throws AlreadySubscribedException, DataValidationException,
 			InvalidConnectionIdException, UserNotConnectedException {
-		UserCommandService.getInstance().subscribeCurrentMarket(userName,
-				connId, product);
+		UserCommandService.getInstance().subscribeCurrentMarket(getUserName(),
+				getConnId(), product);
 
 	}
 
@@ -325,8 +325,8 @@ public class UserImpl implements User {
 	public void subscribeLastSale(String product)
 			throws AlreadySubscribedException, DataValidationException,
 			InvalidConnectionIdException, UserNotConnectedException {
-		UserCommandService.getInstance().subscribeLastSale(userName,
-				connId, product);
+		UserCommandService.getInstance().subscribeLastSale(getUserName(),
+				getConnId(), product);
 
 	}
 
@@ -337,8 +337,8 @@ public class UserImpl implements User {
 	public void subscribeMessages(String product)
 			throws AlreadySubscribedException, DataValidationException,
 			InvalidConnectionIdException, UserNotConnectedException {
-		UserCommandService.getInstance().subscribeMessages(userName,
-				connId, product);
+		UserCommandService.getInstance().subscribeMessages(getUserName(),
+				getConnId(), product);
 
 	}
 
@@ -349,8 +349,8 @@ public class UserImpl implements User {
 	public void subscribeTicker(String product)
 			throws AlreadySubscribedException, DataValidationException,
 			InvalidConnectionIdException, UserNotConnectedException {
-		UserCommandService.getInstance().subscribeTicker(userName,
-				connId, product);
+		UserCommandService.getInstance().subscribeTicker(getUserName(),
+				getConnId(), product);
 
 	}
 
@@ -360,7 +360,7 @@ public class UserImpl implements User {
 	 */
 
 	public Price getAllStockValue() throws InvalidPriceOperation {
-		return Position.getInstance().getAllStockValue();
+		return getPosition().getAllStockValue();
 
 	}
 
@@ -369,7 +369,7 @@ public class UserImpl implements User {
 	 * sales.
 	 */
 	public Price getAccountCosts() {
-		return Position.getInstance().getAccountCosts();
+		return getPosition().getAccountCosts();
 
 	}
 
@@ -379,53 +379,49 @@ public class UserImpl implements User {
 	 */
 
 	public Price getNetAccountValue() throws InvalidPriceOperation {
-		return Position.getInstance().getNetAccountValue();
+		return getPosition().getNetAccountValue();
 
 	}
 
 	/*
 	 * Allows the User object to submit a Book Depth request for the specified
 	 * stock. To do this, return the results of a call to the user command
-	 * service’s “getBookDepth” method passing this user’s user name, connection
+	 * serviceï¿½s ï¿½getBookDepthï¿½ method passing this userï¿½s user name, connection
 	 * id, and the String product passed into this method as the parameters to
 	 * that method.
 	 */
 	public String[][] getBookDepth(String product)
 			throws DataValidationException, NoSuchProductException,
 			InvalidConnectionIdException, UserNotConnectedException {
-		return UserCommandService.getInstance().getBookDepth(userName,
-				connId, product);
-
+		return UserCommandService.getInstance().getBookDepth(getUserName(),
+				getConnId(), product);
 	}
 
 	/*
 	 * Allows the User object to query the market state (OPEN, PREOPEN, CLOSED).
-	 * To do this, return the results of a call to the user command service’s
-	 * “getMarketState” method passing this user’s user name, connection id as
+	 * To do this, return the results of a call to the user command serviceï¿½s
+	 * ï¿½getMarketStateï¿½ method passing this userï¿½s user name, connection id as
 	 * the parameters to that method.
 	 */
 	public String getMarketState() throws InvalidConnectionIdException,
 			UserNotConnectedException {
-		return UserCommandService.getInstance().getMarketState(userName,
-				connId);
-
+		return UserCommandService.getInstance().getMarketState(getUserName(),
+				getConnId());
 	}
 
 	/*
-	 * Returns a list of order id’s (a data member) for the orders this user has
+	 * Returns a list of order idï¿½s (a data member) for the orders this user has
 	 * submitted.
 	 */
 	public ArrayList<TradableUserData> getOrderIds() {
-		// return User.getOrderIds();
-		return tradUserData;
+		return getTradUserData();
 	}
 
 	/*
 	 * Returns a list of stocks (a data member) available in the trading system.
 	 */
 	public ArrayList<String> getProductList() {
-		return stocks;
-
+		return getStocks();
 	}
 
 	/*
@@ -433,39 +429,31 @@ public class UserImpl implements User {
 	 */
 	public Price getStockPositionValue(String product)
 			throws InvalidPriceOperation {
-		return Position.getInstance().getStockPositionValue(product);
-
+		return getPosition().getStockPositionValue(product);
 	}
 
 	/*
 	 * Returns the value of the specified stock that this user owns.
 	 */
 	public int getStockPositionVolume(String product) {
-		return Position.getInstance().getStockPositionVolume(product);
-
+		return getPosition().getStockPositionVolume(product);
 	}
 
 	/*
 	 * Returns a list of all the Stocks the user owns.
 	 */
 	public ArrayList<String> getHoldings() {
-		return Position.getInstance().getHoldings();
-
+		return getPosition().getHoldings();
 	}
 
 	/*
-	 * Gets a list of DTO’s containing information on all Orders for this user
+	 * Gets a list of DTOï¿½s containing information on all Orders for this user
 	 * for the specified product with remaining volume.
 	 */
 	public ArrayList<TradableDTO> getOrdersWithRemainingQty(String product)
 			throws InvalidConnectionIdException, UserNotConnectedException,
 			DataValidationException, NoSuchProductException {
-
 		return UserCommandService.getInstance().getOrdersWithRemainingQty(
-				userName, connId, product);
-
+				getUserName(), getConnId(), product);
 	}
-
-	
-
 }
