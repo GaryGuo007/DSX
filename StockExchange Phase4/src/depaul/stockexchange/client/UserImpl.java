@@ -53,7 +53,7 @@ public class UserImpl implements User {
 	public UserImpl(String userName) {
 		setUserName(userName);
 		setStocks(new ArrayList<>());
-		setTradUserData(new ArrayList<TradableUserData>());
+		setTradUserData();
 		setPosition(new Position());
 		//setUserDisplay(UserDisplayManager.getInstance());
 	}
@@ -95,8 +95,8 @@ public class UserImpl implements User {
 		this.stocks = stocks;
 	}
 
-	private void setTradUserData(ArrayList<TradableUserData> tradUserData) {
-		this.tradUserData = tradUserData;
+	private void setTradUserData() {
+		this.tradUserData = new ArrayList<TradableUserData>();
 	}
 
 	private void setPosition(Position position) {
