@@ -56,7 +56,7 @@ public class UserImpl implements User {
         setStocks(new ArrayList<>());
         setTradUserData(new ArrayList<TradableUserData>());
         setPosition(new Position());
-        //setUserDisplay(UserDisplayManager.getInstance());
+        //setUserDisplay();
     }
 
     @Override
@@ -105,7 +105,9 @@ public class UserImpl implements User {
     }
 
     private void setUserDisplay() {
-        this.userDisplay = new UserDisplayManager(this);
+        if (userDisplay == null) {
+            this.userDisplay = new UserDisplayManager(this);
+        }
     }
 
     /*
@@ -114,6 +116,7 @@ public class UserImpl implements User {
      */
     @Override
     public void acceptLastSale(String product, Price price, int volume) {
+        setUserDisplay();
         try {
             userDisplay.updateLastSale(product, price, volume);
             position.updateLastSale(product, price);
@@ -128,6 +131,7 @@ public class UserImpl implements User {
      */
     @Override
     public void acceptMessage(FillMessage fm) {
+        setUserDisplay();
         try {
             Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
             String summary = String.format("{%s} Fill Message: %s %s %s at %s %s [Tradable Id: %s]",
@@ -145,6 +149,7 @@ public class UserImpl implements User {
      */
     @Override
     public void acceptMessage(CancelMessage cm) {
+        setUserDisplay();
         try {
             Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
             String summary = String.format("{%s} Cancel Message: %s %s %s at %s %s [Tradable Id: %s]",
@@ -161,6 +166,7 @@ public class UserImpl implements User {
      */
     @Override
     public void acceptMarketMessage(String message) {
+        setUserDisplay();
         try {
             userDisplay.updateMarketState(message);
         } catch (Exception e) {
@@ -173,6 +179,7 @@ public class UserImpl implements User {
      */
     @Override
     public void acceptTicker(String product, Price price, char direction) {
+        setUserDisplay();
         try {
             userDisplay.updateTicker(product, price, direction);
         } catch (Exception e) {
@@ -186,6 +193,7 @@ public class UserImpl implements User {
     @Override
     public void acceptCurrentMarket(String product, Price bPrice, int bVolume,
             Price sPrice, int sVolume) {
+        setUserDisplay();
         try {
             userDisplay.updateMarketData(product, bPrice, bVolume, sPrice, sVolume);
         } catch (Exception e) {
