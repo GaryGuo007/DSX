@@ -125,7 +125,7 @@ public class ProductBookSide {
             // for every Order in the book (in â€œthe â€œbookEntriesâ€� HashMap) 
             // for the specified userName that has remaining volume > 0
             for (Tradable order : orders) {
-                if (userName.equals(order.getUser()) && order.getRemainingVolume() > 0) {
+                if (!order.isQuote() && userName.equals(order.getUser()) && order.getRemainingVolume() > 0) {
                     tradables.add(new TradableDTO(order));
                 }
             }

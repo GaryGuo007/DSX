@@ -134,10 +134,15 @@ public class MessagePublisher extends PublisherBase {
         
         // all subscribed Users 
         // regardless of the stock symbol they are interested in 
+        HashSet<User> allSubscribers = new HashSet<>();
         for (HashSet<User> subscribers : subscriptions.values()) {
             for (User u : subscribers) {
-                u.acceptMarketMessage(mm.toString());
+                allSubscribers.add(u);
             }
+        }
+
+        for (User u : allSubscribers) {
+            u.acceptMarketMessage(mm.toString());
         }
     }
 }
