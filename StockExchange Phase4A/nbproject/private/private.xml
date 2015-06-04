@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/Phase4Main.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/Phase3Main.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/client/TradableUserData.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/client/UserCommandService.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/client/UserImpl.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/client/Position.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/book/ProductService.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/publishers/MessagePublisher.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/book/ProductBook.java</file>
+            <file>file:/Users/jimliu/Github/DSX/StockExchange%20Phase4A/src/depaul/stockexchange/tradable/Quote.java</file>
+        </group>
+    </open-files>
+</project-private>

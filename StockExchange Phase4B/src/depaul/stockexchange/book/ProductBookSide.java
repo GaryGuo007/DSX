@@ -405,7 +405,7 @@ public class ProductBookSide {
             addOldEntry(tradableFound);
         } else { 
         	// If NO order is found with the specified Id, then it was already filled or cancelled.
-            parent.checkTooLateToCancel(tradableFound.getId());
+            parent.checkTooLateToCancel(orderId);
         }
     }
 
