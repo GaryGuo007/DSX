@@ -161,7 +161,7 @@ public final class Position {
     public Price getAllStockValue() throws InvalidPriceOperation, DataValidationException {
         Price sum = PriceFactory.makeLimitPrice(0);
         for (String p : holdings.keySet()) {
-            sum.add(getStockPositionValue(p));
+            sum = sum.add(getStockPositionValue(p));
         }
         return sum;
     }
