@@ -10,25 +10,25 @@ import depaul.stockexchange.price.Price;
 import depaul.stockexchange.price.PriceFactory;
 
 /**
- * The Position class (this class can go in the same package as “User”
+ * The Position class (this class can go in the same package as User
  * interface) is used to hold an individual users profit and loss information,
  * including how much they have spent buying stock, how much they gained or lost
  * selling stock, and the value of the stock they currently own.
  * 
  * @author Xin Guo
  * @author Yuancheng Zhang
- * @author Junmin Liu
+ * @author Junmin Liu 
  */
 public final class Position {
 	private HashMap<String, Integer> holdings = new HashMap<String, Integer>();
 	/*
-	 * This will keep a running balance between the “money out” for stock
-	 * purchases, and the “money in” for stock sales. This should be initialized
-	 * to a (value) price object with a value of “$0.00”.
+	 * This will keep a running balance between the ï¿½money outï¿½ for stock
+	 * purchases, and the ï¿½money inï¿½ for stock sales. This should be initialized
+	 * to a (value) price object with a value of ï¿½$0.00ï¿½.
 	 */
 	private Price accountCosts = new Price(0);
 	/*
-	 * A HashMap<String, Price> to store the “last sales” of the stocks this
+	 * A HashMap<String, Price> to store the ï¿½last salesï¿½ of the stocks this
 	 * user owns. Last sales indicate the current value of the stocks they own.
 	 * Initially this will be empty.
 	 */
@@ -86,7 +86,7 @@ public final class Position {
 
 	/*
 	 * This method should insert the last sale for the specified stock into the
-	 * “last sales” HashMap (product parameter is the key, Price parameter is
+	 * ï¿½last salesï¿½ HashMap (product parameter is the key, Price parameter is
 	 * the value).
 	 */
 	public void updateLastSale(String product, Price price) {
@@ -137,7 +137,7 @@ public final class Position {
 	}
 
 	/*
-	 * This method simply returns the “account costs” data member.
+	 * This method simply returns the ï¿½account costsï¿½ data member.
 	 */
 	public Price getAccountCosts() {
 		return accountCosts;
