@@ -3,9 +3,6 @@ package depaul.stockexchange;
 
 import java.util.ArrayList;
 
-
-
-
 //import depaul.stockexchange.*;
 import depaul.stockexchange.book.*;
 import depaul.stockexchange.client.*;
@@ -18,7 +15,7 @@ public class Phase4Main {
     private static int testCount = 1;
 
     public static void main(String[] args) {
-        
+
         try {
             System.out.println("A) Add some stocks to the Trading System: IBM, CBOE, GOOG, AAPL, GE, T");
             String[] products = {"IBM", "CBOE", "GOOG", "AAPL", "GE", "T"};
@@ -28,7 +25,7 @@ public class Phase4Main {
             System.out.println();
 
             System.out.println("B) Create 3 users: REX, ANN, RAJ");
-            
+
             users.add(new UserImpl("REX"));
             users.add(new UserImpl("ANN"));
             users.add(new UserImpl("RAJ"));
@@ -65,16 +62,16 @@ public class Phase4Main {
             System.out.println();
 
             System.out.println("H) Put the market in OPEN state");
-            ProductService.getInstance().setMarketState(MarketState.OPEN );
+            ProductService.getInstance().setMarketState(MarketState.OPEN);
             System.out.println();
 
             System.out.println("I) User RAJ queries market state");
             System.out.println(users.get(2).getUserName() + ": Market State Query: " + users.get(0).getMarketState());
             System.out.println();
-            
+
             runTests(1, "GOOG");
             runTests(2, "IBM");
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -83,7 +80,6 @@ public class Phase4Main {
     private static void runTests(int runCount, String stock) {
         try {
 
-
             System.out.println(runCount + ".1) User REX submits an order for " + stock + ", BUY 100@40.00");
             String rexO1 = users.get(0).submitOrder(stock, PriceFactory.makeLimitPrice("$40.00"), 100, BookSide.BUY);
             System.out.println();
@@ -91,7 +87,6 @@ public class Phase4Main {
             System.out.println(runCount + ".2) User ANN submits a quote for " + stock + ", 100@40.00 x 100@40.50");
             users.get(1).submitQuote(stock, PriceFactory.makeLimitPrice("$40.00"), 100, PriceFactory.makeLimitPrice("$40.50"), 100);
             System.out.println();
-
 
             System.out.println(runCount + ".3) User RAJ submits an Order for " + stock + ", SELL 135@40.50");
             String o2 = users.get(2).submitOrder(stock, PriceFactory.makeLimitPrice("$40.50"), 135, BookSide.SELL);
@@ -142,9 +137,8 @@ public class Phase4Main {
             System.out.println();
 
             System.out.println(runCount + ".14) User RAJ enters an order for " + stock + ", SELL 150@$10.00 - results in a trade");
-            String [][] st = users.get(2).getBookDepth(stock);
- 
-            
+            String[][] st = users.get(2).getBookDepth(stock);
+
             users.get(2).submitOrder(stock, PriceFactory.makeLimitPrice("$10.00"), 150, BookSide.SELL);
             System.out.println();
 
@@ -160,7 +154,7 @@ public class Phase4Main {
             System.out.println("IBM Book Depth: " + users.get(1).getBookDepth(stock)[0][0] + " -- " + users.get(1).getBookDepth(stock)[1][0]);
             System.out.println();
 
-            System.out.println(runCount + ".18) User ANN cancels her quote for "+ stock);
+            System.out.println(runCount + ".18) User ANN cancels her quote for " + stock);
             users.get(1).submitQuoteCancel(stock);
             System.out.println();
 
@@ -176,7 +170,6 @@ public class Phase4Main {
             System.out.println(users.get(2).getUserName() + " Orders: " + users.get(2).getOrderIds());
             System.out.println();
 
-
             System.out.println(runCount + ".21) Show positions for all users");
             for (User u : users) {
                 System.out.print(u.getUserName() + " Stock Value: " + u.getAllStockValue());
@@ -184,7 +177,6 @@ public class Phase4Main {
                 System.out.println(", Net Value: " + u.getNetAccountValue());
             }
             System.out.println();
-            
 
         } catch (Exception ex) {
             ex.printStackTrace();

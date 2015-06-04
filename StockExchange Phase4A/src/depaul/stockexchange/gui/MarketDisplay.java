@@ -1,11 +1,10 @@
-
 package depaul.stockexchange.gui;
 
 import depaul.stockexchange.client.User;
 import depaul.stockexchange.price.*;
 
-
 public class MarketDisplay {
+
     private User user;
     private boolean visible;
     private final UserDisplayManager outer;
@@ -39,5 +38,5 @@ public class MarketDisplay {
     public void updateMarketState(String state) {
         System.out.format("[%s's GUI], Update Market State: %s%n", user.getUserName(), state);
     }
-    
+
 }
