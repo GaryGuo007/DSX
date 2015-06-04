@@ -22,7 +22,7 @@ import depaul.stockexchange.gui.*;
 /**
  * The UserImpl class (this class can go in the same package as �User�
  * interface) is our application�s implementation of the �User� interface. This
- * represents a �real� user in the trading system; many of these objects can be
+ * represents a real user in the trading system; many of these objects can be
  * active in our system.
  *
  * @author Xin Guo
@@ -32,14 +32,14 @@ import depaul.stockexchange.gui.*;
 public class UserImpl implements User {
     /*
      * 1. A String to hold their user name 2. A long value to hold their
-     * �connection id� � provided to them when they connect to the system. 3. A
+     * connection id provided to them when they connect to the system. 3. A
      * String list of the stocks available in the trading system. The user fills
      * this list once connected based upon data received from the trading
      * system. 4. A list of TradableUserData objects that contains information
      * on the orders this user has submitted (needed for cancelling). 5. A
      * reference to a Position object (part of this assignment) which holds the
      * values of the users stocks, costs, etc. 6. A reference to a
-     * UserDisplayManager object (part of this assignment) that acts as a fa�ade
+     * UserDisplayManager object (part of this assignment) that acts as a faade
      * between the user and the market display.
      */
 
@@ -50,7 +50,7 @@ public class UserImpl implements User {
     private Position position;
     private UserDisplayManager userDisplay;
 
-    public UserImpl(String userName) {
+    public UserImpl(String userName) throws DataValidationException {
         setUserName(userName);
         setStocks(new ArrayList<>());
         setTradUserData(new ArrayList<TradableUserData>());
@@ -83,7 +83,10 @@ public class UserImpl implements User {
         return userDisplay;
     }
 
-    public void setUserName(String userName) {
+    public void setUserName(String userName) throws DataValidationException {
+        if (Utils.isNullOrEmpty(userName)) {
+            throw new DataValidationException("Username can't be null or empty.");
+        }
         this.userName = userName;
     }
 
@@ -108,15 +111,16 @@ public class UserImpl implements User {
     }
 
     /*
-     * This method should call the user display manager�s updateLastSale method,
+     * This method should call the user display managers updateLastSale method,
      * passing the same 3 parameters that were passed in.
      */
+    @Override
     public void acceptLastSale(String product, Price price, int volume) {
         try {
             userDisplay.updateLastSale(product, price, volume);
             position.updateLastSale(product, price);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error occured while accept last sale from UserImpl." + e.getMessage());
         }
     }
 
@@ -124,6 +128,7 @@ public class UserImpl implements User {
      * This method will display the Fill Message in the market display and will
      * forward the data to the Position object:
      */
+    @Override
     public void acceptMessage(FillMessage fm) {
         try {
             Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
@@ -133,13 +138,14 @@ public class UserImpl implements User {
             userDisplay.updateMarketActivity(summary);
             position.updatePosition(fm.getProduct(), fm.getPrice(), fm.getSide(), fm.getVolume());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error occured while accept fill message from UserImpl." + e.getMessage());
         }
     }
 
     /*
      * This method will display the Cancel Message in the market display:
      */
+    @Override
     public void acceptMessage(CancelMessage cm) {
         try {
             Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
@@ -148,51 +154,52 @@ public class UserImpl implements User {
                     cm.getPrice(), cm.getDetails(), cm.getId());
             userDisplay.updateMarketActivity(summary);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error occured while accept cancel message from UserImpl." + e.getMessage());
         }
     }
 
     /*
      * This method will display the Market Message in the market display:
      */
+    @Override
     public void acceptMarketMessage(String message) {
         try {
             userDisplay.updateMarketState(message);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error occured while accept market message from UserImpl." + e.getMessage());
         }
-
-		// UserDisplayManager.getInstance().updateMarketState(message);
     }
 
     /*
      * This method will display the Ticker data in the market display:
      */
+    @Override
     public void acceptTicker(String product, Price price, char direction) {
         try {
             userDisplay.updateTicker(product, price, direction);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error occured while accept ticker from UserImpl." + e.getMessage());
         }
     }
 
     /*
      * This method will display the Current Market data in the market display:
      */
+    @Override
     public void acceptCurrentMarket(String product, Price bPrice, int bVolume,
             Price sPrice, int sVolume) {
         try {
             userDisplay.updateMarketData(product, bPrice, bVolume, sPrice, sVolume);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error occured while accept current market from UserImpl." + e.getMessage());
         }
     }
 
     /*
      * This method will connect the user to the trading system
      */
-    public void connect() throws AlreadyConnectedException,
-            InvalidConnectionIdException, UserNotConnectedException {
+    @Override
+    public void connect() throws Exception {
         setConnId(UserCommandService.getInstance().connect(this));
         setStocks(UserCommandService.getInstance().getProducts(getUserName(), getConnId()));
     }
@@ -200,17 +207,18 @@ public class UserImpl implements User {
     /*
      * This method will disconnect the user to the trading system.
      */
-    public void disConnect() throws InvalidConnectionIdException,
-            UserNotConnectedException {
+    @Override
+    public void disConnect() throws Exception {
         UserCommandService.getInstance().disConnect(getUserName(), getConnId());
     }
 
     /*
      * This method qwill activate the market display.
      */
+    @Override
     public void showMarketDisplay() throws Exception {
         if (getStocks() == null) {
-            throw new UserNotConnectedException("The user is not connected.");
+            throw new UserNotConnectedException("The user has not connected.");
         }
         if (getUserDisplay() == null) {
             setUserDisplay();
@@ -225,14 +233,10 @@ public class UserImpl implements User {
     /**
      * Allows the User object to submit a new Order request
      *
-     * @throws UserNotConnectedException
-     * @throws InvalidConnectionIdException
-     * @throws NotSubscribedException
-     * @throws NoSuchProductException
-     * @throws InvalidMarketStateException
      */
+    @Override
     public String submitOrder(String product, Price price, int volume, BookSide side)
-            throws DataValidationException {
+            throws Exception {
         if (Utils.isNullOrEmpty(product)) {
             throw new DataValidationException("Product should not be null.");
         }
@@ -245,27 +249,19 @@ public class UserImpl implements User {
         if (side == null) {
             throw new DataValidationException("Side should not be null");
         }
-        // something not sure below; 
-        try {
-            String id = UserCommandService.getInstance().submitOrder(getUserName(), getConnId(), product, price, volume, side);
-            TradableUserData t = new TradableUserData(getUserName(), product, side, id);
-            tradUserData.add(t);
-            return id;
-        } catch (InvalidMarketStateException | NoSuchProductException | NotSubscribedException | InvalidConnectionIdException | UserNotConnectedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
+        String id = UserCommandService.getInstance().submitOrder(getUserName(), getConnId(), product, price, volume, side);
+        TradableUserData t = new TradableUserData(getUserName(), product, side, id);
+        tradUserData.add(t);
+        return id;
     }
 
     /*
      * This method forwards the order cancel request to the user command service
      * as follows
      */
+    @Override
     public void submitOrderCancel(String product, BookSide side, String orderId)
-            throws InvalidConnectionIdException, UserNotConnectedException,
-            InvalidMarketStateException, DataValidationException,
-            NoSuchProductException, OrderNotFoundException {
+            throws Exception {
         UserCommandService.getInstance().submitOrderCancel(getUserName(),
                 getConnId(), product, side, orderId);
 
@@ -275,36 +271,31 @@ public class UserImpl implements User {
      * This method forwards the new quote request to the user command service as
      * follows:
      */
+    @Override
     public void submitQuote(String product, Price bPrice, int bVolume,
-            Price sPrice, int sVolume) throws DataValidationException,
-            InvalidMarketStateException, NoSuchProductException,
-            NotSubscribedException, InvalidConnectionIdException,
-            UserNotConnectedException {
+            Price sPrice, int sVolume) throws Exception {
         UserCommandService.getInstance().submitQuote(getUserName(), getConnId(),
                 product, bPrice, bVolume, sPrice, sVolume);
-
     }
 
     /*
      * This method forwards the quote cancel request to the user command service
      * as follows:
      */
+    @Override
     public void submitQuoteCancel(String product)
-            throws InvalidConnectionIdException, UserNotConnectedException,
-            InvalidMarketStateException, DataValidationException,
-            NoSuchProductException {
+            throws Exception {
         UserCommandService.getInstance().submitQuoteCancel(getUserName(),
                 getConnId(), product);
-
     }
 
     /*
      * This method forwards the current market subscription to the user command
      * service as follows:
      */
+    @Override
     public void subscribeCurrentMarket(String product)
-            throws AlreadySubscribedException, DataValidationException,
-            InvalidConnectionIdException, UserNotConnectedException {
+            throws Exception {
         UserCommandService.getInstance().subscribeCurrentMarket(getUserName(),
                 getConnId(), product);
 
@@ -314,9 +305,9 @@ public class UserImpl implements User {
      * This method forwards the last sale subscription to the user command
      * service as follows:
      */
+    @Override
     public void subscribeLastSale(String product)
-            throws AlreadySubscribedException, DataValidationException,
-            InvalidConnectionIdException, UserNotConnectedException {
+            throws Exception {
         UserCommandService.getInstance().subscribeLastSale(getUserName(),
                 getConnId(), product);
 
@@ -326,9 +317,9 @@ public class UserImpl implements User {
      * This method forwards the message subscription to the user command service
      * as follows:
      */
+    @Override
     public void subscribeMessages(String product)
-            throws AlreadySubscribedException, DataValidationException,
-            InvalidConnectionIdException, UserNotConnectedException {
+            throws Exception {
         UserCommandService.getInstance().subscribeMessages(getUserName(),
                 getConnId(), product);
 
@@ -338,9 +329,9 @@ public class UserImpl implements User {
      * This method forwards the ticker subscription to the user command service
      * as follows:
      */
+    @Override
     public void subscribeTicker(String product)
-            throws AlreadySubscribedException, DataValidationException,
-            InvalidConnectionIdException, UserNotConnectedException {
+            throws Exception {
         UserCommandService.getInstance().subscribeTicker(getUserName(),
                 getConnId(), product);
 
@@ -350,7 +341,8 @@ public class UserImpl implements User {
      * Returns the value of the all Sock the User owns (has bought but not
      * sold).
      */
-    public Price getAllStockValue() throws InvalidPriceOperation {
+    @Override
+    public Price getAllStockValue() throws Exception {
         return getPosition().getAllStockValue();
 
     }
@@ -359,6 +351,7 @@ public class UserImpl implements User {
      * Returns the difference between cost of all stock purchases and stock
      * sales.
      */
+    @Override
     public Price getAccountCosts() {
         return getPosition().getAccountCosts();
 
@@ -368,7 +361,8 @@ public class UserImpl implements User {
      * Returns the difference between current value of all stocks owned and the
      * account costs.
      */
-    public Price getNetAccountValue() throws InvalidPriceOperation {
+    @Override
+    public Price getNetAccountValue() throws Exception {
         return getPosition().getNetAccountValue();
 
     }
@@ -376,33 +370,34 @@ public class UserImpl implements User {
     /*
      * Allows the User object to submit a Book Depth request for the specified
      * stock. To do this, return the results of a call to the user command
-     * service�s �getBookDepth� method passing this user�s user name, connection
+     * services getBookDepth method passing this users user name, connection
      * id, and the String product passed into this method as the parameters to
      * that method.
      */
+    @Override
     public String[][] getBookDepth(String product)
-            throws DataValidationException, NoSuchProductException,
-            InvalidConnectionIdException, UserNotConnectedException {
+            throws Exception {
         return UserCommandService.getInstance().getBookDepth(getUserName(),
                 getConnId(), product);
     }
 
     /*
      * Allows the User object to query the market state (OPEN, PREOPEN, CLOSED).
-     * To do this, return the results of a call to the user command service�s
-     * �getMarketState� method passing this user�s user name, connection id as
+     * To do this, return the results of a call to the user command services
+     * getMarketState method passing this user�s user name, connection id as
      * the parameters to that method.
      */
-    public String getMarketState() throws InvalidConnectionIdException,
-            UserNotConnectedException {
+    @Override
+    public String getMarketState() throws Exception {
         return UserCommandService.getInstance().getMarketState(getUserName(),
                 getConnId());
     }
 
     /*
-     * Returns a list of order id�s (a data member) for the orders this user has
+     * Returns a list of order ids (a data member) for the orders this user has
      * submitted.
      */
+    @Override
     public ArrayList<TradableUserData> getOrderIds() {
         return getTradUserData();
     }
@@ -410,6 +405,7 @@ public class UserImpl implements User {
     /*
      * Returns a list of stocks (a data member) available in the trading system.
      */
+    @Override
     public ArrayList<String> getProductList() {
         return getStocks();
     }
@@ -417,32 +413,35 @@ public class UserImpl implements User {
     /*
      * Returns the value of the specified stock that this user owns.
      */
+    @Override
     public Price getStockPositionValue(String product)
-            throws InvalidPriceOperation {
+            throws Exception {
         return getPosition().getStockPositionValue(product);
     }
 
     /*
      * Returns the value of the specified stock that this user owns.
      */
-    public int getStockPositionVolume(String product) {
+    @Override
+    public int getStockPositionVolume(String product) throws Exception {
         return getPosition().getStockPositionVolume(product);
     }
 
     /*
      * Returns a list of all the Stocks the user owns.
      */
+    @Override
     public ArrayList<String> getHoldings() {
         return getPosition().getHoldings();
     }
 
     /*
-     * Gets a list of DTO�s containing information on all Orders for this user
+     * Gets a list of DTOs containing information on all Orders for this user
      * for the specified product with remaining volume.
      */
+    @Override
     public ArrayList<TradableDTO> getOrdersWithRemainingQty(String product)
-            throws InvalidConnectionIdException, UserNotConnectedException,
-            DataValidationException, NoSuchProductException {
+            throws Exception {
         return UserCommandService.getInstance().getOrdersWithRemainingQty(
                 getUserName(), getConnId(), product);
     }

@@ -106,7 +106,7 @@ public interface User {
      * @throws UserNotConnectedException
      * @throws InvalidConnectionIdException
      */
-    void connect() throws AlreadyConnectedException, InvalidConnectionIdException, UserNotConnectedException;
+    void connect() throws Exception;
 
     /**
      * Instructs a User object to disconnect from the trading system.
@@ -114,7 +114,7 @@ public interface User {
      * @throws UserNotConnectedException
      * @throws InvalidConnectionIdException
      */
-    void disConnect() throws InvalidConnectionIdException, UserNotConnectedException;
+    void disConnect() throws Exception;
 
     /**
      * Requests the opening of the market display if the user is connected.
@@ -122,36 +122,26 @@ public interface User {
      * @throws UserNotConnectedException
      * @throws Exception
      */
-    void showMarketDisplay() throws UserNotConnectedException, Exception;
+    void showMarketDisplay() throws Exception;
 
     /**
      * Allows the User object to submit a new Order request
      */
-    String submitOrder(String product, Price price, int volume, BookSide side) throws DataValidationException;
+    String submitOrder(String product, Price price, int volume, BookSide side) throws Exception;
 
     /**
      * Allows the User object to submit a new Order Cancel request
      *
-     * @throws OrderNotFoundException
-     * @throws NoSuchProductException
-     * @throws DataValidationException
-     * @throws InvalidMarketStateException
-     * @throws UserNotConnectedException
-     * @throws InvalidConnectionIdException
      */
-    void submitOrderCancel(String product, BookSide side, String orderId) throws InvalidConnectionIdException, UserNotConnectedException, InvalidMarketStateException, DataValidationException, NoSuchProductException, OrderNotFoundException;
+    void submitOrderCancel(String product, BookSide side, String orderId) 
+            throws Exception;
 
     /**
      * Allows the User object to submit a new Quote request
      *
-     * @throws UserNotConnectedException
-     * @throws InvalidConnectionIdException
-     * @throws NotSubscribedException
-     * @throws NoSuchProductException
-     * @throws InvalidMarketStateException
-     * @throws DataValidationException
      */
-    void submitQuote(String product, Price buyPrice, int buyVolume, Price sellPrice, int sellVolume) throws DataValidationException, InvalidMarketStateException, NoSuchProductException, NotSubscribedException, InvalidConnectionIdException, UserNotConnectedException;
+    void submitQuote(String product, Price buyPrice, int buyVolume, Price sellPrice, int sellVolume) 
+            throws Exception;
 
     /**
      * Allows the User object to submit a new Quote Cancel request
@@ -162,7 +152,7 @@ public interface User {
      * @throws UserNotConnectedException
      * @throws InvalidConnectionIdException
      */
-    void submitQuoteCancel(String product) throws InvalidConnectionIdException, UserNotConnectedException, InvalidMarketStateException, DataValidationException, NoSuchProductException;
+    void submitQuoteCancel(String product) throws Exception;
 
     /**
      * Allows the User object to subscribe for Current Market for the specified
@@ -173,7 +163,7 @@ public interface User {
      * @throws DataValidationException
      * @throws AlreadySubscribedException
      */
-    void subscribeCurrentMarket(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException;
+    void subscribeCurrentMarket(String product) throws Exception;
 
     /**
      * Allows the User object to subscribe for Last Sale for the specified
@@ -184,7 +174,7 @@ public interface User {
      * @throws DataValidationException
      * @throws AlreadySubscribedException
      */
-    void subscribeLastSale(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException;
+    void subscribeLastSale(String product) throws Exception;
 
     /**
      * Allows the User object to subscribe for Messages for the specified Stock.
@@ -194,7 +184,7 @@ public interface User {
      * @throws DataValidationException
      * @throws AlreadySubscribedException
      */
-    void subscribeMessages(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException;
+    void subscribeMessages(String product) throws Exception;
 
     /**
      * Allows the User object to subscribe for Ticker for the specified Stock.
@@ -205,14 +195,14 @@ public interface User {
      * @throws AlreadySubscribedException
      *
      */
-    void subscribeTicker(String product) throws AlreadySubscribedException, DataValidationException, InvalidConnectionIdException, UserNotConnectedException;
+    void subscribeTicker(String product) throws Exception;
 
     /**
      * Returns the value of the all Sock the User owns (has bought but not sold)
      *
      * @throws InvalidPriceOperation
      */
-    Price getAllStockValue() throws InvalidPriceOperation;
+    Price getAllStockValue() throws Exception;
 
     /**
      * Returns the difference between cost of all stock purchases and stock
@@ -226,7 +216,7 @@ public interface User {
      *
      * @throws InvalidPriceOperation
      */
-    Price getNetAccountValue() throws InvalidPriceOperation;
+    Price getNetAccountValue() throws Exception;
 
     /**
      * Allows the User object to submit a Book Depth request for the specified
@@ -237,7 +227,7 @@ public interface User {
      * @throws NoSuchProductException
      * @throws DataValidationException
      */
-    String[][] getBookDepth(String product) throws DataValidationException, NoSuchProductException, InvalidConnectionIdException, UserNotConnectedException;
+    String[][] getBookDepth(String product) throws Exception;
 
     /**
      * Allows the User object to query the market state (OPEN, PREOPEN, CLOSED).
@@ -245,7 +235,7 @@ public interface User {
      * @throws UserNotConnectedException
      * @throws InvalidConnectionIdException
      */
-    String getMarketState() throws InvalidConnectionIdException, UserNotConnectedException;
+    String getMarketState() throws Exception;
 
     /**
      * Returns a list of order id’s for the orders this user has submitted.
@@ -262,12 +252,12 @@ public interface User {
      *
      * @throws InvalidPriceOperation
      */
-    Price getStockPositionValue(String sym) throws InvalidPriceOperation;
+    Price getStockPositionValue(String sym) throws Exception;
 
     /**
      * Returns the volume of the specified stock that this user owns
      */
-    int getStockPositionVolume(String product);
+    int getStockPositionVolume(String product) throws Exception;
 
     /**
      * Returns a list of all the Stocks the user owns
@@ -283,6 +273,6 @@ public interface User {
      * @throws UserNotConnectedException
      * @throws InvalidConnectionIdException
      */
-    ArrayList<TradableDTO> getOrdersWithRemainingQty(String product) throws InvalidConnectionIdException, UserNotConnectedException, DataValidationException, NoSuchProductException;
+    ArrayList<TradableDTO> getOrdersWithRemainingQty(String product) throws Exception;
 
 }
