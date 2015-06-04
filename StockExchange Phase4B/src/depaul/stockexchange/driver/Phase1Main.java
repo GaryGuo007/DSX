@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package depaul.stockexchange;
+package depaul.stockexchange.driver;
 
+import depaul.stockexchange.BookSide;
 import depaul.stockexchange.price.InvalidPriceOperation;
 import depaul.stockexchange.tradable.Order;
 import depaul.stockexchange.tradable.Quote;

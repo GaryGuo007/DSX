@@ -18,6 +18,7 @@ import depaul.stockexchange.publishers.NotSubscribedException;
 import depaul.stockexchange.tradable.Tradable;
 import depaul.stockexchange.tradable.TradableDTO;
 import depaul.stockexchange.gui.*;
+import depaul.stockexchange.price.PriceFactory;
 
 /**
  * The UserImpl class (this class can go in the same package as �User�
@@ -50,7 +51,7 @@ public class UserImpl implements User {
     private Position position;
     private UserDisplayManager userDisplay;
 
-    public UserImpl(String userName) throws DataValidationException {
+    public UserImpl(String userName) {
         setUserName(userName);
         setStocks(new ArrayList<>());
         setTradUserData(new ArrayList<TradableUserData>());
@@ -83,10 +84,7 @@ public class UserImpl implements User {
         return userDisplay;
     }
 
-    public void setUserName(String userName) throws DataValidationException {
-        if (Utils.isNullOrEmpty(userName)) {
-            throw new DataValidationException("Username can't be null or empty.");
-        }
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
@@ -342,8 +340,14 @@ public class UserImpl implements User {
      * sold).
      */
     @Override
-    public Price getAllStockValue() throws Exception {
-        return getPosition().getAllStockValue();
+    public Price getAllStockValue() {
+        Price price = PriceFactory.makeLimitPrice(0);
+        try {
+            price = getPosition().getAllStockValue();
+        } catch(Exception ex) {
+            System.out.printf("Failed to getStockPositionValue from UserImpl." + ex.getMessage());
+        }
+        return price;
 
     }
 
@@ -362,7 +366,7 @@ public class UserImpl implements User {
      * account costs.
      */
     @Override
-    public Price getNetAccountValue() throws Exception {
+    public Price getNetAccountValue() {
         return getPosition().getNetAccountValue();
 
     }
@@ -414,17 +418,28 @@ public class UserImpl implements User {
      * Returns the value of the specified stock that this user owns.
      */
     @Override
-    public Price getStockPositionValue(String product)
-            throws Exception {
-        return getPosition().getStockPositionValue(product);
+    public Price getStockPositionValue(String product) {
+        Price price = PriceFactory.makeLimitPrice(0);
+        try {
+            price = getPosition().getStockPositionValue(product);
+        } catch(Exception ex) {
+            System.out.printf("Failed to getStockPositionValue from UserImpl." + ex.getMessage());
+        }
+        return price;
     }
 
     /*
      * Returns the value of the specified stock that this user owns.
      */
     @Override
-    public int getStockPositionVolume(String product) throws Exception {
-        return getPosition().getStockPositionVolume(product);
+    public int getStockPositionVolume(String product) {
+        int volume = 0;
+        try {
+            volume = getPosition().getStockPositionVolume(product);
+        } catch(Exception ex) {
+            System.out.printf("Failed to getStockPositionVolume from UserImpl." + ex.getMessage());
+        }
+        return volume;
     }
 
     /*

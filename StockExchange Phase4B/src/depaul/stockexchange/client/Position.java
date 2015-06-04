@@ -170,7 +170,13 @@ public final class Position {
      * This method should return the total current value of all stocks this user
      * owns PLUS the account costs.
      */
-    public Price getNetAccountValue() throws InvalidPriceOperation, DataValidationException {
-        return getAccountCosts().add(getAllStockValue());
+    public Price getNetAccountValue() {
+        Price p = PriceFactory.makeLimitPrice(0);
+        try {
+            p = getAccountCosts().add(getAllStockValue());
+        } catch (Exception ex) {
+            System.out.printf("Failed to getNetAccountValue from Position." + ex.getMessage());
+        }
+        return p;
     }
 }

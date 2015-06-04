@@ -202,7 +202,7 @@ public interface User {
      *
      * @throws InvalidPriceOperation
      */
-    Price getAllStockValue() throws Exception;
+    Price getAllStockValue();
 
     /**
      * Returns the difference between cost of all stock purchases and stock
@@ -216,7 +216,7 @@ public interface User {
      *
      * @throws InvalidPriceOperation
      */
-    Price getNetAccountValue() throws Exception;
+    Price getNetAccountValue();
 
     /**
      * Allows the User object to submit a Book Depth request for the specified
@@ -252,12 +252,12 @@ public interface User {
      *
      * @throws InvalidPriceOperation
      */
-    Price getStockPositionValue(String sym) throws Exception;
+    Price getStockPositionValue(String sym);
 
     /**
      * Returns the volume of the specified stock that this user owns
      */
-    int getStockPositionVolume(String product) throws Exception;
+    int getStockPositionVolume(String product);
 
     /**
      * Returns a list of all the Stocks the user owns

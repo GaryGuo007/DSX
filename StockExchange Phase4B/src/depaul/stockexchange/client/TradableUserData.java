@@ -51,7 +51,7 @@ public class TradableUserData {
      *
      * @return The string stock symbol
      */
-    public String getStockSymbol() {
+    public String getProduct() {
         return stockSymbol;
     }
 
@@ -69,7 +69,7 @@ public class TradableUserData {
      *
      * @return The id
      */
-    public String getId() {
+    public String getOrderId() {
         return this.id;
     }
 

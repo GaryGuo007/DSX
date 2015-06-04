@@ -1,6 +1,7 @@
-package depaul.stockexchange;
+package depaul.stockexchange.driver;
 // HERE you should add any imports for your classes that you need to make this class compile.
 
+import depaul.stockexchange.BookSide;
 import java.util.ArrayList;
 
 //import depaul.stockexchange.*;
